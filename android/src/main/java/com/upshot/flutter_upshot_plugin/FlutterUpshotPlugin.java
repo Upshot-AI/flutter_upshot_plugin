@@ -1,4 +1,4 @@
-package com.example.flutter_upshot_plugin;
+package com.upshot.flutter_upshot_plugin;
 
 import android.app.Activity;
 import android.content.Context;

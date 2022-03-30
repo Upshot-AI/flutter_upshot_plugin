@@ -1,4 +1,4 @@
-package com.example.flutter_upshot_plugin_example;
+package com.upshot.flutter_upshot_plugin_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

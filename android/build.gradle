@@ -1,4 +1,4 @@
-group 'com.example.flutter_upshot_plugin'
+group 'com.upshot.flutter_upshot_plugin'
 version '1.0'
 
 buildscript {
