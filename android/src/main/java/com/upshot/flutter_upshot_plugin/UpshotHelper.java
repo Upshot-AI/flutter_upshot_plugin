@@ -16,13 +16,14 @@ class UpshotHelper {
 
         if (options == null) {return;}
 
-        String appId  = options.get("appId").toString();
-        String ownerId = options.get("ownerId").toString();
-        Boolean fetchLocation = (Boolean) options.get("enableLocation") ? (Boolean) options.get("enableLocation") : false ;
-        Boolean enableDebugLogs = (Boolean) options.get("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs") : false ;
-        Boolean useExternalStorage = (Boolean) options.get("enableExternalStorage") ? (Boolean) options.get("enableExternalStorage") : false ;
-        Boolean enableCrashLogs = (Boolean) options.get("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs") : false ;
-        if (appId != null && ownerId != null) {
+        String appId  = options.containsKey("appId") ? options.get("appId").toString() : "";
+        String ownerId = options.containsKey("ownerId") ? options.get("ownerId").toString() : "";
+        Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation") : false ;
+        Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs") : false ;
+        Boolean useExternalStorage = options.containsKey("enableExternalStorage") ? (Boolean) options.get("enableExternalStorage") : false ;
+        Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs") : false ;
+        if (appId != null && ownerId != null && !appId.isEmpty && !ownerId.isEmpty) {
+            
             Bundle bundle =new Bundle();
             bundle.putString(BKProperties.BK_APPLICATION_ID, appId);
             bundle.putString(BKProperties.BK_APPLICATION_OWNER_ID, ownerId);

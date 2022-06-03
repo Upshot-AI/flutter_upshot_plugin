@@ -9,41 +9,41 @@ class FlutterUpshotPlugin {
 
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
 
-  static Future<void> initializeUpshotUsingConfigFile() async {
-    await _channel.invokeMethod("initializeUpshotUsingConfigFile");
-    return;
+  static void initializeUpshotUsingConfigFile() {
+     _channel.invokeMethod("initializeUpshotUsingConfigFile");    
   }
 
-  static Future<void> initialiseUpshotUsingOptions(Map options) async {
-    await _channel.invokeMethod("initializeUsingOptions", options);
-    return;
+  static void initialiseUpshotUsingOptions(Map options) {
+     _channel.invokeMethod("initializeUsingOptions", options);
   }
 
-  static Future<void> terminateUpshot() async {
-    await _channel.invokeMethod("terminate");
-    return;
+  static void terminateUpshot() {
+     _channel.invokeMethod("terminate");
   }
 
-  static Future<void> sendUserDetails(Map data) async {
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("data", () => data);
-    await _channel.invokeMethod("sendUserDetails", data);
+  static void sendUserDetails(Map data) {        
+     _channel.invokeMethod("sendUserDetails", data);
   }
 
   static Future<Map?> get getUserDetails async {
     return await _channel.invokeMethod("getUserDetails");
   }
 
-  static Future<void> sendLogoutDetails() async {
+  static void sendLogoutDetails() {
     return await _channel.invokeMethod("sendLogoutDetails");
   }
 
-  static Future<void> sendDeviceToken(String token) async {
-    return await _channel.invokeMethod("sendDeviceToken", token);
+  static void sendDeviceToken(String platform, String token) {
+    Map tokenData = {'platform': platform, 'token': token};
+    _channel.invokeMethod("sendDeviceToken", tokenData);
   }
 
-  static Future<void> sendPushClickDetails(Map data) async {
-    return await _channel.invokeMethod("sendPushClickDetails", data);
+  static void sendPushClickDetails(Map data) {
+     _channel.invokeMethod("sendPushClickDetails", data);
+  }
+
+  static void displayNotification(Map data) {
+    _channel.invokeMethod("displayNotification", data);
   }
 
   static Future<String> get getUserId async {
@@ -55,117 +55,87 @@ class FlutterUpshotPlugin {
     return version;
   }
 
-  static Future<String?> createCustomEvent(String? eventName, Map data, bool isTimed) async {
-
-    // Map<String, dynamic> values = <String, dynamic>{};
-    Map payload = {'eventName': eventName, 'data': data, 'isTimed': isTimed};
-    // values.putIfAbsent("data", () => data);
-    // values.putIfAbsent("eventName", () => eventName);
-    // log(values.toString());
+  static Future<String?> createCustomEvent(String eventName, Map data, bool isTimed) async {
+    
+    Map payload = {'eventName': eventName, 'data': data, 'isTimed': isTimed};    
     return await _channel.invokeMethod("createCustomEvent", payload);
   }
 
-  static Future<String?> createPageViewEvent(String pageName) async {
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("data", () => data);
-    // values.putIfAbsent("isTimed", () => isTimed);
-    // values.putIfAbsent("pageName", () => pageName);
-    // String? eventId =
+  static Future<String?> createPageViewEvent(String pageName) async {    
     return await _channel.invokeMethod("createPageViewEvent", pageName);
   }
 
-  static Future<String?> createAttributionEvent(Map payload) async {
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("attributionSource", () => attributionSource);
-    // values.putIfAbsent("utmSource", () => utmSource);
-    // values.putIfAbsent("utmMedium", () => utmMedium);
-    // values.putIfAbsent("utmCampaign", () => utmCampaign);
+  static Future<String?> createAttributionEvent(Map payload) async {    
     return await _channel.invokeMethod("createAttributionEvent", payload);
   }
 
-  static Future<void> createLocationEvent(double latitude, double longitude) async {
+  static void createLocationEvent(double latitude, double longitude) {
 
-    Map params = {'latitude': latitude, 'longitude': longitude};
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("latitude", () => latitude);
-    // values.putIfAbsent("longitude", () => longitude);
-    await _channel.invokeMethod("createLocationEvent", params);
-    return;
+    Map params = {'latitude': latitude, 'longitude': longitude};    
+    _channel.invokeMethod("createLocationEvent", params);    
   }
 
-  static Future<void> setValueAndClose(String eventId, Map data) async {
+  static void setValueAndClose(String eventId, Map data) {
 
-    Map payload = {'eventId': eventId, 'data': data};
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("data", () => data);
-    // values.putIfAbsent("isTimed", () => isTimed);
-    // values.putIfAbsent("eventName", () => eventName);
-    await _channel.invokeMethod("setValueAndClose", payload);
-    return;
+    Map payload = {'eventId': eventId, 'data': data};    
+    _channel.invokeMethod("setValueAndClose", payload);    
   }
 
-  static Future<void> closeEventForId(String eventId) async {
-    // Map payload = {'eventId': eventId};
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("eventId", () => eventId);
-    await _channel.invokeMethod("closeEventForId", eventId);
-    return;
+  static void closeEventForId(String eventId) {    
+     _channel.invokeMethod("closeEventForId", eventId);    
   }
 
-  static Future<void> dispatchEvents(bool timedEvents) async {
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("timedEvents", () => timedEvents);
-    await _channel.invokeMethod("dispatchEvents", timedEvents);
-    return;
+  static void dispatchEvents(bool timedEvents) {
+    
+     _channel.invokeMethod("dispatchEvents", timedEvents);    
   }
 
-  static Future<void> showActivity(int type, String tag) async {
-    Map values = {'type': type, 'tag': tag};
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("tag", () => tag);
-    return    await _channel.invokeMethod("showActivity", values);
+  static void showActivity(int type, String tag) {
+    Map values = {'type': type, 'tag': tag};    
+    _channel.invokeMethod("showActivity", values);
   }
 
-  static Future<void> showActivityWithId(String activityId) async {
-    // Map<String, dynamic> values = <String, dynamic>{};
-    // values.putIfAbsent("activityId", () => activityId);
-    return    await _channel.invokeMethod("showActivityWithId", activityId);
+  static void showActivityWithId(String activityId) {    
+    _channel.invokeMethod("showActivityWithId", activityId);
   }
 
-  static Future<void> removeTutorial() async {
-    await _channel.invokeMethod("removeTutorial");
-    return;
+  static void removeTutorial() {
+     _channel.invokeMethod("removeTutorial");
   }
 
-  static Future<void> fetchUserBadges() async {
-    return await _channel.invokeMethod("getBadges");
+  static void fetchUserBadges() {
+     _channel.invokeMethod("getBadges");
   }
 
-  static Future<void> fetchInboxDetails() async {
-    await _channel.invokeMethod('getInboxDetails');
+  static void fetchInboxDetails() {
+     _channel.invokeMethod('getInboxDetails');
   }
 
-  static Future<void> fetchRewards() async {
-    await _channel.invokeMethod('fetchRewards');
+  static void fetchRewards() {
+     _channel.invokeMethod('fetchRewards');
   }
 
-  static Future<void> fetchRewardHistory(String programId, int transactionType) async {
+  static void fetchRewardHistory(String programId, int transactionType) {
     Map details = {'programId': programId, 'type': transactionType};
-    await _channel.invokeMethod('fetchRewardHistory', details);
+    _channel.invokeMethod('fetchRewardHistory', details);
   }
 
-  static Future<void> fetchRewardRules(String programId) async {
-    await _channel.invokeMethod('fetchRewardRules', programId);
+  static void fetchRewardRules(String programId) {
+     _channel.invokeMethod('fetchRewardRules', programId);
   }
 
-  static Future<void> redeemRewards(String programId, int redeemAmount,
-      int transactionValue, String tag) async {
+  static void redeemRewards(String programId, int redeemAmount,
+      int transactionValue, String tag) {
     Map details = {
       'programId': programId,
       'redeemAmount': redeemAmount,
       'transactionValue': transactionValue,
       'tag': tag
     };
-    await _channel.invokeMethod('redeemRewards', details);
+     _channel.invokeMethod('redeemRewards', details);
+  }
+
+  static voiddisableUser(bool shouldDisable) {
+     _channel.invokeMethod("disableUser", shouldDisable);    
   }
 }

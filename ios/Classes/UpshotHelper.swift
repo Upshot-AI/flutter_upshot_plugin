@@ -17,7 +17,20 @@ class UpshotHelper: NSObject {
     }
     
     func initializeUsingOptions(options: [String: Any]) {
-        BrandKinesis.sharedInstance().initialize(options: options, delegate: self)
+        let appId = options["appId"] ?? ""
+        let ownerId = options["ownerId"] ?? ""
+        let enableLocation = options["enableLocation"] ?? false
+        let enableDebuglogs = options["enableDebuglogs"] ?? false
+        let enableCrashlogs = options["enableCrashlogs"] ?? false
+        
+        if let initOptions = [BKApplicationID: appId,
+                      BKApplicationOwnerID: ownerId,
+                         BKEnableDebugLogs: enableDebuglogs,
+                           BKFetchLocation: enableLocation,
+                           BKExceptionHandler: enableCrashlogs] as? [String: Any] {
+            
+            BrandKinesis.sharedInstance().initialize(options: initOptions, delegate: self)
+        }        
     }
     
     func terminate() {
@@ -360,6 +373,12 @@ class UpshotHelper: NSObject {
             return "UserInfo"
         }
         return "Others"
+    }
+
+    func disableUser(shouldDisable: Bool) {
+
+        BrandKinesis.sharedInstance().disableUser(shouldDisable) { (status, error) in
+        }
     }
 }
 

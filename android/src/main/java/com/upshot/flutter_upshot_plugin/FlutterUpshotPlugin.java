@@ -15,6 +15,7 @@ import com.brandkinesis.callback.BKBadgeAccessListener;
 import com.brandkinesis.callback.BKInboxAccessListener;
 import com.brandkinesis.callback.BrandKinesisCallback;
 import com.brandkinesis.rewards.BKRewardsResponseListener;
+import com.brandkinesis.callback.BrandKinesisUserStateCompletion;
 import com.brandkinesis.utils.BKAppStatusUtil;
 
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
   private Handler handler;
-
+  public  static EventChannel.EventSink eventSinkChannel = null;
   private Context context;
   HashMap<String, List<HashMap<String, Object>>> badgesResult;
 
@@ -50,10 +51,23 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin");
     channel.setMethodCallHandler(this);
     this.context = flutterPluginBinding.getApplicationContext();
     handler = new Handler(Looper.getMainLooper());
+
+    new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/events").setStreamHandler(new EventChannel.StreamHandler() {
+      @Override
+      public void onListen(Object arguments, EventChannel.EventSink events) {        
+        eventSinkChannel = events;
+      }
+
+      @Override
+      public void onCancel(Object arguments) {
+       
+      }
+    });
   }
 
   BKAppStatusUtil.BKAppStatusListener listener = new BKAppStatusUtil.BKAppStatusListener() {
@@ -195,10 +209,10 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 HashMap<String, Object> keyValue = new HashMap<>();
                 keyValue.put("deepLink_keyValue", deeplinkJSON);
                 response.put("params", keyValue);
-                channel.invokeMethod("upshotActivityDidDismiss", response);
+                channel.invokeMethod("upshotActivityDeeplink", response);
               } catch (JSONException e) {
                 response.put("params", actionData);
-                channel.invokeMethod("upshotActivityDidDismiss", response);
+                channel.invokeMethod("upshotActivityDeeplink", response);
                 e.printStackTrace();
               }
             }
@@ -245,11 +259,20 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         }
         break;
         case "sendDeviceToken":{
-          String token = (String) call.arguments;
-          helper.updateDeviceToken(token);
+          String platform = call.argument("platform");
+          if(platform.equals("Android")) {
+            String token = call.argument("token");
+            helper.updateDeviceToken(token);
+          }
         }
         break;
         case "sendPushClickDetails":{ }
+        break;
+        case "displayNotification":{
+          HashMap<String , Object> data = (HashMap<String, Object>) call.arguments;
+          Bundle pushBundle = convertMapToBundle(data);
+          BrandKinesis.getBKInstance().buildEnhancedPushNotification(context, pushBundle, true);
+        }
         break;
         case "getUserId":{
           result.success(helper.getUserId(context));
@@ -318,7 +341,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         break;
         case "showActivity": {
           String tag = call.argument("tag");
-          Integer type = call.argument("activityType");
+          Integer type = call.argument("type");
           helper.getActivity(tag, type, context);
         }
         break;
@@ -496,11 +519,65 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
         }
         break;
+         case "disableUser": {
+
+          boolean disable = (boolean) call.arguments;
+          BrandKinesis.getBKInstance().disableUser(disable, context, new BrandKinesisUserStateCompletion() {
+            @Override
+            public void userStateCompletion(final boolean status) {
+              
+            }
+          });
+        }
+        break;
         default:
           Log.d("Upshot","No Method");
       }
   }
 
+private static Bundle convertMapToBundle(HashMap<String, Object> data) {
+
+    Bundle bundle = new Bundle();
+    Iterator<String> iterator = data.keySet().iterator();
+    while (iterator.hasNext()) {
+
+      String key = iterator.next();
+      Object value = data.get(key);
+      try {
+
+        if (value == null) {
+          bundle.putString(key, null);
+        } else if (value instanceof Number) {
+          bundle.putInt(key, (Integer) value);
+        } else if (value instanceof String) {
+          bundle.putString(key, (String) value);
+        } else if (value instanceof Boolean) {
+          boolean boolValue = (boolean) value;
+          bundle.putBoolean(key, boolValue);
+        } else if (value.getClass().isArray() || value instanceof Map || value instanceof List) {
+
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Object json = JSONObject.wrap(value);
+            if (json instanceof JSONArray || json instanceof JSONObject) {
+              bundle.putString(key, json.toString());
+            } else {
+              Log.i("Data", "invalid value for '" + key );
+            }
+          } else {
+            Log.i("Data", "invalid value for '" + key );
+          }
+        } else {
+
+          Log.i("Data", "invalid value for '" + key );
+        }
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
+    return bundle;
+  }
 
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {

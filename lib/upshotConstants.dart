@@ -12,52 +12,52 @@ class ActivityTypes {
   static int miniGames = 13;
 }
 
-enum UpshotInitOptions {
-  appId,
-  ownerId,
-  enableLocation,
-  enableDebuglogs,
-  enableExternalStorage,
-  enableCrashlogs
+class UpshotInitOptions {
+  static String appId = "appId",
+  static String ownerId = "ownerId",
+  static String enableLocation = "enableLocation",
+  static String enableDebuglogs = "enableDebuglogs",
+  static String enableExternalStorage = "enableExternalStorage",
+  static String enableCrashlogs = "enableCrashlogs"
 }
 
-enum UpshotAttribution {
-  attributionSource,
-  utmSource,
-  utmMedium,
-  utmCampaign
+class UpshotAttribution {
+  static String attributionSource = "attributionSource",
+  static String utmSource = "utmSource",
+  static String utmMedium = "utmMedium",
+  static String utmCampaign = "utmCampaign"
 }
 
-enum UpshotProfileAttributes {
-  lastName,
-  middleName,
-  firstName,
-  language,
-  occupation,
-  qualification,
-  maritalStatus,
-  phone,
-  localeCode,
-  userName,
-  email,
-  age,
-  gender,
-  email_opt,
-  sms_opt,
-  push_opt,
-  data_opt,
-  ip_opt,
-  appuID,
-  facebookID,
-  twitterID,
-  foursquareID,
-  linkedinID,
-  googleplusID,
-  enterpriseUID,
-  advertisingID,
-  instagramID,
-  pinterest,
-  day,
-  month,
-  year
+class UpshotProfileAttributes {
+  static String lastName = "lastName",
+  static String middleName = "middleName",
+  static String firstName = "firstName",
+  static String language = "language",
+  static String occupation = "occupation",
+  static String qualification = "qualification",
+  static String maritalStatus = "maritalStatus",
+  static String phone = "phone",
+  static String localeCode = "localeCode",
+  static String userName = "userName",
+  static String email = "email",
+  static String age = "age",
+  static String gender ="gender",
+  static String email_opt = "email_opt",
+  static String sms_opt ="sms_opt",
+  static String push_opt = "push_opt",
+  static String data_opt = "data_opt",
+  static String ip_opt = "ip_opt",
+  static String appuID = "appuID",
+  static String facebookID = "facebookID",
+  static String twitterID = "twitterID",
+  static String foursquareID = "foursquareID",
+  static String linkedinID = "linkedinID",
+  static String googleplusID = "googleplusID",
+  static String enterpriseUID = "enterpriseUID",
+  static String advertisingID = "advertisingID",
+  static String instagramID = "instagramID",
+  static String pinterest = "pinterest",
+  static String day = "day",
+  static String month = "month",
+  static String year = "year"
 }
