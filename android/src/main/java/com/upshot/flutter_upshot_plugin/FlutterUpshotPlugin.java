@@ -229,16 +229,21 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
         case "initializeUpshotUsingConfigFile": {
           setUpshotGlobalCallback();
-          helper.initializeUsingConfig(context);
+          if(initType == null) {
+            helper.initializeUsingConfig(context);
+          }          
           initType = "Config";
           BKAppStatusUtil.getInstance().register(context, listener);
         }
         break;
         case "initializeUsingOptions": {
-          HashMap<String , Object> data = (HashMap<String, Object>) call.arguments;
-          helper.initialize(data, context);
           setUpshotGlobalCallback();
+          HashMap<String , Object> data = (HashMap<String, Object>) call.arguments;
           initType = "Options";
+          if (options == null) {
+            options = data;
+            helper.initialize(data, context);
+          }                              
           BKAppStatusUtil.getInstance().register(context, listener);
         }
         break;
@@ -377,10 +382,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 @Override
                 public void run() {
                   HashMap<String, Object> data = new HashMap<>();
-                  if (list.size() > 0) {
-                    data.put("data", list);
-                    channel.invokeMethod("upshotCampaignDetails", data);
-                  }
+                  data.put("data", list);
+                  channel.invokeMethod("upshotCampaignDetails", data);                  
                 }
               });
             }

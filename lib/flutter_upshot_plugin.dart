@@ -17,7 +17,7 @@ class FlutterUpshotPlugin {
      _channel.invokeMethod("initializeUsingOptions", options);
   }
 
-  static void terminateUpshot() {
+  static void terminate() {
      _channel.invokeMethod("terminate");
   }
 
