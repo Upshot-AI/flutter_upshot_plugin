@@ -1,6 +1,6 @@
 # flutter_upshot_plugin
 
-A new Flutter project.
+Upshot.ai is a analytics and customer engagement platform. This framework helps you capture analytics, track events, send smart notifications and in-app messages to users.
 
 ## Getting Started
 
