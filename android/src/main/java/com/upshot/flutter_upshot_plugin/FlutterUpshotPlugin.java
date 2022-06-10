@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -20,11 +21,13 @@ import com.brandkinesis.utils.BKAppStatusUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Iterator;
 
 import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -32,6 +35,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.EventChannel;
 
 /** FlutterUpshotPlugin */
 public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
@@ -104,7 +108,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
       @Override
       public void onUserInfoUploaded(boolean uploadSuccess) {
-
+          channel.invokeMethod("upshotProfileUpdatingStatus", uploadSuccess);
       }
 
       @Override

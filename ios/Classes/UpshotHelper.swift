@@ -323,7 +323,12 @@ class UpshotHelper: NSObject {
         userInfo.externalId = externalId
         userInfo.dateOfBirth = dob
         userInfo.build { status, error in
-            
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotProfileUpdatingStatus", arguments: status)                    
+                }
+            }
         }
     }
     

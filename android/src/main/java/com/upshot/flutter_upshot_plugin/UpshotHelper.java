@@ -22,7 +22,7 @@ class UpshotHelper {
         Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs") : false ;
         Boolean useExternalStorage = options.containsKey("enableExternalStorage") ? (Boolean) options.get("enableExternalStorage") : false ;
         Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs") : false ;
-        if (appId != null && ownerId != null && !appId.isEmpty && !ownerId.isEmpty) {
+        if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
             
             Bundle bundle =new Bundle();
             bundle.putString(BKProperties.BK_APPLICATION_ID, appId);

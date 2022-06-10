@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
+  s.dependency 'Upshot-iOS-SDK'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.
@@ -26,6 +27,6 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
       'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
   }
-  s.dependency = 'Upshot-iOS-SDK'
+  
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end

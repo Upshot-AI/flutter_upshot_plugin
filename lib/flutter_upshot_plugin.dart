@@ -30,7 +30,7 @@ class FlutterUpshotPlugin {
   }
 
   static void sendLogoutDetails() {
-    return await _channel.invokeMethod("sendLogoutDetails");
+     _channel.invokeMethod("sendLogoutDetails");
   }
 
   static void sendDeviceToken(String platform, String token) {
@@ -135,7 +135,7 @@ class FlutterUpshotPlugin {
      _channel.invokeMethod('redeemRewards', details);
   }
 
-  static voiddisableUser(bool shouldDisable) {
+  static void disableUser(bool shouldDisable) {
      _channel.invokeMethod("disableUser", shouldDisable);    
   }
 }
