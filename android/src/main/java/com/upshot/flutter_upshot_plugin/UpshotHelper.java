@@ -2,36 +2,45 @@ package com.upshot.flutter_upshot_plugin;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.brandkinesis.BKProperties;
 import com.brandkinesis.BKUserInfo;
 import com.brandkinesis.BrandKinesis;
 import com.brandkinesis.activitymanager.BKActivityTypes;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.*;
 
 class UpshotHelper {
 
     public void initialize(HashMap<String, Object> options, Context context) {
 
-        if (options == null) {return;}
+        try {
+            if (options == null) {return;}
+            String appId = options.containsKey("appId") ? options.get("appId").toString() : "";
+            String ownerId = options.containsKey("ownerId") ? options.get("ownerId").toString() : "";
+            Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation") : false;
+            Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs") : false;
+            Boolean useExternalStorage = options.containsKey("enableExternalStorage") ? (Boolean) options.get("enableExternalStorage") : false;
+            Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs") : false;
+            if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
 
-        String appId  = options.containsKey("appId") ? options.get("appId").toString() : "";
-        String ownerId = options.containsKey("ownerId") ? options.get("ownerId").toString() : "";
-        Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation") : false ;
-        Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs") : false ;
-        Boolean useExternalStorage = options.containsKey("enableExternalStorage") ? (Boolean) options.get("enableExternalStorage") : false ;
-        Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs") : false ;
-        if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
-            
-            Bundle bundle =new Bundle();
-            bundle.putString(BKProperties.BK_APPLICATION_ID, appId);
-            bundle.putString(BKProperties.BK_APPLICATION_OWNER_ID, ownerId);
-            bundle.putBoolean(BKProperties.BK_FETCH_LOCATION, fetchLocation);
-            bundle.putBoolean(BKProperties.BK_ENABLE_DEBUG_LOGS, enableDebugLogs);
-            bundle.putBoolean(BKProperties.BK_USE_EXTERNAL_STORAGE, useExternalStorage);
-            bundle.putBoolean(BKProperties.BK_EXCEPTION_HANDLER, enableCrashLogs);
-            BrandKinesis.initialiseBrandKinesis(context, bundle, null);
+                Bundle bundle = new Bundle();
+                bundle.putString(BKProperties.BK_APPLICATION_ID, appId);
+                bundle.putString(BKProperties.BK_APPLICATION_OWNER_ID, ownerId);
+                bundle.putBoolean(BKProperties.BK_FETCH_LOCATION, fetchLocation);
+                bundle.putBoolean(BKProperties.BK_ENABLE_DEBUG_LOGS, enableDebugLogs);
+                bundle.putBoolean(BKProperties.BK_USE_EXTERNAL_STORAGE, useExternalStorage);
+                bundle.putBoolean(BKProperties.BK_EXCEPTION_HANDLER, enableCrashLogs);
+                BrandKinesis.initialiseBrandKinesis(context, bundle, null);
+            }
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -45,10 +54,9 @@ class UpshotHelper {
 
     public void terminateUpshot(Context context) {
         BrandKinesis.getBKInstance().terminate(context);
-
     }
 
-    public void setUserProfile(String userData) {
+    public void setUserProfile(HashMap<String, Object> userData) {
 
         HashMap<String, String> predefinedKeys = new HashMap();
 
@@ -84,29 +92,32 @@ class UpshotHelper {
         predefinedKeys.put("sms_opt", BKUserInfo.BKUserData.SMS_OPT_OUT);
         predefinedKeys.put("data_opt", BKUserInfo.BKUserData.DATA_OPT_OUT);
         predefinedKeys.put("ip_opt", BKUserInfo.BKUserData.IP_OPT_OUT);
-
         try {
-            JSONObject providedJson = new JSONObject(userData);
             JSONObject othersJson = new JSONObject();
             Bundle bundle = new Bundle();
-            Iterator<String> keys = providedJson.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                Object value = providedJson.get(key);
+
+            // using for-each loop for iteration over Map.entrySet()
+            for (Map.Entry<String, Object> entry : userData.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
                 if (predefinedKeys.containsKey(key)) {
                     // predefined
                     String bkKey = predefinedKeys.get(key);
                     if (value instanceof Integer) {
-                        bundle.putInt(bkKey, providedJson.optInt(key));
-                    } else if (value instanceof Float || value instanceof Double) {
-                        bundle.putFloat(bkKey, (float) providedJson.optDouble(key));
+                        bundle.putInt(bkKey, (Integer) userData.get(key));
+                    } else if (value instanceof Float) {
+                        bundle.putFloat(bkKey, (float) userData.get(key));
+                    } else if (value instanceof Double) {
+                        bundle.putDouble(bkKey, (double) userData.get(key));
                     } else {
-                        bundle.putString(bkKey, providedJson.optString(key));
+                        bundle.putString(bkKey, (String) userData.get(key));
                     }
                 } else {
                     othersJson.put(key, value);
                 }
             }
+
             if (othersJson.length() != 0) {
                 HashMap<String, Object> others = jsonToHashMap(othersJson);
                 if (others != null) {
@@ -120,48 +131,52 @@ class UpshotHelper {
         }
     }
 
-    public Map<String, Object> getUserDetails()  {
-        return BrandKinesis.getBKInstance().getUserDetails(null);
-    }
-
     public void logoutDetails() {
-        Bundle userInfo =new Bundle();
+        Bundle userInfo = new Bundle();
         userInfo.putString(BKUserInfo.BKExternalIds.APPUID, "");
         BrandKinesis.getBKInstance().setUserInfoBundle(userInfo, null);
     }
 
     public void updateDeviceToken(String token) {
 
-        if (token == null) { return ; }
-        Bundle userInfo =new Bundle();
+        if (token == null) {
+            return;
+        }
+        Bundle userInfo = new Bundle();
         userInfo.putString(BKUserInfo.BKExternalIds.GCM, token);
         BrandKinesis.getBKInstance().setUserInfoBundle(userInfo, null);
     }
 
     public String getUserId(Context context) {
-        return  BrandKinesis.getBKInstance().getUserId(context);
+        return BrandKinesis.getBKInstance().getUserId(context);
     }
 
     public String getSDKVersion() {
         return BrandKinesis.getBKInstance().getSdkVersion();
     }
 
-    public String createCustomEvent(HashMap<String, Object> data, String eventName, Boolean timed)  {
+    public String createCustomEvent(HashMap<String, Object> data, String eventName, Boolean timed) {
 
-        if (eventName == null || eventName.isEmpty() || data == null) {  return null ;}
-        return  BrandKinesis.getBKInstance().createEvent(eventName, data, timed);
+        if (eventName == null || eventName.isEmpty()) {
+            return null;
+        }
+        return BrandKinesis.getBKInstance().createEvent(eventName, data, timed);
     }
 
     public String createPageEvent(String pageName) {
 
-        if (pageName == null || pageName.isEmpty()) {return  null;}
+        if (pageName == null || pageName.isEmpty()) {
+            return null;
+        }
         HashMap data = new HashMap<String, Object>();
         data.put(BrandKinesis.BK_CURRENT_PAGE, pageName);
         return BrandKinesis.getBKInstance().createEvent(BKProperties.BKPageViewEvent.NATIVE, data, true);
     }
 
     public String createAttributionEvent(HashMap<String, String> data) {
-        if (data == null) { return null;}
+        if (data == null) {
+            return null;
+        }
         return BrandKinesis.getBKInstance().createAttributionEvent(data);
     }
 
@@ -170,14 +185,16 @@ class UpshotHelper {
     }
 
     public void setValueAndClose(String eventId, HashMap<String, Object> data) {
-        if (eventId == null || eventId.isEmpty() || data == null) {return ;}
-
+        if (eventId == null || eventId.isEmpty()) {
+            return;
+        }
         BrandKinesis.getBKInstance().closeEvent(eventId, data);
     }
 
     public void closeEvent(String eventId) {
-        if (eventId == null || eventId.isEmpty()) {return ;}
-
+        if (eventId == null || eventId.isEmpty()) {
+            return;
+        }
         BrandKinesis.getBKInstance().closeEvent(eventId);
     }
 
@@ -190,7 +207,9 @@ class UpshotHelper {
     }
 
     public void getActivityById(String activityId) {
-        if (activityId == null || activityId.isEmpty()) {return ;}
+        if (activityId == null || activityId.isEmpty()) {
+            return;
+        }
         BrandKinesis.getBKInstance().getActivity(activityId, null);
     }
 
@@ -200,7 +219,7 @@ class UpshotHelper {
 
     public HashMap<String, Object> jsonToHashMap(JSONObject jsonObject) {
         HashMap<String, Object> data = new HashMap();
-        Iterator iter  = jsonObject.keys();
+        Iterator iter = jsonObject.keys();
         while (iter.hasNext()) {
             String key = (String) iter.next();
             Object value = null;

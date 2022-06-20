@@ -41,9 +41,9 @@ class UpshotProfileAttributes {
   static String userName = "userName";
   static String email = "email";
   static String age = "age";
-  static String gender ="gender";
+  static String gender = "gender";
   static String email_opt = "email_opt";
-  static String sms_opt ="sms_opt";
+  static String sms_opt = "sms_opt";
   static String push_opt = "push_opt";
   static String data_opt = "data_opt";
   static String ip_opt = "ip_opt";
@@ -60,4 +60,21 @@ class UpshotProfileAttributes {
   static String day = "day";
   static String month = "month";
   static String year = "year";
+}
+
+class UpshotGender {
+  static int RESET_GENDER = 0;
+  static int MALE = 1;
+  static int FEMALE = 2;
+  static int OTHERS = 3;
+}
+
+class UpshotMaritalStatus {
+  static int RESET_MARITAL_STATUS = 0;
+  static int SINGLE = 1;
+  static int ENGAGED = 2;
+  static int MARRIED = 3;
+  static int WIDOW = 4;
+  static int WIDOWER = 4;
+  static int DIVORCED = 5;
 }

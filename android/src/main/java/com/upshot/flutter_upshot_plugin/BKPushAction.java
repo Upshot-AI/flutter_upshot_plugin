@@ -44,9 +44,13 @@ public class BKPushAction extends BroadcastReceiver {
             }
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            FlutterUpshotPlugin.eventSinkChannel.success(bundleToMap(bundle));
-        }
+            if (FlutterUpshotPlugin.eventSinkChannel != null) {
+                FlutterUpshotPlugin.eventSinkChannel.success(bundleToMap(bundle));
+            }
+            context.startActivity(launchIntent);
             BrandKinesis bkInstance = BrandKinesis.getBKInstance();
             bkInstance.handlePushNotification(context, bundle);
         }
+
+    }
 }

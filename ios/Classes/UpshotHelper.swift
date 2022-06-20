@@ -36,18 +36,28 @@ class UpshotHelper: NSObject {
     func terminate() {
         BrandKinesis.sharedInstance().terminate()
     }
+
+    func dispatchInterval(interval: Int) {
+        BrandKinesis.sharedInstance().dispatchInterval = TimeInterval(interval)
+    }
     
     func updateUserDetails(details: [String: Any]) {
         
         buildUserDetails(details: details)
     }
     
-    func getUserDetails() -> [String: Any] {
+    func getUserDetails() {
         
         if let details = BrandKinesis.sharedInstance().getUserDetails(nil) as? [String: Any] {
-            return details
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotCurrentUserDetails", arguments: details)
+                }
+            }
         }
-        return [:]
+       
     }
     
     func sendLogoutDetails() {
@@ -383,6 +393,14 @@ class UpshotHelper: NSObject {
     func disableUser(shouldDisable: Bool) {
 
         BrandKinesis.sharedInstance().disableUser(shouldDisable) { (status, error) in
+             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshotUserStateCompletion", arguments: status)
+            }
+        }
         }
     }
 }

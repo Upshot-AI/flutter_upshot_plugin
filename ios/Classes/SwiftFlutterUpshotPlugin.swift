@@ -30,19 +30,20 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
                 UpshotHelper.defaultHelper.updateUserDetails(details: payload)
             }
         case "getUserDetails":
-            let userDetails = UpshotHelper.defaultHelper.getUserDetails()
-            result(userDetails)
+            UpshotHelper.defaultHelper.getUserDetails()
             
         case "sendLogoutDetails":
             UpshotHelper.defaultHelper.sendLogoutDetails()
             
         case "sendDeviceToken":
 
-          String platform = call.argument("platform");
-          if(platform == "iOS") {
-            String token = call.argument("token");
-            UpshotHelper.defaultHelper.updateDeviceToken(token: token)
-          }            
+            if let payload = call.arguments as? [String: Any] {
+                let platform = payload["platform"] as? String ?? ""
+                let token = payload["token"] as? String ?? ""
+                if platform == "iOS" {
+                    UpshotHelper.defaultHelper.updateDeviceToken(token: token)
+                }
+            }           
             
         case "sendPushClickDetails":
             
@@ -148,6 +149,10 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
          if let isDisable = call.arguments as? Bool {
             UpshotHelper.defaultHelper.disableUser(shouldDisable: isDisable)
         }
+        case "dispatchInterval":
+            if let interval = call.arguments as? Int {
+                UpshotHelper.defaultHelper.dispatchInterval(interval: interval)
+            }
             
         default:
             result(FlutterMethodNotImplemented)
