@@ -208,8 +208,8 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var rewards: [String : Any] =  [:]
-                if let res = response {
-                    rewards = ["status": "Success", "response": res]
+                if let res = response as? [String: Any] {
+                    rewards = ["status": "Success", "response": self.jsonToString(json: res) ?? ""]
                 }
                 if let err = error {
                     rewards = ["status": "Fail", "errorMessage": err]
@@ -230,8 +230,8 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var history: [String : Any] =  [:]
-                if let res = response {
-                    history = ["status": "Success", "response": res]
+                if let res = response as? [String: Any] {
+                    history = ["status": "Success", "response": self.jsonToString(json: res) ?? ""]
                 }
                 if let err = error {
                     history = ["status": "Fail", "errorMessage": err]
@@ -252,8 +252,8 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var rules: [String : Any] =  [:]
-                if let res = response {
-                    rules = ["status": "Success", "response": res]
+                if let res = response as? [String: Any] {
+                    rules = ["status": "Success", "response": self.jsonToString(json: res)  ?? ""]
                 }
                 if let err = error {
                     rules = ["status": "Fail", "errorMessage": err]
@@ -274,8 +274,8 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var redeemStatus: [String : Any] =  [:]
-                if let res = response {
-                    redeemStatus = ["status": "Success", "response": res]
+                if let res = response as? [String: Any] {
+                    redeemStatus = ["status": "Success", "response": self.jsonToString(json: res) ?? ""]
                 }
                 if let err = error {
                     redeemStatus = ["status": "Fail", "errorMessage": err]
@@ -403,6 +403,17 @@ class UpshotHelper: NSObject {
         }
         }
     }
+    
+    func jsonToString(json: [String: Any]) -> String? {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let jsonString = String(data: data, encoding: .utf8)
+            return jsonString
+        } catch let myJSONError {
+            print(myJSONError)
+        }
+        return nil
+    }
 }
 
 extension UpshotHelper: BrandKinesisDelegate {
@@ -453,20 +464,22 @@ extension UpshotHelper: BrandKinesisDelegate {
     
     func brandKinesisActivity(_ activityType: BKActivityType, performedActionWithParams params: [AnyHashable : Any]) {
         
-        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
-            
-            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
-            if let _  = params["deepLink"] as? String {
-                let activityPayload = ["activityType": activityType.rawValue, "params": params] as [String : Any]
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: activityPayload)
-                }
-                
-            } else if let _ = params["deepLink_keyValue"] as? [String: Any] {
-                let activityPayload = ["activityType": activityType.rawValue, "params": params] as [String : Any]
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: activityPayload)
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                if let deepLink  = params["deepLink"] as? String {
+                    let activityPayload = ["activityType": activityType.rawValue, "deepLink": deepLink] as [String : Any]
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: activityPayload)
+                    }
+                    
+                } else if let data = params["deepLink_keyValue"] as? [String: Any] {
+                    let activityPayload = ["activityType": activityType.rawValue, "deepLink_keyValue": self.jsonToString(json: data) ?? ""] as [String : Any]
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: activityPayload)
+                    }
                 }
             }
         }
@@ -487,7 +500,5 @@ extension UpshotHelper: BrandKinesisDelegate {
     
     func brandkinesisCampaignDetailsLoaded() {
         UpshotHelper.defaultHelper.showActivity(activityType: .any, tag: "Upshot_loaded")
-    }
-    
+    }   
 }
-

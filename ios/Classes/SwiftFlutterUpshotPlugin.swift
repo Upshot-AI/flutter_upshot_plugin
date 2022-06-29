@@ -38,11 +38,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
         case "sendDeviceToken":
 
             if let payload = call.arguments as? [String: Any] {
-                let platform = payload["platform"] as? String ?? ""
-                let token = payload["token"] as? String ?? ""
-                if platform == "iOS" {
-                    UpshotHelper.defaultHelper.updateDeviceToken(token: token)
-                }
+                let token = payload["token"] as? String ?? ""                
+                UpshotHelper.defaultHelper.updateDeviceToken(token: token)                
             }           
             
         case "sendPushClickDetails":

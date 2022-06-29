@@ -32,8 +32,8 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod("sendLogoutDetails");
   }
 
-  static void sendDeviceToken(String platform, String token) {
-    Map tokenData = {'platform': platform, 'token': token};
+  static void sendDeviceToken(String token) {
+    Map tokenData = {'token': token};
     _channel.invokeMethod("sendDeviceToken", tokenData);
   }
 

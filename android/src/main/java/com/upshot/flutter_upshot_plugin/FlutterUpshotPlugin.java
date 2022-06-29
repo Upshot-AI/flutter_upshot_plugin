@@ -18,6 +18,9 @@ import com.brandkinesis.callback.BKInboxAccessListener;
 import com.brandkinesis.callback.BrandKinesisCallback;
 import com.brandkinesis.rewards.BKRewardsResponseListener;
 import com.brandkinesis.callback.BrandKinesisUserStateCompletion;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +52,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     private MethodChannel channel;
     private Handler handler;
     public static EventChannel.EventSink eventSinkChannel = null;
+    public static EventChannel.EventSink pushReceiveSinkChannel = null;
     private Context context;
 
     UpshotHelper helper = new UpshotHelper();
@@ -69,7 +73,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
-            @Override
+    @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin");
@@ -88,6 +92,17 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
             }
         });
+        new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/onPushReceive").setStreamHandler(new EventChannel.StreamHandler() {
+            @Override
+            public void onListen(Object arguments, EventChannel.EventSink events) {
+                pushReceiveSinkChannel = events;
+            }
+
+            @Override
+            public void onCancel(Object arguments) {
+
+            }
+        });
         UpshotApplication.getApplicationInstance().setCustomListener(customListener);
     }
 
@@ -97,6 +112,27 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             setUpshotGlobalCallback();
         }
     };
+
+    private void fetchTokenFromFirebaseSdk() {
+
+        try {
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                return;
+                            }
+                            String token = task.getResult();
+                            helper.updateDeviceToken(token);
+                        }
+                    });
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void setUpshotGlobalCallback() {
         BrandKinesis bkInstance = BrandKinesis.getBKInstance();
@@ -147,7 +183,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
             @Override
             public void onAuthenticationSuccess() {
-
+                fetchTokenFromFirebaseSdk();
                 HashMap<String, String> response = new HashMap<>();
                 response.put("status", "Success");
                 response.put("errorMessage", "");
@@ -217,12 +253,10 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                         if (data != null) {
                             try {
                                 JSONObject deeplinkJSON = new JSONObject(data);
-                                HashMap<String, Object> keyValue = new HashMap<>();
-                                keyValue.put("deepLink_keyValue", deeplinkJSON);
-                                response.put("params", keyValue);
+                                response.put("deepLink_keyValue", deeplinkJSON.toString());
                                 channel.invokeMethod("upshotActivityDeeplink", response);
                             } catch (JSONException e) {
-                                response.put("params", actionData);
+                                response.put("deepLink", data);
                                 channel.invokeMethod("upshotActivityDeeplink", response);
                                 e.printStackTrace();
                             }
@@ -264,20 +298,15 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             case "getUserDetails": {
                 Set<String> keys = new HashSet<>();
                 new UserInfoAsync().execute(keys);
-//                Map<String, Object> details = helper.getUserDetails();
-//                result.success(details);
             }
             break;
             case "sendLogoutDetails": {
                 helper.logoutDetails();
             }
             break;
-            case "sendDeviceToken": {
-                String platform = call.argument("platform");
-                if (platform.equals("Android")) {
-                    String token = call.argument("token");
-                    helper.updateDeviceToken(token);
-                }
+            case "sendDeviceToken": {            
+                String token = call.argument("token");
+                helper.updateDeviceToken(token);                
             }
             break;
             case "sendPushClickDetails": {
