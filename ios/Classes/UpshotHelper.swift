@@ -190,11 +190,9 @@ class UpshotHelper: NSObject {
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    if inboxDetails.count > 0 {
-                        let data = ["data": inboxDetails]
-                        upshotChannel.invokeMethod("upshotCampaignDetails", arguments: data)
-                    }
+                DispatchQueue.main.asyncAfter(deadline: .now()) {                    
+                    let data = ["data": inboxDetails]
+                    upshotChannel.invokeMethod("upshotCampaignDetails", arguments: data)                    
                 }
             }
         }
@@ -419,6 +417,11 @@ class UpshotHelper: NSObject {
 extension UpshotHelper: BrandKinesisDelegate {
     
     func brandKinesisAuthentication(_ brandKinesis: BrandKinesis, withStatus status: Bool, error: Error?) {
+        
+        let userDefaults = UserDefaults.standard
+        if let token = userDefaults.value(forKey: "upshot_token") as? String {
+            updateDeviceToken(token: token)
+        }
         
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
             

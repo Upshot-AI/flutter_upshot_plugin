@@ -2,6 +2,7 @@ class ActivityTypes {
   static int any = -1;
   static int survey = 0;
   static int rating = 1;
+  static int fullScreenAd = 3;
   static int poll = 5;
   static int tutorials = 7;
   static int inAppMessage = 8;

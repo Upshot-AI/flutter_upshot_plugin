@@ -124,6 +124,14 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                                 return;
                             }
                             String token = task.getResult();
+                            HashMap<String, String> response = new HashMap<>();
+                            response.put("token", token);                            
+                            handler.post(new Runnable() {
+                                @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotPushToken", response);
+                                    }
+                            });
                             helper.updateDeviceToken(token);
                         }
                     });

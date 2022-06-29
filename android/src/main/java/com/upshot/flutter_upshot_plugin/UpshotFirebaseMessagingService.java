@@ -34,16 +34,15 @@ public class UpshotFirebaseMessagingService extends FirebaseMessagingService {
         }
         if (bundle.containsKey("bk")) {
             sendPushBundleToBK(bundle, this, true);            
-        } else {
-            if (FlutterUpshotPlugin.pushReceiveSinkChannel != null) {
-                Map<String, String> remoteData = remoteMessage.getData();
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        FlutterUpshotPlugin.pushReceiveSinkChannel.success(remoteData);
-                    }
-                });
-            }
+        }
+        if (FlutterUpshotPlugin.pushReceiveSinkChannel != null) {
+            Map<String, String> remoteData = remoteMessage.getData();
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    FlutterUpshotPlugin.pushReceiveSinkChannel.success(remoteData);
+                }
+            });
         }
     }
 
