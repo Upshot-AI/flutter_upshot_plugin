@@ -530,7 +530,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 int transactionValue = call.argument("transactionValue");
                 String tag = call.argument("tag");
 
-                BrandKinesis.getBKInstance().redeemRewardsWithProgramId(context, programId, redeemAmount, transactionValue, tag, new BKRewardsResponseListener() {
+                BrandKinesis.getBKInstance().redeemRewardsWithProgramId(context, programId, transactionValue, redeemAmount, tag, new BKRewardsResponseListener() {
                     @Override
                     public void rewardsResponse(Object o) {
 
