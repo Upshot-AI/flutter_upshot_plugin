@@ -56,7 +56,7 @@ flutter {
 }
 
 dependencies{
-    implementation files('libs/BrandKinesis.aar')
+//    implementation files('libs/BrandKinesis.aar')
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     implementation "com.squareup.duktape:duktape-android:1.1.0"

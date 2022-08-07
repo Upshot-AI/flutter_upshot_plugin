@@ -8,6 +8,15 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
         let channel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: registrar.messenger())
         let instance = SwiftFlutterUpshotPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
+        
+        let fileKey = registrar.lookupKey(forAsset: "assets/UpshotCustomisation.json")
+        let filePath =  Bundle.main.path(forResource: fileKey, ofType: nil)
+        if let path = filePath {
+            let fileUrl = URL(fileURLWithPath: path)
+            let data = try? Data(contentsOf: fileUrl)
+            UpshotHelper.defaultHelper.customizationData = data
+            UpshotHelper.defaultHelper.registrar = registrar
+        }
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -150,6 +159,11 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             if let interval = call.arguments as? Int {
                 UpshotHelper.defaultHelper.dispatchInterval(interval: interval)
             }
+        case "getNotifications":
+            
+            if let loadMore = call.arguments as? Bool {
+                UpshotHelper.defaultHelper.getNotifications(loadMore: loadMore)
+           }
             
         default:
             result(FlutterMethodNotImplemented)

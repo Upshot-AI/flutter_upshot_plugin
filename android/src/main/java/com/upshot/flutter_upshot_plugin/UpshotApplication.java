@@ -13,6 +13,7 @@ import java.util.HashMap;
 import io.flutter.app.FlutterApplication;
 
 public class UpshotApplication extends FlutterApplication {
+
     private static UpshotApplication application;
     public static String initType = "";
     public static HashMap<String, Object> options = null;

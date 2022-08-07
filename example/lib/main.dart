@@ -28,46 +28,46 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
+    initializeBrandKinesisWithOptions();
     // initialiseBrandKinesis();
-    FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
+    // FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
     UpshotMethodChannel(context);
   }
 
   Future<void> initPlatformState() async {
     String platformVersion;
     try {
-      platformVersion = await FlutterUpshotPlugin.getSDKVersion ??
-          'Unknown platform version';
+      // platformVersion = await FlutterUpshotPlugin.getSDKVersion ??
+      //     'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion;
+      // _platformVersion = platformVersion;
     });
   }
 
   Future<void> initialiseBrandKinesis() async {
     try {
-      await FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
+      // await FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
     } catch (e) {
       log('Error:  $e');
     }
   }
 
-  Future<void> initializeBrandKinesisWithOptions(String appId, String ownerId,
-      bool fetchLocation, bool useExternalStorage, bool enableDebugLogs) async {
+  Future<void> initializeBrandKinesisWithOptions() async {
 
     Map optionsMap = {
-      UpshotInitOptions.appId.name : appId,
-      UpshotInitOptions.ownerId.name: ownerId,
-      UpshotInitOptions.enableDebuglogs.name: enableDebugLogs,
-      UpshotInitOptions.enableLocation.name: fetchLocation,
-      UpshotInitOptions.enableCrashlogs.name: true,
-      UpshotInitOptions.enableExternalStorage.name: useExternalStorage
+      UpshotInitOptions.appId : "e748a45e-fbef-4a7e-a2c7-ef0b88812399",
+      UpshotInitOptions.ownerId: "f3bf1d6f-5771-41f7-a6ff-640d3af4805e",
+      UpshotInitOptions.enableDebuglogs: false,
+      UpshotInitOptions.enableLocation: false,
+      UpshotInitOptions.enableCrashlogs: true,
+      UpshotInitOptions.enableExternalStorage: false
     };
-    await FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
+     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
   }
 
   Future<void> createEvent(String eventName, HashMap<String, Object> data) async {
@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> createLocationEvent(double lat, double long) async {
     try {
-      await FlutterUpshotPlugin.createLocationEvent(lat, long);
+      // await FlutterUpshotPlugin.createLocationEvent(lat, long);
     } catch (e) {
       log('$e');
     }
@@ -104,23 +104,23 @@ class _MyAppState extends State<MyApp> {
   }
 
   static Future<void> sendUserDetails(HashMap<String, Object> data) async {
-    await FlutterUpshotPlugin.sendUserDetails(data);
+    // await FlutterUpshotPlugin.sendUserDetails(data);
   }
 
   static Future<void> setValueAndClose(String eventName, Map data) async {
-    await FlutterUpshotPlugin.setValueAndClose(eventName, data);
+    // await FlutterUpshotPlugin.setValueAndClose(eventName, data);
   }
 
   static Future<void> closeEventForId(String eventId) async {
-    await FlutterUpshotPlugin.closeEventForId(eventId);
+    // await FlutterUpshotPlugin.closeEventForId(eventId);
   }
 
   static Future<void> dispatchEventWithTime(bool time) async {
-    await FlutterUpshotPlugin.dispatchEvents(time);
+    // await FlutterUpshotPlugin.dispatchEvents(time);
   }
 
   static Future<void> removeTutorial() async {
-    await FlutterUpshotPlugin.removeTutorial();
+    // await FlutterUpshotPlugin.removeTutorial();
   }
 
   static Future<void> createPageViewEvent(String pageName) async {
@@ -133,19 +133,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> terminateUpshot() async {
-    await FlutterUpshotPlugin.terminateUpshot();
+    // await FlutterUpshotPlugin.terminateUpshot();
   }
 
   Future<void> showActivity(String tag) async {
-    await FlutterUpshotPlugin.showActivity(-1, tag);
+     FlutterUpshotPlugin.showActivity(-1, "");
   }
 
   static Future<void> getBadges() async {
-    await FlutterUpshotPlugin.fetchUserBadges();
+    // await FlutterUpshotPlugin.fetchUserBadges();
   }
 
   static Future<void> getCampaignDetails() async {
-    await FlutterUpshotPlugin.fetchInboxDetails();
+    // await FlutterUpshotPlugin.fetchInboxDetails();
   }
 
   @override
@@ -171,8 +171,7 @@ class _MyAppState extends State<MyApp> {
                     backgroundColor: Colors.black12,
                     textStyle: const TextStyle(color: Colors.white)),
                 onPressed: () {
-                  initializeBrandKinesisWithOptions(
-                      "appId", "ownerId", true, true, true);
+                  // initializeBrandKinesisWithOptions("appId", "ownerId", true, true, true);
                 },
                 child: const Text("Initialize With Options"),
               ),

@@ -2,7 +2,6 @@ package com.upshot.flutter_upshot_plugin;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.brandkinesis.BKProperties;
 import com.brandkinesis.BKUserInfo;
@@ -38,9 +37,10 @@ class UpshotHelper {
                 BrandKinesis.initialiseBrandKinesis(context, bundle, null);
             }
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+//            if (BuildConfig.DEBUG) {
+//
+//            }
         }
     }
 
@@ -203,7 +203,11 @@ class UpshotHelper {
     }
 
     public void getActivity(String tag, int type, Context context) {
-        BrandKinesis.getBKInstance().getActivity(context, BKActivityTypes.parse(type), tag);
+        BKActivityTypes activityType = BKActivityTypes.ACTIVITY_ANY;
+        if (type >= 0) {
+            activityType = BKActivityTypes.parse(type);
+        }
+        BrandKinesis.getBKInstance().getActivity(context, activityType, tag);
     }
 
     public void getActivityById(String activityId) {
@@ -233,5 +237,16 @@ class UpshotHelper {
             }
         }
         return data;
+    }
+
+    public void setCustomizationData(String customizationJson, Context context) {
+
+        try {
+            BrandKinesis bkInstance = BrandKinesis.getBKInstance();
+            UpshotCustomization upshotCustomization = new UpshotCustomization();
+            upshotCustomization.setCustomizationData(new JSONObject(customizationJson), bkInstance, context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

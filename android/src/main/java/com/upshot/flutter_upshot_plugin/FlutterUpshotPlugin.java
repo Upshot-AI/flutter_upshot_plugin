@@ -2,6 +2,8 @@ package com.upshot.flutter_upshot_plugin;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -16,6 +18,7 @@ import com.brandkinesis.activitymanager.BKActivityTypes;
 import com.brandkinesis.callback.BKBadgeAccessListener;
 import com.brandkinesis.callback.BKInboxAccessListener;
 import com.brandkinesis.callback.BrandKinesisCallback;
+import com.brandkinesis.pushnotifications.BKNotificationsResponseListener;
 import com.brandkinesis.rewards.BKRewardsResponseListener;
 import com.brandkinesis.callback.BrandKinesisUserStateCompletion;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +38,9 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.Set;
 
+import io.flutter.FlutterInjector;
 import io.flutter.Log;
+import io.flutter.embedding.engine.loader.FlutterLoader;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -50,6 +57,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
+    private FlutterPluginBinding binding;
     private Handler handler;
     public static EventChannel.EventSink eventSinkChannel = null;
     public static EventChannel.EventSink pushReceiveSinkChannel = null;
@@ -73,6 +81,38 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
+    public String loadJSONFromAsset(Context context, String fileName) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String loadJSONFromAsset(Context context, AssetFileDescriptor afd) {
+        String json = null;
+        try {
+            InputStream is = afd.createInputStream();
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
@@ -80,6 +120,16 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(this);
         this.context = flutterPluginBinding.getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
+        binding = flutterPluginBinding;
+        FlutterLoader loader = FlutterInjector.instance().flutterLoader();
+        String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
+
+//        AssetManager assetManager = binding.getApplicationContext().getAssets();
+
+//            AssetFileDescriptor fd = assetManager.openFd(key);
+        String customizationJson = loadJSONFromAsset(context, key);
+
+        helper.setCustomizationData(customizationJson, context);
 
         new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/pushClick").setStreamHandler(new EventChannel.StreamHandler() {
             @Override
@@ -109,6 +159,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     UpshotListener customListener = new UpshotListener() {
         @Override
         public void onAppComesForeground(Activity activity) {
+
             setUpshotGlobalCallback();
         }
     };
@@ -136,9 +187,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                         }
                     });
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
+//            if (BuildConfig.DEBUG) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -572,6 +623,36 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 });
             }
             break;
+            case "getNotifications": {
+                boolean loadMore = (boolean) call.arguments;
+                BrandKinesis.getBKInstance().getNotifications(context, loadMore, new BKNotificationsResponseListener() {
+                    @Override
+                    public void notificationsResponse(Object o) {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("status", "Success");
+                        data.put("response", o);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                channel.invokeMethod("upshotGetNotifications", data);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onErrorReceived(Object o) {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("status", "Fail");
+                        data.put("errorMessage", o);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                channel.invokeMethod("upshotGetNotifications", data);
+                            }
+                        });
+                    }
+                });
+            }
             default:
                 Log.d("Upshot", "No Method");
         }

@@ -1,10 +1,10 @@
 name: flutter_upshot_plugin
 description: Upshot.ai is a analytics and customer engagement platform. This framework helps you capture analytics, track events, send smart notifications and in-app messages to users.
-version: 1.0.8
+version: 1.0.9
 homepage: https://github.com/Upshot-AI/flutter_upshot_plugin.git
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
   flutter: ">=1.20.0"
 
 dependencies:

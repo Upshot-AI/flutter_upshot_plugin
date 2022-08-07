@@ -11,9 +11,16 @@ import Upshot
 class UpshotHelper: NSObject {
     
     static var defaultHelper = UpshotHelper()
+    var customizationData: Data?
+    var registrar:FlutterPluginRegistrar?
+    
+    let customisation = UpshotCustomisation()
     
     func initializeUpshotUsingConfigFile() {
         BrandKinesis.sharedInstance().initialize(withDelegate: self)
+        customisation.registrar = registrar
+        customisation.customiseData = customizationData
+        BKUIPreferences.preferences().delegate = customisation
     }
     
     func initializeUsingOptions(options: [String: Any]) {
@@ -30,6 +37,9 @@ class UpshotHelper: NSObject {
                            BKExceptionHandler: enableCrashlogs] as? [String: Any] {
             
             BrandKinesis.sharedInstance().initialize(options: initOptions, delegate: self)
+            customisation.registrar = registrar
+            customisation.customiseData = customizationData
+            BKUIPreferences.preferences().delegate = customisation
         }        
     }
     
@@ -281,6 +291,29 @@ class UpshotHelper: NSObject {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     upshotChannel.invokeMethod("upshotRedeemRewardsResponse", arguments: redeemStatus)
+                }
+            }
+        }
+    }
+    
+    func getNotifications(loadMore: Bool) {
+        
+        BrandKinesis.sharedInstance().getNotificationsWithLoadmore(loadMore) { response, errorMessage in
+            
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                
+                var notificationStatus: [String : Any] =  [:]
+                if let res = response as? [String: Any] {
+                    notificationStatus = ["status": "Success", "response": self.jsonToString(json: res) ?? ""]
+                }
+                if let err = errorMessage {
+                    notificationStatus = ["status": "Fail", "errorMessage": err]
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotGetNotifications", arguments: notificationStatus)
                 }
             }
         }
