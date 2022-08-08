@@ -186,6 +186,11 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                         button.setImage(skipimage, for: .normal)
                         button.setImage(skipimage, for: .highlighted)
                         button.setImage(skipimage, for: .selected)
+                        if activityType == .screenTips && activityButton == .skipButton {
+                            button.setBackgroundImage(nil, for: .selected)
+                            button.setBackgroundImage(nil, for: .highlighted)
+                            button.setBackgroundImage(nil, for: .normal)
+                        }
                     }
                 }
             case .ratingYesButton:
