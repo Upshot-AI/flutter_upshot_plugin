@@ -45,19 +45,19 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             UpshotHelper.defaultHelper.sendLogoutDetails()
             
         case "sendDeviceToken":
-
+            
             if let payload = call.arguments as? [String: Any] {
-                let token = payload["token"] as? String ?? ""                
-                UpshotHelper.defaultHelper.updateDeviceToken(token: token)                
-            }           
+                let token = payload["token"] as? String ?? ""
+                UpshotHelper.defaultHelper.updateDeviceToken(token: token)
+            }
             
         case "sendPushClickDetails":
             
             if let payload = call.arguments as? [String: Any] {
                 UpshotHelper.defaultHelper.updatePushClickDetails(payload: payload)
             }
-        case "displayNotification": 
-        break
+        case "displayNotification":
+            break
         case "getUserId":
             result(UpshotHelper.defaultHelper.getUserId())
             
@@ -152,18 +152,30 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
                 UpshotHelper.defaultHelper.redeemRewards(programId: programId, transactionValue: transactionValue, redeemAmount: redeemAmount, tag: tag)
             }
         case "disableUser":
-         if let isDisable = call.arguments as? Bool {
-            UpshotHelper.defaultHelper.disableUser(shouldDisable: isDisable)
-        }
+            if let isDisable = call.arguments as? Bool {
+                UpshotHelper.defaultHelper.disableUser(shouldDisable: isDisable)
+            }
         case "dispatchInterval":
             if let interval = call.arguments as? Int {
                 UpshotHelper.defaultHelper.dispatchInterval(interval: interval)
             }
         case "getNotifications":
             
-            if let loadMore = call.arguments as? Bool {
-                UpshotHelper.defaultHelper.getNotifications(loadMore: loadMore)
-           }
+            if let data = call.arguments as? [String: Any] {
+                let loadMore = data["loadMore"] as? Bool ?? false
+                let limit = data["limit"] as? Int ?? 10
+                UpshotHelper.defaultHelper.getNotifications(loadMore: loadMore, limit: limit)
+            }
+            
+        case "showInboxScreen":
+            
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.showInboxScreen(options: details)    
+            }
+        case "getUnreadnotiifcationsCount":
+            
+            let limit = call.arguments as? Int ?? 10
+            UpshotHelper.defaultHelper.getUnreadnotiifcationsCount(limit: limit)
             
         default:
             result(FlutterMethodNotImplemented)

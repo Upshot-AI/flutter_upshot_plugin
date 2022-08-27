@@ -22,6 +22,16 @@ class UpshotInitOptions {
   static String enableCrashlogs = "enableCrashlogs";
 }
 
+class UpshotInboxScreenConfig {
+  static String inboxType = "BKInboxType";
+  static String showReadNotifications = "BKShowReadNotifications";
+  static String deListingType = "BKDeListingType";
+  static String enableLoadMore = "BKEnableLoadMore";
+  static String pushFetchLimit = "BKPushFetchLimit";
+  static String displayMessageCount = "BKDisplayMsgCount";
+  static String displayTime = "BKDisplayTime";
+}
+
 class UpshotAttribution {
   static String attributionSource = "attributionSource";
   static String utmSource = "utmSource";
@@ -64,18 +74,29 @@ class UpshotProfileAttributes {
 }
 
 class UpshotGender {
-  static int RESET_GENDER = 0;
-  static int MALE = 1;
-  static int FEMALE = 2;
-  static int OTHERS = 3;
+  static int reset = 0;
+  static int male = 1;
+  static int female = 2;
+  static int others = 3;
 }
 
 class UpshotMaritalStatus {
-  static int RESET_MARITAL_STATUS = 0;
-  static int SINGLE = 1;
-  static int ENGAGED = 2;
-  static int MARRIED = 3;
-  static int WIDOW = 4;
-  static int WIDOWER = 4;
-  static int DIVORCED = 5;
+  static int reset = 0;
+  static int single = 1;
+  static int engaged = 2;
+  static int married = 3;
+  static int widow = 4;
+  static int widower = 4;
+  static int divorced = 5;
+}
+
+class UpshotInboxType {
+  static int onlyInAppNudges = 1;
+  static int onlyPush = 2;
+  static int both = 3;
+}
+
+class UpshotDelistingType {
+  static int campaign = 1;
+  static int variable = 2;
 }

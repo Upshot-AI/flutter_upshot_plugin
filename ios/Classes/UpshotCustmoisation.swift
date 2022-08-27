@@ -133,24 +133,26 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                 
             case .continueButton:
                 if let cButton = json["continue"] as? [String: Any] {
-                    setButtonPreferences(data: cButton, button: button)
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        self.setButtonPreferences(data: cButton, button: button)
+                    }
                 }
             case .previousButton:
                 if let cButton = json["prev"] as? [String: Any] {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
                         self.setButtonPreferences(data: cButton, button: button)
                     }
                 }
             case .nextButton:
                 if let cButton = json["next"] as? [String: Any] {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
                         self.setButtonPreferences(data: cButton, button: button)
                     }
                 }
                 
             case .ratingDislikeButton:
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     if let mainJson = self.getJsonUsing(key: "image"),
                        let dislike_defJson = mainJson["dislike_def"] as? [String: Any] ,
                        let defimage = self.getImage(imageName: dislike_defJson["name"] as? String ?? "", extn: dislike_defJson["ext"]  as? String ?? "") {
@@ -164,7 +166,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                     }
                 }
             case .ratingLikeButton:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     if let mainJson = self.getJsonUsing(key: "image"),
                        let like_defJson = mainJson["like_def"] as? [String: Any] ,
                        let defimage = self.getImage(imageName: like_defJson["name"] as? String ?? "", extn: like_defJson["ext"]  as? String ?? "") {
@@ -179,7 +181,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                 }
             case .skipButton:
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     if let mainJson = self.getJsonUsing(key: "image"),
                        let skipJson = mainJson["skip"] as? [String: Any] ,
                        let skipimage = self.getImage(imageName: skipJson["name"] as? String ?? "", extn: skipJson["ext"]  as? String ?? "") {
@@ -195,15 +197,21 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                 }
             case .ratingYesButton:
                 if let cButton = json["yes"] as? [String: Any] {
-                    setButtonPreferences(data: cButton, button: button)
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        self.setButtonPreferences(data: cButton, button: button)
+                    }
                 }
             case .ratingNoButton:
                 if let cButton = json["no"] as? [String: Any] {
-                    setButtonPreferences(data: cButton, button: button)
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        self.setButtonPreferences(data: cButton, button: button)
+                    }
                 }
             case .submitButton:
                 if let cButton = json["submit"] as? [String: Any] {
-                    setButtonPreferences(data: cButton, button: button)
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        self.setButtonPreferences(data: cButton, button: button)
+                    }
                 }
             default:
                 break
@@ -221,6 +229,22 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                 if let header = json["header"] as? [String: Any] {
                     setLablePreferences(data:header , label: label)
                 }
+            case .triviaResultsLabel:
+                if let triviaResultsLabel = json["triviaResultsLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaResultsLabel , label: label)
+                }
+            case .scoreLabel:
+                if let triviaScoreLabel = json["triviaScoreLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaScoreLabel , label: label)
+                }
+            case .userScoreLabel:
+                if let triviaUserScoreLabel = json["triviaUserScoreLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaUserScoreLabel , label: label)
+                }
+            case .yourScoreLabel:
+                if let triviaYourScoreLabel = json["triviaYourScoreLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaYourScoreLabel , label: label)
+                }
             case .descriptionLabel:
                 if let desc = json["desc"] as? [String: Any] {
                     setLablePreferences(data:desc , label: label)
@@ -236,6 +260,22 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                     .optionLabel:
                 if let option = json["option"] as? [String: Any] {
                     setLablePreferences(data:option , label: label)
+                }
+            case .triviaGraphCountLabel:
+                if let triviaGraphCountLabel = json["triviaGraphCountLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaGraphCountLabel , label: label)
+                }
+            case .triviaGraphGradeLabel:
+                if let triviaGraphGradeLabel = json["triviaGraphGradeLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaGraphGradeLabel , label: label)
+                }
+            case .triviaTabularGradeLabel:
+                if let triviaTabularGradeLabel = json["triviaTabularGradeLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaTabularGradeLabel , label: label)
+                }
+            case .triviaTabularResponsesLabel:
+                if let triviaTabularResponsesLabel = json["triviaTabularResponsesLabel"] as? [String: Any] {
+                    setLablePreferences(data:triviaTabularResponsesLabel , label: label)
                 }
             case .questionLabel:
                 if let question = json["question"] as? [String: Any] {
@@ -261,9 +301,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
             
             var colors: [UIColor] = []
             for color in graph {
-                if color.isEmpty {
-                    return
-                }
+                if color.isEmpty {return}
                 colors.append(hexStringToUIColor(hex: color))
             }
             if colors.count == 5 {
@@ -276,75 +314,68 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
         
         if let json = getJsonUsing(key: "image") {
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                
-            }
-            if activityRating == .starRating {
-                
-                var defimage: UIImage?
-                var selimage: UIImage?
-                
-                if let star_defJson = json["star_def"] as? [String: Any] {
-                    defimage = self.getImage(imageName: star_defJson["name"] as? String ?? "", extn: star_defJson["ext"]  as? String ?? "")
-                }
-                if let star_selJson = json["start_sel"] as? [String: Any] {
-                    selimage = self.getImage(imageName: star_selJson["name"] as? String ?? "", extn: star_selJson["ext"]  as? String ?? "")
-                }
-                if let def = defimage, let sel = selimage {
-                    block([def,def,def,def,def], [sel,sel,sel,sel,sel])
-                }
-            }
-            
-            if activityRating == .emojiRating {
-                
-                if let veryGood_defJson = json["veryGood_def"] as? [String: Any],
-                   let vgDef = getImage(imageName: veryGood_defJson["name"] as? String ?? "",
-                                        extn: veryGood_defJson["ext"] as? String ?? ""),
-                   
-                    let good_defJson = json["good_def"] as? [String: Any],
-                   let gDef = getImage(imageName: good_defJson["name"] as? String ?? "",
-                                       extn: good_defJson["ext"] as? String ?? ""),
-                   
-                    let avg_defJson = json["avg_def"] as? [String: Any],
-                   let avgDef = getImage(imageName: avg_defJson["name"] as? String ?? "",
-                                       extn: avg_defJson["ext"] as? String ?? ""),
-                   
-                    let bad_defJson = json["bad_def"] as? [String: Any],
-                   let bDef = getImage(imageName: bad_defJson["name"] as? String ?? "",
-                                       extn: bad_defJson["ext"] as? String ?? ""),
-                   let verybad_defJson = json["veryBad_def"] as? [String: Any],
-                   
-                    let vbDef = getImage(imageName: verybad_defJson["name"] as? String ?? "",
-                                         extn: verybad_defJson["ext"] as? String ?? ""),
-                   
-                    let veryGood_selJson = json["veryGood_sel"] as? [String: Any],
-                   let vgSel = getImage(imageName: veryGood_selJson["name"] as? String ?? "",
-                                        extn: veryGood_selJson["ext"] as? String ?? ""),
-                   
-                    let good_selJson = json["good_sel"] as? [String: Any],
-                   let gSel = getImage(imageName: good_selJson["name"] as? String ?? "",
-                                       extn: good_selJson["ext"] as? String ?? ""),
-                   
-                    let avg_selJson = json["avg_sel"] as? [String: Any],
-                   let avgSel = getImage(imageName: avg_selJson["name"] as? String ?? "",
-                                         extn: avg_selJson["ext"] as? String ?? ""),
-                   
-                    let bad_selJson = json["bad_sel"] as? [String: Any],
-                   let bSel = getImage(imageName: bad_selJson["name"] as? String ?? "",
-                                       extn: bad_selJson["ext"] as? String ?? ""),
-                   
-                    let verybad_selJson = json["veryBad_sel"] as? [String: Any],
-                   
-                    let vbSel = getImage(imageName: verybad_selJson["name"] as? String ?? "",
-                                         extn: verybad_selJson["ext"] as? String ?? "") {
-                    block([vgDef, gDef, avgDef, bDef, vbDef], [vgSel, gSel, avgSel, bSel, vbSel])
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                if activityRating == .starRating {
+                    
+                    var defimage: UIImage?
+                    var selimage: UIImage?
+                    
+                    if let star_defJson = json["star_def"] as? [String: Any] {
+                        defimage = self.getImage(imageName: star_defJson["name"] as? String ?? "", extn: star_defJson["ext"]  as? String ?? "")
+                    }
+                    if let star_selJson = json["start_sel"] as? [String: Any] {
+                        selimage = self.getImage(imageName: star_selJson["name"] as? String ?? "", extn: star_selJson["ext"]  as? String ?? "")
+                    }
+                    if let def = defimage, let sel = selimage {
+                        block([def,def,def,def,def], [sel,sel,sel,sel,sel])
+                    }
                 }
                 
-                
-                
-                
-                
-                
+                if activityRating == .emojiRating {
+                    
+                    if let veryGood_defJson = json["veryGood_def"] as? [String: Any],
+                       let vgDef = self.getImage(imageName: veryGood_defJson["name"] as? String ?? "",
+                                                 extn: veryGood_defJson["ext"] as? String ?? ""),
+                       
+                        let good_defJson = json["good_def"] as? [String: Any],
+                       let gDef = self.getImage(imageName: good_defJson["name"] as? String ?? "",
+                                                extn: good_defJson["ext"] as? String ?? ""),
+                       
+                        let avg_defJson = json["avg_def"] as? [String: Any],
+                       let avgDef = self.getImage(imageName: avg_defJson["name"] as? String ?? "",
+                                                  extn: avg_defJson["ext"] as? String ?? ""),
+                       
+                        let bad_defJson = json["bad_def"] as? [String: Any],
+                       let bDef = self.getImage(imageName: bad_defJson["name"] as? String ?? "",
+                                                extn: bad_defJson["ext"] as? String ?? ""),
+                       let verybad_defJson = json["veryBad_def"] as? [String: Any],
+                       
+                        let vbDef = self.getImage(imageName: verybad_defJson["name"] as? String ?? "",
+                                                  extn: verybad_defJson["ext"] as? String ?? ""),
+                       
+                        let veryGood_selJson = json["veryGood_sel"] as? [String: Any],
+                       let vgSel = self.getImage(imageName: veryGood_selJson["name"] as? String ?? "",
+                                                 extn: veryGood_selJson["ext"] as? String ?? ""),
+                       
+                        let good_selJson = json["good_sel"] as? [String: Any],
+                       let gSel = self.getImage(imageName: good_selJson["name"] as? String ?? "",
+                                                extn: good_selJson["ext"] as? String ?? ""),
+                       
+                        let avg_selJson = json["avg_sel"] as? [String: Any],
+                       let avgSel = self.getImage(imageName: avg_selJson["name"] as? String ?? "",
+                                                  extn: avg_selJson["ext"] as? String ?? ""),
+                       
+                        let bad_selJson = json["bad_sel"] as? [String: Any],
+                       let bSel = self.getImage(imageName: bad_selJson["name"] as? String ?? "",
+                                                extn: bad_selJson["ext"] as? String ?? ""),
+                       
+                        let verybad_selJson = json["veryBad_sel"] as? [String: Any],
+                       
+                        let vbSel = self.getImage(imageName: verybad_selJson["name"] as? String ?? "",
+                                                  extn: verybad_selJson["ext"] as? String ?? "") {
+                        block([vgDef, gDef, avgDef, bDef, vbDef], [vgSel, gSel, avgSel, bSel, vbSel])
+                    }
+                }
             }
         }
     }
@@ -447,20 +478,24 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                 }
             case .headerBGColor:
                 if let headerColor = json["headerColor"] as? String, !headerColor.isEmpty {
-                    if activityType == .trivia {
+                    if activityType != .trivia {
                         color.backgroundColor = hexStringToUIColor(hex: headerColor)
+                    }
+                }
+                if let triviaHeaderColor = json["triviaHeaderColor"] as? String, !triviaHeaderColor.isEmpty {
+                    if activityType == .trivia {
+                        color.backgroundColor = hexStringToUIColor(hex: triviaHeaderColor)
                     }
                 }
             case .optionDefaultBorderColor:
                 if let optionsBorder = json["optionsBorder"] as? [String: Any], let defcolor = optionsBorder["def"] as? String, !defcolor.isEmpty {
                     color.backgroundColor = hexStringToUIColor(hex: defcolor)
-                }
-                break
+                }                
             case .optionSelectedBorderColor:
                 if let optionsBorder = json["optionsBorder"] as? [String: Any], let selcolor = optionsBorder["sel"] as? String, !selcolor.isEmpty {
+                    print("selcolor------\(selcolor)")
                     color.backgroundColor = hexStringToUIColor(hex: selcolor)
-                }
-                break
+                }                
             default:
                 break
             }

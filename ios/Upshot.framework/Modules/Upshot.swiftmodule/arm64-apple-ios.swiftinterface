@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
 // swift-module-flags: -target arm64-apple-ios9.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Upshot
 import Dispatch
 import Foundation
@@ -31,6 +31,17 @@ extension Upshot.TriviaPieView {
 }
 extension UIKit.UIImageView {
   @objc @_Concurrency.MainActor(unsafe) dynamic open func load(url: Foundation.URL, completion: @escaping (UIKit.UIImage) -> Swift.Void)
+}
+@objc @_inheritsConvenienceInitializers public class InboxControllerManager : ObjectiveC.NSObject {
+  @objc public func getUnreadNotificationsCount(pushLimit: Swift.Int, appuid: Swift.String, onCompletion: @escaping (_ notificationsCount: Swift.Int) -> Swift.Void)
+  @objc public func showInboxController(options: [Swift.String : Any], appuid: Swift.String)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class NotificationHandler : ObjectiveC.NSObject {
+  @objc public func fetchUsernotifications(appuid: Swift.String, notificationId: Swift.String, limit: Swift.Int, completionBlock: @escaping (_ response: Upshot.JSON?, _ errorMessage: Swift.String?) -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
 }
 public protocol URLConvertible {
   func asURL() throws -> Foundation.URL
@@ -644,6 +655,11 @@ extension Upshot.Timeline : Swift.CustomDebugStringConvertible {
     get
   }
 }
+@objc @_inheritsConvenienceInitializers public class PushAmplificationHandler : ObjectiveC.NSObject {
+  @objc public func updatePushReadStatus(msgId: Swift.String, appuid: Swift.String)
+  @objc override dynamic public init()
+  @objc deinit
+}
 open class MultipartFormData {
   open var contentType: Swift.String {
     get
@@ -663,11 +679,6 @@ open class MultipartFormData {
   public func append(_ stream: Foundation.InputStream, withLength length: Swift.UInt64, headers: Upshot.HTTPHeaders)
   public func encode() throws -> Foundation.Data
   public func writeEncodedData(to fileURL: Foundation.URL) throws
-  @objc deinit
-}
-@objc @_inheritsConvenienceInitializers public class NotificationHandler : ObjectiveC.NSObject {
-  @objc public func fetchUsernotifications(appuid: Swift.String, notificationId: Swift.String, completionBlock: @escaping (_ response: Upshot.JSON?, _ errorMessage: Swift.String?) -> Swift.Void)
-  @objc override dynamic public init()
   @objc deinit
 }
 public typealias JSON = [Swift.String : Any]

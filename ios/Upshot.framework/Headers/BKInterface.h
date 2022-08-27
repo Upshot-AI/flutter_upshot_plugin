@@ -47,6 +47,7 @@ typedef NS_ENUM(NSInteger, BKActivityType) {
      */
     BKActivityTypeOpinionPoll  = 5,
 
+    BKActivityTypePush          = 6,
     /*!
      @brief  Get Tutorilas
      */

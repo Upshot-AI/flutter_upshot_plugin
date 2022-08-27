@@ -22,7 +22,7 @@
             "borderColor": "#DD002C"
         },
         "submit": {
-            "bgColor": "3DD002C",
+            "bgColor": "#DD002C",
             "tColor": "#ffffff",
             "fStyle": "PFHandbookPro-Medium",
             "fSize": 18,
@@ -73,7 +73,48 @@
             "tColor": "#6B6C73",
             "fStyle": "PFHandbookPro-Regular",
             "fSize": 16
+        },
+        "triviaResultsLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaScoreLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaUserScoreLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaYourScoreLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaGraphCountLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaGraphGradeLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaTabularGradeLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
+        },
+        "triviaTabularResponsesLabel": {
+            "tColor": "#6B6C73",
+            "fStyle": "PFHandbookPro-Regular",
+            "fSize": 16
         }
+
     },
     "color": {
         "bgColor": "",
@@ -93,7 +134,8 @@
             "",
             "",
             ""
-        ]
+        ],
+        "triviaHeaderColor": ""
     },
     "image": {
         "logo": {

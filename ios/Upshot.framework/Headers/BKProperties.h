@@ -118,9 +118,20 @@ typedef NS_ENUM(NSInteger, BKCloseEventTimeType) {
 
 };
 
+typedef NS_ENUM(NSInteger, BKInboxMessageType) {
+   
+    OnlyInAppNudges = 1,
+    OnlyPushNotifications,
+    AllNotifications
+};
+
+typedef NS_ENUM(NSInteger, BKDeListingType) {
+   
+    Campaign = 1,
+    Variable
+};
+
 //App ID, owner ID, DevID
-
-
 BK_EXTERN NSString *const BKFetchLocation;
 BK_EXTERN NSString *const BKApplicationID;
 BK_EXTERN NSString *const BKApplicationOwnerID;
@@ -128,6 +139,13 @@ BK_EXTERN NSString *const BKExceptionHandler;
 BK_EXTERN NSString *const BKEnableDebugLogs;
 BK_EXTERN NSString *const BKUseCellularData;
 
+BK_EXTERN NSString *const BKInboxType;
+BK_EXTERN NSString *const BKShowReadNotifications;
+BK_EXTERN NSString *const BKDeListing;
+BK_EXTERN NSString *const BKEnableLoadMore;
+BK_EXTERN NSString *const BKPushFetchLimit;
+BK_EXTERN NSString *const BKDisplayMsgCount;
+BK_EXTERN NSString *const BKDisplayTime;
 
 
 #endif

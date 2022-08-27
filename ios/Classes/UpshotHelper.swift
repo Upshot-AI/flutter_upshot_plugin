@@ -13,17 +13,18 @@ class UpshotHelper: NSObject {
     static var defaultHelper = UpshotHelper()
     var customizationData: Data?
     var registrar:FlutterPluginRegistrar?
-    
+
     let customisation = UpshotCustomisation()
     
     func initializeUpshotUsingConfigFile() {
         BrandKinesis.sharedInstance().initialize(withDelegate: self)
         customisation.registrar = registrar
         customisation.customiseData = customizationData
-        BKUIPreferences.preferences().delegate = customisation
+        BKUIPreferences.preferences().delegate = customisation        
     }
     
     func initializeUsingOptions(options: [String: Any]) {
+
         let appId = options["appId"] ?? ""
         let ownerId = options["ownerId"] ?? ""
         let enableLocation = options["enableLocation"] ?? false
@@ -196,6 +197,7 @@ class UpshotHelper: NSObject {
     }
     
     func fetchInbox() {
+        
         BrandKinesis.sharedInstance().fetchInboxInfo { inboxDetails in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
@@ -296,10 +298,9 @@ class UpshotHelper: NSObject {
         }
     }
     
-    func getNotifications(loadMore: Bool) {
+    func getNotifications(loadMore: Bool, limit: Int) {
         
-        BrandKinesis.sharedInstance().getNotificationsWithLoadmore(loadMore) { response, errorMessage in
-            
+        BrandKinesis.sharedInstance().getNotificationsWith(limit, loadmore: loadMore) { response, errorMessage in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
@@ -422,16 +423,38 @@ class UpshotHelper: NSObject {
     }
 
     func disableUser(shouldDisable: Bool) {
-
+        
         BrandKinesis.sharedInstance().disableUser(shouldDisable) { (status, error) in
-             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
-            
-            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                upshotChannel.invokeMethod("upshotUserStateCompletion", arguments: status)
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotUserStateCompletion", arguments: status)
+                }
             }
         }
+    }
+    
+    func showInboxScreen(options: [String: Any]) {
+                
+        print("showInboxScreen-----------\(options)")
+        let path = Bundle.main.path(forResource: "UpshotInboxConfig", ofType: "json")
+        print("showInboxScreen path-------\(path)")
+        BrandKinesis.sharedInstance().showInboxController(options)
+    }
+
+    func getUnreadnotiifcationsCount(limit: Int) {
+     
+        BrandKinesis.sharedInstance().getUnreadNotificationsCount(limit) { count in
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotNotificationsCount", arguments: count)
+                }
+            }
         }
     }
     

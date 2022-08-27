@@ -124,7 +124,8 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod('fetchRewardRules', programId);
   }
 
-  static void redeemRewards(String programId, int redeemAmount, int transactionValue, String tag) {
+  static void redeemRewards(
+      String programId, int redeemAmount, int transactionValue, String tag) {
     Map details = {
       'programId': programId,
       'redeemAmount': redeemAmount,
@@ -140,5 +141,13 @@ class FlutterUpshotPlugin {
 
   static void getNotifications(bool loadMore) {
     _channel.invokeListMethod("getNotifications", loadMore);
+  }
+
+  static void showInboxScreen(Map options) {
+    _channel.invokeListMethod("showInboxScreen", options);
+  }
+
+  static void getUnreadnotiifcationsCount() {
+    _channel.invokeListMethod("getUnreadnotiifcationsCount");
   }
 }

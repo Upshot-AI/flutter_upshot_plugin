@@ -15,25 +15,6 @@
 #import <UIKit/UIKit.h>
 
 
-
-typedef NS_ENUM(NSUInteger, BKTutorialViewPlacement) {
-    BKTutorialViewPlacementLeft,
-    BKTutorialViewPlacementRight,
-    BKTutorialViewPlacementTop,
-    BKTutorialViewPlacementBottom,
-};
-
-
-
-typedef NS_ENUM(NSUInteger, BKTutorialTextPlacement) {
-    BKTutorialTextPlacementLeft,
-    BKTutorialTextPlacementRight,
-    BKTutorialTextPlacementTop,
-    BKTutorialTextPlacementBottom,
-};
-
-
-
 typedef void(^_Nullable BrandKinesisActivityWillAppear)(BOOL willAppear, BKActivityType activityType);
 typedef void(^_Nullable BrandKinesisActivityDidAppear)(BOOL didAppear, BKActivityType activityType);
 typedef void(^_Nullable BrandKinesisActivityDidDismiss)(BOOL didDismiss, BKActivityType activityType);
@@ -58,44 +39,6 @@ BK_EXTERN NSString *_Null_unspecified const BKPageViewNative;
  Use this key to create web pageView event
  */
 BK_EXTERN NSString *_Null_unspecified const BKPageViewWeb;
-
-/**
- * Key used to define ItemID for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemID;
-/**
- * Key used to define category for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemCategory;
-/**
- * Key used to define sub category for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemSubCategory;
-/**
- * Key used to define item price for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemPrice;
-/**
- * Key used to define item currency for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemCurrency;
-/**
- * Key used to define items purchased for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemQuantity;
-/**
- * Key used to define item purchased date for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemsPurchasedDate;
-/**
- * Key used to define items purchased total for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemsPurchasedTotal;
-/**
- * Key used to define purchased state for BKEventInAppPurchase
- */
-BK_EXTERN NSString *_Null_unspecified const BKIAPItemPurchasedState;
-
 BK_EXTERN NSString *_Null_unspecified const BKAttributionSource;
 BK_EXTERN NSString *_Null_unspecified const BKUTM_Source;
 BK_EXTERN NSString *_Null_unspecified const BKUTM_Medium;
@@ -126,12 +69,7 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
  */
 @property (nonatomic, readonly, getter = isAuthenticated) BOOL isAuthenticated;
 
-
-/*!
- This will be YES if the brand kinesis is authenticated
- */
 @property (nonatomic, readonly, getter = isInitCompleted) BOOL isInitCompleted;
-
 
 /*!
  This will Get Current SDK Version if the brand kinesis is authenticated
@@ -356,7 +294,14 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
 
 - (void)showEnhancedPushNotification:(UIViewController * _Nonnull)controller withContent:(UNNotification * _Nonnull)notification;
 
-- (void)getNotificationsWithLoadmore:(BOOL)loadMore onCompletion:(BrandKinesisGetNotificationCompletion)completionBlock;
+- (void)showInboxController:(NSDictionary * _Nonnull)options;
+
+- (void)getNotificationsWith:(NSInteger)limit
+                loadmore:(BOOL)loadMore
+            onCompletion:(BrandKinesisGetNotificationCompletion)completionBlock;
+
+- (void)getUnreadNotificationsCount:(NSInteger)pushLimit onCompletion:(void (^_Nullable)(NSInteger  pushCount))completionBlock;
+
 
 @end
 

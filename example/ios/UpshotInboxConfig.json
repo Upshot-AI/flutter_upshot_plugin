@@ -1,0 +1,47 @@
+{
+  "bgImage": "",
+  "bgColor": "#E2E2E2",
+  "header": {
+    "backButton": {
+      "color": "#ffffff",
+      "text": "back",
+      "image": "back"
+    },
+    "title": {
+      "text": "Notifications",
+      "Color": "#ffffff",
+      "font": {
+        "style": "PFHandbookPro-Medium",
+        "size": 22
+      }
+    },
+    "bgColor": "#DD002C"
+  },
+  "tile": {
+    "bgColor": "#ffffff",
+    "unReadColor": "#DC8581",
+    "timeColor": "#DC8581",
+    "header": {
+      "color": "#000000",
+      "font": {
+        "style": "PFHandbookPro-Medium",
+        "size": 18
+      }
+    },
+    "content": {
+      "color": "#000000",
+      "font": {
+        "style": "PFHandbookPro-Regular",
+        "size": 16
+      }
+    },
+    "button": {
+      "color": "#ff0000",
+      "text": "click here to navigate",
+      "font": {
+        "style": "PFHandbookPro-Medium",
+        "size": 18
+      }
+    }
+  }
+}

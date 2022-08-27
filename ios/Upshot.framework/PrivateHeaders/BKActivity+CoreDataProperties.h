@@ -32,6 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSNumber *segmentType;
 @property (nullable, nonatomic, copy) NSNumber *skipCount;
 @property (nullable, nonatomic, copy) NSString *jeId;
+@property (nullable, nonatomic, copy) NSString *filterData;
+@property (nullable, nonatomic, copy) NSNumber *nSkip;
+@property (nullable, nonatomic, copy) NSNumber *nSubmit;
+@property (nullable, nonatomic, copy) NSDate *insertionTime;
 @property (nullable, nonatomic, retain) NSSet<BKActivityTags *> *activityTags;
 @property (nullable, nonatomic, retain) BKInbox *inbox;
 

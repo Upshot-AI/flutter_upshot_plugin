@@ -58,21 +58,22 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initializeBrandKinesisWithOptions() async {
-
     Map optionsMap = {
-      UpshotInitOptions.appId : "e748a45e-fbef-4a7e-a2c7-ef0b88812399",
-      UpshotInitOptions.ownerId: "f3bf1d6f-5771-41f7-a6ff-640d3af4805e",
+      UpshotInitOptions.appId: "de8b0f3d-5fe8-44ab-95eb-8220b74f9f03",
+      UpshotInitOptions.ownerId: "b8662993-d078-4b5b-abc6-deefc9f6734d",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,
       UpshotInitOptions.enableExternalStorage: false
     };
-     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
+    FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
   }
 
-  Future<void> createEvent(String eventName, HashMap<String, Object> data) async {
+  Future<void> createEvent(
+      String eventName, HashMap<String, Object> data) async {
     try {
-      String? eventID = await FlutterUpshotPlugin.createCustomEvent(eventName, data, false);
+      String? eventID =
+          await FlutterUpshotPlugin.createCustomEvent(eventName, data, false);
       eventId = eventID;
       log('$eventId');
     } catch (e) {
@@ -95,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         UpshotAttribution.attributionSource.toString(): attributionSource,
         UpshotAttribution.utmSource.toString(): utmSource,
         UpshotAttribution.utmMedium.toString(): utmMedium,
-        UpshotAttribution.utmCampaign.toString():utmCampaign
+        UpshotAttribution.utmCampaign.toString(): utmCampaign
       };
       await FlutterUpshotPlugin.createAttributionEvent(optionsMap);
     } catch (e) {
@@ -103,7 +104,13 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  static Future<void> sendUserDetails(HashMap<String, Object> data) async {
+  static void sendUserDetails(HashMap<String, Object> data) {
+    Map profileData = {
+      UpshotProfileAttributes.email: "upshot@gmail.com",
+      UpshotProfileAttributes.userName: "Upshot",
+      UpshotProfileAttributes.appuID: "Vinod"
+    };
+    FlutterUpshotPlugin.sendUserDetails(profileData);
     // await FlutterUpshotPlugin.sendUserDetails(data);
   }
 
@@ -119,8 +126,17 @@ class _MyAppState extends State<MyApp> {
     // await FlutterUpshotPlugin.dispatchEvents(time);
   }
 
-  static Future<void> removeTutorial() async {
-    // await FlutterUpshotPlugin.removeTutorial();
+  static void showInbox() {
+    Map options = {
+      UpshotInboxScreenConfig.inboxType: UpshotInboxType.both,
+      UpshotInboxScreenConfig.deListingType: UpshotDelistingType.campaign,
+      UpshotInboxScreenConfig.displayMessageCount: true,
+      UpshotInboxScreenConfig.displayTime: true,
+      UpshotInboxScreenConfig.enableLoadMore: true,
+      UpshotInboxScreenConfig.pushFetchLimit: 10,
+      UpshotInboxScreenConfig.showReadNotifications: true
+    };
+    FlutterUpshotPlugin.showInboxScreen(options);
   }
 
   static Future<void> createPageViewEvent(String pageName) async {
@@ -137,7 +153,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> showActivity(String tag) async {
-     FlutterUpshotPlugin.showActivity(-1, "");
+    FlutterUpshotPlugin.showActivity(-1, "");
   }
 
   static Future<void> getBadges() async {
@@ -304,9 +320,9 @@ class _MyAppState extends State<MyApp> {
                     backgroundColor: Colors.black12,
                     textStyle: const TextStyle(color: Colors.white)),
                 onPressed: () {
-                  removeTutorial();
+                  showInbox();
                 },
-                child: const Text("Remove Tutorial"),
+                child: const Text("Show Inbox"),
               ),
               const SizedBox(height: 10),
               TextButton(

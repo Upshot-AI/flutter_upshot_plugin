@@ -176,17 +176,23 @@ var $BK$; // global reference for BK library
 
                             }
 
+                        } else if(aggregate.attribute === "AppLaunch" && aggregate.attribute_operator === "occurs") {
+                          if (!("value" in aggregate)) {
+                              aggregate["value"] = 1;
+                          } else {
+                              aggregate.value += 1;
+                          }
                         }
 
                     }
 
-                    if (aggregate.aggregate_type === "attributevalues") {
+                    if (aggregate.aggregate_type === "attributevalues" && aggregate.attribute !== "page") {
                         var att_operator = aggregate.attribute_operator;
                         if (!("attribute_operator" in aggregate) || (aggregate.attribute_operator === null)) {
                             att_operator = "eq";
                         }
 
-                        var containsOperators = ['containsone', 'containsnone', 'containsall', 'between']
+                        var containsOperators = ['containsone', 'containsnone', 'containsall', 'between', 'before', 'after', 'onaday'];
 
                         if (containsOperators.indexOf(aggregate.attribute_operator) !== -1) {
                             var attribute_value = aggregate.attribute_values
@@ -287,9 +293,9 @@ var $BK$; // global reference for BK library
                         } else {
                             aggregate.dayCountMap[dayUtc] = 1;
                         }
-                    } else if (aggregate.aggregate_type === "attributevalues") {
+                    } else if (aggregate.aggregate_type === "attributevalues" && aggregate.attribute !== "page") {
 
-                        if (!foundAttribute) {
+                        if (foundAttribute === undefined) {
                             aggregate.evaluated = false;
                             continue;
                         }
@@ -472,78 +478,136 @@ var $BK$; // global reference for BK library
                     return found;
                 })()
             },
+            "before": function (v1,v2){
+              return isValidOperands(v1, v2) && (function (){
+                  var found = false;
+
+                  try {
+                      if (Number(v1) < Number(v2[0])) {
+                          found = true;
+                      }
+                  } catch (e) {
+
+                  }
+
+                  return found;
+              })()
+            },
+            "after": function (v1,v2){
+              return isValidOperands(v1, v2) && (function (){
+                  var found = false;
+
+                  try {
+                    if (Number(v1) > Number(v2[0])) {
+                        found = true;
+                    }
+                  } catch (e) {
+
+                  }
+
+                  return found;
+              })()
+            },
+            "onaday": function (v1,v2){
+              return isValidOperands(v1, v2) && (function (){
+                  var found = false;
+
+                  try {
+                    if (Number(v2[0]) <= Number(v1)) {
+                        found = true;
+                    }
+                  } catch (e) {
+
+                  }
+
+                  return found;
+              })()
+            },
             "containsone": function (v1, v2){
                 return isValidOperands(v1, v2) && (function (){
                     var found = false;
+                    var newV1 = v1.split(",").map(function(v){return v.toLowerCase()});
+                    var newV2 = v2.map(function(v){return v.toLowerCase()});
+                    found = newV1.some(function(v){return newV2.includes(v)})
 
-                    v2.every(function (val, key){
-
-                        if (v1.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
-                            found = true;
-                            keywords.push(val);
-                            return false;
-                        } else {
-                            return true;
-                        }
-
-                    })
                     return found;
                 })()
             },
             "containsnone": function (v1, v2){
                 return isValidOperands(v1, v2) && (function (){
                     var found = false;
+                    var newV1 = v1.split(",").map(function(v){return v.toLowerCase()});
+                    var newV2 = v2.map(function(v){return v.toLowerCase()});
+                    found = newV1.some(function(v){return newV2.includes(v)})
 
-                    v2.every(function (val, key){
-
-                        if (v1.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
-                            found = true;
-                            keywords.push(val);
-                            return false;
-                        } else {
-                            return true;
-                        }
-
-                    })
                     return !found;
                 })()
             },
             "containsall": function (v1, v2){
                 return isValidOperands(v1, v2) && (function (){
                     var found = true;
+                    var newV1 = v1.split(",").map(function(v){return v.toLowerCase()});
+                    var newV2 = v2.map(function(v){return v.toLowerCase()});
+                    found = newV2.every(function(val) { return newV1.indexOf(val) >= 0});
 
-                    v2.every(function (val, key){
-
-                        if (v1.toLowerCase().indexOf(val.toLowerCase()) === -1) {
-                            found = false;
-                            return false;
-                        } else {
-                            keywords.push(val);
-                            return true;
-                        }
-
-                    })
                     return found;
                 })()
             },
             'selected': function(v1, v2, qType, rating) {
-                if (qType === 9 || qType === 7 || qType === 11) {
+                if (qType === 9 || qType === 7 || qType === 10 || qType === 11) {
                     var result = false;
                     if (v1 === 'any') {
                         for (var key in v2) {
                             if (v2.hasOwnProperty(key)) {
-                                if (v2[key] === rating) {
+                                if(rating === 'any') {
                                     result = true;
+                                } else {
+                                    if(typeof (rating) === 'string') {
+                                      var exp = rating.split('-');
+                                      if(exp[1]!== undefined) {
+                                        if(parseInt(exp[0]) <= v2[key] && v2[key] <= parseInt(exp[1])) {
+                                          result = true;
+                                          }
+                                        }
+                                      } else if (v2[key] === parseInt(rating)) {
+                                          result = true;
+                                    }
                                 }
                             }
                         }
-
                         return result;
                     } else {
-                        return isValidOperands(v1, v2) && (v1 in v2) && (v2[v1] === rating)
+                        if (rating === 'any') {
+                            var keys = Object.keys(v2);
+                            return isValidOperands(v1, keys) && (keys.indexOf(v1) !== -1)
+                        } else if (rating === undefined && (qType === 10 || qType === 11)) {
+                            var exp = v1.split('-');
+                            for(var key in v2) {
+                                if(exp[1] !== undefined) {
+                                    if(parseInt(exp[0])<= v2[key] && v2[key] <= parseInt(exp[1])) {
+                                        result = true;
+                                    }
+                                } else if(parseInt(exp[0]) === v2[key]){
+                                    result = true;
+                                }
+                            }
+                            return result
+                        } else {
+                            if (typeof rating === "string") {
+                                var exp = rating.split('-');
+                                if(exp[1] !== undefined) {
+                                    if(parseInt(exp[0])<= v2[v1] && v2[v1] <= parseInt(exp[1])) {
+                                        result = true;
+                                    }
+                                }
+                            } else {
+                                result = isValidOperands(v1, v2) && (v1 in v2) && (v2[v1] === parseInt(rating))
+                            }
+                            return result
+                        }
                     }
-                } else {
-                    return isValidOperands(v1, v2) && (v2.includes(v1))
+                }  else {
+                    return isValidOperands(v1, v2) && (v2.indexOf(v1) !== -1)
                 }
 
             },
@@ -640,7 +704,7 @@ var $BK$; // global reference for BK library
         /**
          * evaluates custom events based on provided variables
          */
-        function evaluateCustomEvents(variables, dataProvider, filterCode, rule, expSubType) {
+        function evaluateCustomEvents(variables, dataProvider, filterCode, rule, expSubType, upshotEvent) {
 
             var result = false;
 
@@ -663,7 +727,7 @@ var $BK$; // global reference for BK library
             } else {
                 result = evaluateCustomKeyEvents(variable, dataProvider, filterCode, variables[1],
                 /* second object in variables will be operation */
-                rule, expSubType);
+                rule, expSubType, upshotEvent);
             }
             return result;
         }
@@ -686,10 +750,10 @@ var $BK$; // global reference for BK library
 
             if (variable.key[0] === 'any' && !(qType === 9 || qType === 7 || qType === 11)) {
 
-                if (variable.operator == 'selected' && upshotEvent.response.length > 0) {
+                if (variable.operator === 'selected' && upshotEvent.response.length > 0) {
                     nextQueId = variable.values;
                     return true;
-                } else if(variable.operator == 'notselected' && upshotEvent.response.length === 0) {
+                } else if(variable.operator === 'notselected' && upshotEvent.response.length === 0) {
                     nextQueId = variable.values;
                     return true;
                 }
@@ -698,7 +762,7 @@ var $BK$; // global reference for BK library
 
             if (qType === 1 && upshotEvent.explanation !== '') {
                 responses.push('responded')
-            } else if ((qType === 4 || qType === 8 || qType === 10 || qType == 15) && upshotEvent.response.length > 0) {
+            } else if ((qType === 4 || qType === 8 || qType === 10 || qType === 15) && upshotEvent.response.length > 0) {
                 responses.push(upshotEvent.response[0].explanation)
             } else {
                 upshotEvent.response.forEach(function (val, key){
@@ -781,7 +845,7 @@ var $BK$; // global reference for BK library
                         result = dummyAggregates.indexOf(matchedAggregate.id) != -1;
                     }
                 } else {
-                    result = evaluateCustomEvents(expression.variable, matchedAggregate, filterRef.code, rule, expression.event);
+                    result = evaluateCustomEvents(expression.variable, matchedAggregate, filterRef.code, rule, expression.event, upshotEvent);
                 }
 
             } else if (expression.type === 'Location' || expression.event === 106) {
@@ -801,12 +865,50 @@ var $BK$; // global reference for BK library
                     result = evaluateResponse(expression.variable, upshotEvent, expression.qType);
                 }
             } else if (expression.type === 'PreDefinedEvents' && expression.event === 'Sessions') {
-
-                var time = expression.variable[0].values[0]
-                time = time - upshotEvent.timer > 0 ? time - upshotEvent.timer : 0
-
-                if (time === 0) {
+                if(expression.variable[0].key === "AppLaunch" && upshotEvent.params === "AppLaunch"){
+                  if(expression.variable[0].operator === "occurence"){
                     result = true;
+                  } else {
+                    var aggId = rule.codes[filterRef.code];
+                    var matchedAggregate = undefined;
+                    for (var index = 0, ilen = aggregatesMap.length; index < ilen; index++) {
+                        var aggregatex = aggregatesMap[index];
+                        if (aggregatex.id === aggId) {
+                            matchedAggregate = aggregatex;
+                            break;
+                        }
+                    }
+                    if (expression.variable[1].operator in logicalOperator) {
+                        result = logicalOperator[expression.variable[1].operator](matchedAggregate.value, expression.variable[1].values[0]);
+                    } else {
+                        BK.log("invalid operator:" + expression.variable[1].operator + " in rule:" + rule.id);
+                    }
+                  }
+                } else if (expression.variable[0].key === "AppInstall" && upshotEvent.params === "AppInstall"){
+                  if(expression.variable[0].operator === "occurence"){
+                    result = true;
+                  }
+                } else if(upshotEvent.timer !== undefined && expression.variable[0].values[0] !== undefined) {
+                  var time = expression.variable[0].values[0]
+                  time = time - (upshotEvent.timer === undefined ? 0 : upshotEvent.timer) > 0 ? time - (upshotEvent.timer === undefined ? 0 : upshotEvent.timer) : 0;
+
+                  if (time === 0) {
+                      result = true;
+                  }
+                }
+            } else if(expression.type === 'PreDefinedEvents' && expression.event === 'PageViews') {
+                var screenName = expression.variable[0].value[0],
+                screenTime = expression.variable[1].value
+                screenTime = screenTime - (upshotEvent.timer === undefined ? 0 : upshotEvent.timer) > 0 ? screenTime - (upshotEvent.timer === undefined ? 0 : upshotEvent.timer) : 0;
+
+                if (screenTime === 0 && screenName === upshotEvent.params) {
+                    result = true;
+                }
+            } else if (expression.type === 'PreDefinedEvents' && expression.event === 'Attribution') {
+                if(upshotEvent.params[expression.variable[0].key] === expression.variable[0].value[0]){
+                  result = true;
+                } else {
+                  result = false;
                 }
             }
 
@@ -829,7 +931,7 @@ var $BK$; // global reference for BK library
             return matchedAggregate.value > 0;
         }
 
-        function evaluateCustomKeyEvents(variable, dataProvider, filterCode, operationVariable, rule, expSubType) {
+        function evaluateCustomKeyEvents(variable, dataProvider, filterCode, operationVariable, rule, expSubType, upshotEvent) {
             // find aggregate for this expression/singleFilter
 
             if (dataProvider === undefined) {
@@ -874,6 +976,8 @@ var $BK$; // global reference for BK library
 
                 } else if (variable.key === dataProvider.attribute && dataProvider.attribute_values.indexOf(variable.value) > -1) {
                     found = true;
+                } else if (variable.type === "UnixTimestamp" && variable.key === dataProvider.attribute && dataProvider.sub_event == expSubType) {
+                  found = logicalOperator[variable.operator](upshotEvent.params[dataProvider.attribute], variable.value);
                 }
             }
 
@@ -914,21 +1018,29 @@ var $BK$; // global reference for BK library
 
             if (type === "months") {
 
-                var yr = dayUtc.getUTCFullYear() - (n / 12);
-                n = n % 12; // n [0, 11]
+                // var yr = dayUtc.getUTCFullYear() - (n / 12);
+                // n = n % 12; // n [0, 11]
+                //
+                // var m = 0;
+                //
+                // var currentMonth = dayUtc.getUTCMonth();
+                //
+                // if ((n - 1) > currentMonth) {
+                //     yr = yr - 1;
+                //     m = (currentMonth + 12) - (n - 1);
+                // } else {
+                //     m = currentMonth - (n - 1);
+                // }
+                //
+                // return Date.UTC(yr, m, 1, 0, 0, 0, 0);
 
-                var m = 0;
+                //latestimplementation
 
-                var currentMonth = dayUtc.getUTCMonth();
-
-                if ((n - 1) > currentMonth) {
-                    yr = yr - 1;
-                    m = (currentMonth + 12) - (n - 1);
-                } else {
-                    m = currentMonth - (n - 1);
-                }
-
-                return Date.UTC(yr, m, 1, 0, 0, 0, 0);
+                var d = new Date();
+                d.setDate(1);
+                d.setMonth(d.getMonth() - (n-1));
+                d.setHours(0, 0, 0, 0);
+                return d.getTime();
 
             }
 
@@ -958,65 +1070,37 @@ var $BK$; // global reference for BK library
                 // processed aggregate and its
                 // metadata, now have to check
                 // expression
+                if(variable.date_range.type === "xt_pd"){
+                  var days = Object.keys(dayCountMap);
 
-                var days = Object.keys(dayCountMap);
+                  var todayUtc = bkDate.utcToday();
+                  var givenDaysCount = parseInt(variable.date_range.values[0])/* [0] in xt_pd indicates number of days */;
+                  var lastNdayUtc = getLastNUtc(dataProvider.slidingType, givenDaysCount);
 
-                var todayUtc = bkDate.utcToday();
-                var givenDaysCount = parseInt(variable.date_range.values[0])/* [0] in xt_pd indicates number of days */;
-                var lastNdayUtc = getLastNUtc(dataProvider.slidingType, givenDaysCount);
+                  var requiredDayUtcs = [];
+                  for (var day in dayCountMap) {
+                      var dayNum = parseInt(day);
 
-                var requiredDayUtcs = [];
-                for (var day in dayCountMap) {
-                    var dayNum = parseInt(day);
+                      if (lastNdayUtc <= dayNum && dayNum <= todayUtc) {
+                          requiredDayUtcs.push(dayNum);
+                      }
+                  }
+                } else if(variable.date_range.type === "xt_pm"){
+                  var months = Object.keys(dayCountMap);
 
-                    if (lastNdayUtc <= dayNum && dayNum <= todayUtc) {
-                        requiredDayUtcs.push(dayNum);
-                    }
+                  var currentMonthUtc = bkDate.utcCurrentMonth();
+                  var givenMonthsCount = parseInt(variable.date_range.values[0])/* [0] in xt_pm indicates number of months */;
+                  var lastNMonthUtc = getLastNUtc(dataProvider.slidingType, givenMonthsCount);
+
+                  var requiredMonthUtcs = [];
+                  for (var day in dayCountMap) {
+                      var dayNum = parseInt(day);
+
+                      if (lastNMonthUtc <= dayNum && dayNum <= currentMonthUtc) {
+                          requiredMonthUtcs.push(dayNum);
+                      }
+                  }
                 }
-
-                // Existing version
-
-                // if (requiredDayUtcs.length === givenDaysCount) {
-                //     var i = 0;
-                //     if (variable.date_range.type === "xt_n") {
-                //         var totalCount = 0;
-                //
-                //         for (; i < requiredDayUtcs.length; i++) {
-                //             var day = requiredDayUtcs[i];
-                //
-                //             totalCount += dayCountMap[day];
-                //
-                //         }
-                //
-                //         var logicalResult = logicalOperator[variable.date_range.operator](totalCount, parseInt(variable.date_range.values[1])/* 1 indicates days */);
-                //
-                //         return logicalResult;
-                //     } else {
-                //
-                //         for (; i < requiredDayUtcs.length; i++) {
-                //             var day = requiredDayUtcs[i];
-                //
-                //             if (variable.date_range.operator in logicalOperator) {
-                //
-                //                 var logicalResult = logicalOperator[variable.date_range.operator](dayCountMap[day], parseInt(variable.date_range.values[1])/* 1 indicates days */);
-                //
-                //                 if (!logicalResult) { // failure case
-                //                     break;
-                //                 }
-                //
-                //             } else {
-                //                 // TODO
-                //                 BK.log("operator '" + variable.operator + "' not in util methods");
-                //             }
-                //
-                //         }
-                //         if (i == givenDaysCount) {
-                //             // check if there is any operation variable
-                //             //FIXME return aggregates here...
-                //             return true;
-                //         }
-                //     }
-                // }
 
                 // WIP version
 
@@ -1058,6 +1142,43 @@ var $BK$; // global reference for BK library
                         //FIXME return aggregates here...
                         return true;
                     }
+                } else if (variable.date_range.type === "xt_pm" && variable.date_range.subType !== "ntimes" && requiredMonthUtcs.length === givenMonthsCount) {
+
+                    for (; i < requiredMonthUtcs.length; i++) {
+                        var day = requiredMonthUtcs[i];
+
+                        if (variable.date_range.operator in logicalOperator) {
+
+                            var logicalResult = logicalOperator[variable.date_range.operator](dayCountMap[day], parseInt(variable.date_range.values[1])/* 1 indicates days */);
+
+                            if (!logicalResult) { // failure case
+                                break;
+                            }
+
+                        } else {
+                            // TODO
+                            BK.log("operator '" + variable.operator + "' not in util methods");
+                        }
+
+                    }
+                    if (i == givenMonthsCount) {
+                        // check if there is any operation variable
+                        //FIXME return aggregates here...
+                        return true;
+                    }
+                } else if(variable.date_range.type === "xt_pm" && (variable.date_range.subType === 'ntimes' || variable.date_range.subType === 'gtentimes')) {
+                  var totalCount = 0;
+
+                  for (; i < requiredMonthUtcs.length; i++) {
+                      var month = requiredMonthUtcs[i];
+
+                      totalCount += dayCountMap[month];
+
+                  }
+
+                  var logicalResult = logicalOperator[variable.date_range.operator](totalCount, parseInt(variable.date_range.values[1])/* 1 indicates days */);
+
+                  return logicalResult;
                 }
 
                 // WIP end
@@ -1093,6 +1214,8 @@ var $BK$; // global reference for BK library
                             v1.filters.forEach(function (v2, k2){
                                 if (v2.type === 'single' && v2.expression.event === 'Sessions') {
                                     timers.push(v2.expression.variable[0].values[0])
+                                } else if(v2.type === 'single' && v2.expression.event === 'PageViews'){
+                                    screenTimers.push(v2.expression.variable[1].value)
                                 }
                             })
                         }
@@ -1234,6 +1357,30 @@ var $BK$; // global reference for BK library
             return filteredInbox;
         };
 
+        BK.processActivity = function(filterJSONString, dataJSONstring) {
+            BK.log("processActivity" + filterJSONString + dataJSONstring);
+            var data = JSON.parse(dataJSONstring);
+            var filter = JSON.parse(filterJSONString);
+            var payload = {};
+            var flagCheck = false;
+            payload.AppVersion = data.appVersion;
+            payload.Platform = data.Platform;
+            payload.sdkVersion = data.sdkVersion;
+            payload.PushToken = data.PushToken;
+
+            if(Object.keys(filter).length !== 0){
+              var result = evaluate(filter, undefined, payload, undefined, true);
+              if (result == false) {
+                  flagCheck = false;
+              } else {
+                  flagCheck = true;
+              }
+            } else {
+              flagCheck = false;
+            }
+            return flagCheck;
+        };
+
         var surveyRule = [],
         nextQueId,
         elseFilters = {};
@@ -1264,7 +1411,8 @@ var $BK$; // global reference for BK library
          */
 
         var currentLocation;
-        var timers = []
+        var timers = [];
+        var screenTimers = [];
 
         BK.processEvent = function(eventJsonString, onSuccess, instasenseCallback) {
             BK.log("processing event... ");
@@ -1403,6 +1551,9 @@ var $BK$; // global reference for BK library
             if (upshotEvent.subtype === 'Sessions') {
                 var nextTimer = getLatestTimer(upshotEvent.timer)
                 onSuccess(undefined, undefined, undefined, undefined, nextTimer)
+            } else if(upshotEvent.subtype === 'PageViews'){
+                var nextScreenTimer = getLatestTimer(upshotEvent.timer, upshotEvent.params)
+                onSuccess(undefined, undefined, undefined, "PageViews", nextScreenTimer, upshotEvent.params)
             }
 
             if (upshotEvent.type === 4) {
@@ -1423,7 +1574,8 @@ var $BK$; // global reference for BK library
             }
         };
 
-        function getLatestTimer(time) {
+        function getLatestTimer(time, param) {
+          if(param === undefined || param === null){
             timers.sort(function(a, b){return a - b})
 
             var result = 0
@@ -1436,6 +1588,20 @@ var $BK$; // global reference for BK library
                     return true;
                 }
             })
+          } else {
+            screenTimers.sort(function(a, b){return a - b})
+
+            var result = 0
+
+            screenTimers.every(function (val, key){
+                if (val - time > 0) {
+                    result = val - time
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+          }
 
             return result;
         }

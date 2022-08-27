@@ -52,6 +52,12 @@ function processInbox(inboxString, payloadString) {
     
 }
 
+function processActivity(filterString, payloadString) {
+    
+    return $BK$.processActivity(filterString, payloadString);
+    
+}
+
 function setSurveyRules(filter) {
 
         $BK$.setSurveyRules(filter);
