@@ -18,6 +18,7 @@ import com.brandkinesis.activitymanager.BKActivityTypes;
 import com.brandkinesis.callback.BKBadgeAccessListener;
 import com.brandkinesis.callback.BKInboxAccessListener;
 import com.brandkinesis.callback.BrandKinesisCallback;
+import com.brandkinesis.pushnotifications.BKNotificationsCountResponseListener;
 import com.brandkinesis.pushnotifications.BKNotificationsResponseListener;
 import com.brandkinesis.rewards.BKRewardsResponseListener;
 import com.brandkinesis.callback.BrandKinesisUserStateCompletion;
@@ -430,7 +431,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             }
             break;
             case "dispatchInterval": {
-                int interval = (int) call.arguments;
+                int interval = Integer.parseInt(call.arguments.toString());
                 BrandKinesis.getBKInstance().setDispatchEventTime(interval * 1000);
             }
             break;
@@ -624,8 +625,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             }
             break;
             case "getNotifications": {
-                boolean loadMore = (boolean) call.arguments;
-                BrandKinesis.getBKInstance().getNotifications(context, loadMore, new BKNotificationsResponseListener() {
+                boolean loadMore = call.argument("loadMore");;
+                int limit = call.argument("limit");
+                BrandKinesis.getBKInstance().getNotifications(context, loadMore,limit, new BKNotificationsResponseListener() {
                     @Override
                     public void notificationsResponse(Object o) {
                         HashMap<String, Object> data = new HashMap<>();
@@ -653,6 +655,34 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 });
             }
+            break;
+            case "showInboxScreen": {
+                HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        BrandKinesis.getBKInstance().showInboxActivity(context, convertMapToBundle(options));
+                    }
+                });
+            }
+            break;
+            case "getUnreadNotificationsCount": {
+                int limit =  Integer.parseInt(call.arguments.toString());
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, new BKNotificationsCountResponseListener() {
+                    @Override
+                    public void notificationsCount(int i) {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("count", i);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                channel.invokeMethod("upshotUnreadNotificationsCount", data);
+                            }
+                        });
+                    }
+                });
+            }
+            break;
             default:
                 Log.d("Upshot", "No Method");
         }

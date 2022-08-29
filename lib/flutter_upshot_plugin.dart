@@ -139,15 +139,19 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod("disableUser", shouldDisable);
   }
 
-  static void getNotifications(bool loadMore) {
-    _channel.invokeListMethod("getNotifications", loadMore);
+  static void getNotifications(bool loadMore, int limit) {
+    Map details = {
+      'loadMore': loadMore,
+      'limit': limit
+    };
+    _channel.invokeListMethod("getNotifications", details);
   }
 
   static void showInboxScreen(Map options) {
     _channel.invokeListMethod("showInboxScreen", options);
   }
 
-  static void getUnreadnotiifcationsCount() {
-    _channel.invokeListMethod("getUnreadnotiifcationsCount");
+  static void getUnreadNotificationsCount(int limit) {
+    _channel.invokeListMethod("getUnreadNotificationsCount", limit);
   }
 }

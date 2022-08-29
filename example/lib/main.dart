@@ -72,10 +72,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> createEvent(
       String eventName, HashMap<String, Object> data) async {
     try {
-      String? eventID =
-          await FlutterUpshotPlugin.createCustomEvent(eventName, data, false);
-      eventId = eventID;
-      log('$eventId');
+      FlutterUpshotPlugin.getUnreadNotificationsCount(10);
+      // String? eventID =
+      //     await FlutterUpshotPlugin.createCustomEvent(eventName, data, false);
+      // eventId = eventID;
+      // log('$eventId');
     } catch (e) {
       log('Error : $e');
     }
@@ -127,16 +128,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   static void showInbox() {
+    FlutterUpshotPlugin.getUnreadNotificationsCount(10);
+
     Map options = {
       UpshotInboxScreenConfig.inboxType: UpshotInboxType.both,
-      UpshotInboxScreenConfig.deListingType: UpshotDelistingType.campaign,
+      UpshotInboxScreenConfig.deListingType: UpshotDelistingType.variable,
       UpshotInboxScreenConfig.displayMessageCount: true,
       UpshotInboxScreenConfig.displayTime: true,
       UpshotInboxScreenConfig.enableLoadMore: true,
-      UpshotInboxScreenConfig.pushFetchLimit: 10,
+      UpshotInboxScreenConfig.pushFetchLimit: 50,
       UpshotInboxScreenConfig.showReadNotifications: true
     };
     FlutterUpshotPlugin.showInboxScreen(options);
+
   }
 
   static Future<void> createPageViewEvent(String pageName) async {

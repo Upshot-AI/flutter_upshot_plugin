@@ -172,10 +172,10 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             if let details = call.arguments as? [String: Any] {
                 UpshotHelper.defaultHelper.showInboxScreen(options: details)    
             }
-        case "getUnreadnotiifcationsCount":
+        case "getUnreadNotificationsCount":
             
             let limit = call.arguments as? Int ?? 10
-            UpshotHelper.defaultHelper.getUnreadnotiifcationsCount(limit: limit)
+            UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit)
             
         default:
             result(FlutterMethodNotImplemented)

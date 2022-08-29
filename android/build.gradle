@@ -4,7 +4,7 @@ version '1.0'
 buildscript {
     repositories {
         google()
-        mavenCentral()         
+        mavenCentral()
     }
 
     dependencies {
@@ -40,9 +40,10 @@ android {
 }
 
 dependencies{
-    implementation 'com.github.upshot-git:upshotpushlib:upshot_test_cust_1.6.6'
+    implementation 'com.github.upshot-git:upshotpushlib:1.6.9'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
+
 }
 repositories {
     mavenCentral()

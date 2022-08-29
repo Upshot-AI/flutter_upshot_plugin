@@ -444,7 +444,7 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().showInboxController(options)
     }
 
-    func getUnreadnotiifcationsCount(limit: Int) {
+    func getUnreadNotificationsCount(limit: Int) {
      
         BrandKinesis.sharedInstance().getUnreadNotificationsCount(limit) { count in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
@@ -452,7 +452,8 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    upshotChannel.invokeMethod("upshotNotificationsCount", arguments: count)
+                    var response: [String : Any] =  ["count":count]
+                    upshotChannel.invokeMethod("upshotUnreadNotificationsCount", arguments: response)
                 }
             }
         }
