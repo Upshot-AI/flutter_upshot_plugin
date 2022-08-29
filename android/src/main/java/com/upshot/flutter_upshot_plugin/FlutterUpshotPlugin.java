@@ -658,6 +658,10 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             break;
             case "showInboxScreen": {
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
+                 int inboxType = Integer.parseInt(options.get("BKInboxType").toString());
+                Boolean readNotifications = (Boolean) options.get("BKShowReadNotifications");
+                options.put("bkShowReadNotifications", readNotifications);
+                 options.put("bkInboxType", inboxType);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
