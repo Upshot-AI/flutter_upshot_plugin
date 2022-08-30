@@ -140,7 +140,6 @@ class _MyAppState extends State<MyApp> {
       UpshotInboxScreenConfig.showReadNotifications: true
     };
     FlutterUpshotPlugin.showInboxScreen(options);
-
   }
 
   static Future<void> createPageViewEvent(String pageName) async {

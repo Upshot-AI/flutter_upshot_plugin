@@ -43,6 +43,8 @@ dependencies{
     implementation 'com.github.upshot-git:upshotpushlib:1.6.9'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation "androidx.cardview:cardview:1.0.0"
 
 }
 repositories {

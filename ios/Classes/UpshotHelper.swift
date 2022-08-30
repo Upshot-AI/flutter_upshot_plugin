@@ -202,9 +202,31 @@ class UpshotHelper: NSObject {
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
-                DispatchQueue.main.asyncAfter(deadline: .now()) {                    
-                    let data = ["data": inboxDetails]
-                    upshotChannel.invokeMethod("upshotCampaignDetails", arguments: data)                    
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    if let details = inboxDetails as? [[String: Any]] {
+                        var newInbox: [[String: Any]] = []
+                        details.forEach { payload in
+                            var newPayload: [String: Any] = [:]
+                            if let camName = payload["name"] as? String,
+                               let activities = payload["activities"] as? [[String: Any]],
+                               var activity = activities.first {
+                                                                
+                                if let insertionTime = activity["date"] as? Date {
+                                    let insertionTimeStamp = insertionTime.timeIntervalSince1970
+                                    activity["date"] = Double(insertionTimeStamp)
+                                }
+                                if let expiryTime = activity["expiry"] as? Date {
+                                    let expiryTimeStamp = expiryTime.timeIntervalSince1970
+                                    activity["expiry"] = Double(expiryTimeStamp)
+                                }
+                                newPayload["name"] = camName
+                                newPayload["activities"] = [activity]
+                                newInbox.append(newPayload)
+                            }
+                        }
+                        let data: [String: Any] = ["data":newInbox]
+                        upshotChannel.invokeMethod("upshotCampaignDetails", arguments: data)
+                    }
                 }
             }
         }
