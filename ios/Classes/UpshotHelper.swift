@@ -582,5 +582,29 @@ extension UpshotHelper: BrandKinesisDelegate {
     
     func brandkinesisCampaignDetailsLoaded() {
         UpshotHelper.defaultHelper.showActivity(activityType: .any, tag: "Upshot_loaded")
-    }   
+    }
+    
+    func brandKinesisInboxActivityPresented() {
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+            let activityPayload: [String: Any] = [:]
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshotInboxActivityPresented", arguments: activityPayload)
+            }
+        }
+    }
+    
+    func brandKinesisInboxActivityDismissed() {
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+            let activityPayload: [String: Any] = [:]
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshotInboxActivityDismiss", arguments: activityPayload)
+            }
+        }
+    }
 }

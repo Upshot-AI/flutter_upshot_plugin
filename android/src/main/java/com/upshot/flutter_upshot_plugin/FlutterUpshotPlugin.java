@@ -198,6 +198,28 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         BrandKinesis bkInstance = BrandKinesis.getBKInstance();
         bkInstance.setBrandkinesisCallback(new BrandKinesisCallback() {
             @Override
+            public void brandKinesisInboxActivityPresented() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        HashMap<String, Integer> response = new HashMap<>();
+                        channel.invokeMethod("upshotInboxActivityPresented", response);
+                    }
+                });
+            }
+
+            @Override
+            public void brandKinesisInboxActivityDismissed() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        HashMap<String, Integer> response = new HashMap<>();
+                        channel.invokeMethod("upshotInboxActivityDismiss", response);
+                    }
+                });
+            }
+
+            @Override
             public void userStateCompletion(boolean status) {
 
             }
@@ -665,7 +687,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        BrandKinesis.getBKInstance().showInboxActivity(context, convertMapToBundle(options));
+                        BrandKinesis.getBKInstance().showInboxActivity(context, convertMapToBundle(options), null);
                     }
                 });
             }

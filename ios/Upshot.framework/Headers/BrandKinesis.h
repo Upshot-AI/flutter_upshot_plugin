@@ -330,6 +330,9 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
 
 - (void)brandkinesisCampaignDetailsLoaded;
 
+- (void)brandKinesisInboxActivityPresented;
+
+- (void)brandKinesisInboxActivityDismissed;
 
 - (nonnull NSArray *)brandKinesisExludeActivitiesForShare;
 
