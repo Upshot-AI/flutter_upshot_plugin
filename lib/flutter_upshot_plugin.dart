@@ -3,7 +3,12 @@ import 'dart:collection';
 import 'dart:developer';
 import 'dart:ffi';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'show_tutorial/services/custom_transaparent_route.dart';
+import 'show_tutorial/show_tutorial_view.dart';
+import 'show_tutorial/show_tutorials_viewmodel.dart';
 
 class FlutterUpshotPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
@@ -140,10 +145,7 @@ class FlutterUpshotPlugin {
   }
 
   static void getNotifications(bool loadMore, int limit) {
-    Map details = {
-      'loadMore': loadMore,
-      'limit': limit
-    };
+    Map details = {'loadMore': loadMore, 'limit': limit};
     _channel.invokeListMethod("getNotifications", details);
   }
 
@@ -153,5 +155,20 @@ class FlutterUpshotPlugin {
 
   static void getUnreadNotificationsCount(int limit) {
     _channel.invokeListMethod("getUnreadNotificationsCount", limit);
+  }
+
+  static void showTutorials(BuildContext context, String tag) {
+    ShowTutorials.of(context);
+    Navigator.push(context,
+        TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
+  }
+
+  static void demoMethod(BuildContext context) async {
+    // await ShowTutorialsModel.instance.loadData();
+    ShowTutorialsModel.context = context;
+    ShowTutorials.of(context);
+    // ShowTutorialsModel.instance.inspectChilds(0);
+    Navigator.push(context,
+        TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
   }
 }

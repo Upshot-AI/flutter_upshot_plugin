@@ -7,10 +7,12 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/upshotConstants.dart';
+import 'package:flutter_upshot_plugin_example/home_screen.dart';
 import 'package:flutter_upshot_plugin_example/upshotMethodChannel.dart';
 
 void main() {
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(const DemoApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -21,7 +23,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final String _platformVersion = 'Unknown';
   String? eventId;
 
   @override
