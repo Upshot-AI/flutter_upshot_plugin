@@ -10,14 +10,14 @@ class ShowTutorials extends StatefulWidget {
   static void of(BuildContext context) async {
     assert(!context.owner!.debugBuilding,
         'Method called while building RenderTree.');
-    try {
-      ShowTutorialsModel.instance.getScreenDetails(context);
-      await ShowTutorialsModel.instance.loadData();
-      ShowTutorialsModel.instance.inspectChilds(0);
-      // ShowTutorialsModel.instance.getAllElements(context);
-    } catch (e) {
-      print('The main exception is $e');
-    }
+    // try {
+    ShowTutorialsModel.instance.getScreenDetails(context);
+    await ShowTutorialsModel.instance.loadData();
+    ShowTutorialsModel.instance.inspectChilds(0);
+    // ShowTutorialsModel.instance.getAllElements(context);
+    // } catch (e) {
+    //   print('The main exception is $e');
+    // }
   }
 
   @override
@@ -51,7 +51,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                 }
               },
               child: GestureDetector(
-                onTap: (m.tutorialList[0].enableTap ?? false)
+                onTap: (m.interactiveTutorialResponse?.enableTap ?? false)
                     ? () => m.nextTap1(context)
                     : () {},
                 child: Stack(
@@ -80,6 +80,8 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                         child: ToolTipWidget(
                           key: m.toolTipGlobalKey,
                           isUp: m.getYAxis().isUp,
+                          enableTap:
+                              m.interactiveTutorialResponse?.enableTap ?? false,
                           selectedIndex: m.selectedIndex,
                         ),
                       ),

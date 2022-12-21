@@ -1,212 +1,468 @@
-{
-    "data": {
-      "tutorial": [
-        {
-          "id": "appBarText",
-          "desc": "demo em Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.demo em Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.demo em Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          "nextTitle": "",
-          "skipTitle": "",
-          "submitTitle": "",
-          "prevTitle":"Previous",
-          "descTextColor": "",
-          "bgColor": "",
-          "shadowColor": "#00000F",
-          "borderColor": "#ffff00",
-          "nextBGColor": "",
-          "nextTextColor": "",
-          "skipBGColor": "",
-          "skipTextColor": "",
-          "submitBGColor": "",
-          "submitTextColor": "",
-          "enableTap": false
-        }, {
-          "id": "demoValue",
-          "desc": "demo em Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.demo em Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.demo em Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          "nextTitle": "",
-          "skipTitle": "",
-          "submitTitle": "",
-          "prevTitle":"Previous",
-          "descTextColor": "",
-          "bgColor": "",
-          "shadowColor": "#00000F",
-          "borderColor": "#ffff00",
-          "nextBGColor": "",
-          "nextTextColor": "",
-          "skipBGColor": "",
-          "skipTextColor": "",
-          "submitBGColor": "",
-          "submitTextColor": "",
-          "enableTap": false
-        },
-        {
-          "id": "Button1",
-          "desc": "Button em Ipsum unchanged.",
-          "nextTitle": "xt",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
-        },
 
-        {
-          "id": "container",
-          "desc": "value Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "Next",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
+{
+    "allowSkip": true,
+    "enableTap": false,
+    "bgImage":"https://cdn-icons-png.flaticon.com/128/87/87932.png",
+    "scaleType":"pattern",
+    "elements":[
+      {
+        "targetId" :"appBarText",
+        "borderColor":"",
+        "position":10,
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
         },
-        {
-          "id": "value",
-          "desc": "value Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "Next",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"demoValue",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
         },
-        {
-          "id": "DemoText",
-          "desc": "DemoText  unchanged.",
-          "nextTitle": "Next",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
-        }
-        , {
-          "id": "navDrawer",
-          "desc": "NavDrawer is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "xt",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
-        }, {
-          "id": "drawer1",
-          "desc": "drawer1 Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "xt",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
-        }, {
-          "id": "drawer2",
-          "desc": "drawer2 Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "xt",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
-        }, {
-          "id": "drawer3",
-          "desc": "drawer3 Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "xt",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"Button1",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
         },
-        {
-          "id": "drawer4",
-          "desc": "00s, when an unknown printer took a galley of type and book. It hhe leap into electronic typesetting, remaining essentially unchanged.",
-          "nextTitle": "nexxt",
-          "skipTitle": "skip",
-          "submitTitle": "Got it",
-          "prevTitle":"Previous",
-          "descTextColor": "#000000",
-          "bgColor": "#FFFFFF",
-          "shadowColor": "#00000F",
-          "borderColor": "#40B9C5",
-          "nextBGColor": "#40B9C5",
-          "nextTextColor": "#FFFFFF",
-          "skipBGColor": "",
-          "skipTextColor": "#40B9C5",
-          "submitBGColor": "#40B9C5",
-          "submitTextColor": "#FFFFFF",
-          "enableTap": false
-        }
-      ]
-    }
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"container",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"value",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"DemoText",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"navDrawer",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"drawer1",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"drawer2",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"drawer3",
+        "borderColor":"",
+        "position":10,
+        
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      } 
+    ]
   }

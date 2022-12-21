@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_upshot_plugin/models/tutorial_response/tutorial.dart';
-import 'package:flutter_upshot_plugin/models/tutorial_response/tutorial_response.dart';
+import 'package:flutter_upshot_plugin/models/interactive_tutorial_response/interactive_tutorial_response.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'widget/tool_tip_widget.dart';
+import '../models/interactive_tutorial_response/element.dart'
+    as interactive_tutorial;
 
 class ShowTutorialInheritedNotifier
     extends InheritedNotifier<ShowTutorialsModel> {
@@ -39,7 +39,10 @@ class ShowTutorialsModel extends ChangeNotifier {
   double _appBarHeight = 0.0;
   bool hasAppHeight = false;
   bool hasBottomNavBarHeight = false;
-  final tutorialList = <Tutorial>[];
+  final tutorialList = <interactive_tutorial.Element>[];
+  InteractiveTutorialResponse? _interactiveTutorialResponse;
+  InteractiveTutorialResponse? get interactiveTutorialResponse =>
+      _interactiveTutorialResponse;
   WidgetDataClass? _currentWidget;
   WidgetDataClass? get currentWidget => _currentWidget;
   set currentWidget(WidgetDataClass? details) {
@@ -223,7 +226,7 @@ class ShowTutorialsModel extends ChangeNotifier {
         final rootWidget = child.widget;
         if (rootWidget.key != null && tutorialList.isNotEmpty) {
           if (getStringFromKey(rootWidget.key!)) {
-            if (tutorialList[_selectedIndex].id ==
+            if (tutorialList[_selectedIndex].targetId ==
                 getStringValueFromKey(rootWidget.key!)) {
               final offset = getOffset(child.renderObject!);
               _currentWidget = WidgetDataClass(
@@ -326,7 +329,7 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   void searchElement(int? selectedIndex) {
     final String currentTutorial =
-        tutorialList[selectedIndex ?? _selectedIndex].id!;
+        tutorialList[selectedIndex ?? _selectedIndex].targetId!;
     for (int i = 0; i < keyList.length; i++) {
       if (keyList[i].toLowerCase() == currentTutorial.toLowerCase()) {
         _currentWidget = widgetList[i];
@@ -342,15 +345,16 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   Future<void> loadData() async {
-    try {
-      final tutorialResponse = TutorialResponse.fromJson(
-          await rootBundle.loadString(
-              'packages/flutter_upshot_plugin/assets/tutorial_json.json'));
+    // try {
+    _interactiveTutorialResponse = InteractiveTutorialResponse.fromJson(
+        await rootBundle.loadString(
+            'packages/flutter_upshot_plugin/assets/tutorial_json.json'));
 
-      tutorialList.addAll(tutorialResponse.data!.tutorial!);
-    } catch (e) {
-      print('The exception is $e');
-    }
+    tutorialList.addAll(_interactiveTutorialResponse!.elements!);
+    notifyListeners();
+    // } catch (e) {
+    //   print('The exception is $e');
+    // }
   }
 
   Color? getColor(String? hexColor) {

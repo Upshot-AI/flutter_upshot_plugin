@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
-import 'package:flutter_upshot_plugin_example/custom_app_bar.dart';
 import 'package:flutter_upshot_plugin_example/demo_screen.dart';
 
 class DemoApp extends StatelessWidget {
@@ -9,7 +8,7 @@ class DemoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: DemoClass());
+    return const MaterialApp(home: DemoClass());
   }
 }
 
@@ -34,13 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: const CustomAppBar(
-      //   child: Text(
-      //     'HomeScreen',
-      //     key: ValueKey('appBarText'),
-      //     style: TextStyle(fontSize: 20),
-      //   ),
-      // ),
       appBar: AppBar(
         title: const Text(
           'HomeScreen',
