@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       Future.delayed(const Duration(milliseconds: 0), () {
-        FlutterUpshotPlugin.demoMethod(context);
+        FlutterUpshotPlugin.showTutorials(context, '');
       });
     });
     super.initState();
@@ -78,10 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-                onPressed: () {
-                  Future.delayed(const Duration(seconds: 2),
-                      () => FlutterUpshotPlugin.demoMethod(context));
-                },
+                onPressed: () {},
                 key: const ValueKey('Button1'),
                 child: const Text(
                   'Button1',

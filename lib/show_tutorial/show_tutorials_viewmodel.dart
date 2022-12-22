@@ -71,7 +71,8 @@ class ShowTutorialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // final locationList = <WidgetDataClass?>[];
+  int _maxCount = 0;
+  int get maxCount => _maxCount;
   final widgetList = <WidgetDataClass>[];
   final keyList = <String>[];
   ShowTutorialsModel._();
@@ -112,9 +113,10 @@ class ShowTutorialsModel extends ChangeNotifier {
         toolTipDataClass = _getValue(widgetDataClass);
       }
     } else {
-      final double toolTipHalfHeight = _toolTipHeight / 2;
-      final double yAxis = (_screenHeight / 2) - toolTipHalfHeight;
-      toolTipDataClass = ToolTipDataClass(isUp: false, yAxis: yAxis);
+      toolTipDataClass = ToolTipDataClass(
+          isUp: false,
+          yAxis: _screenHeight *
+              ((tutorialList[_selectedIndex].position ?? 50) / 100));
     }
     print('The yAxis is ${toolTipDataClass.yAxis}');
     return toolTipDataClass;
@@ -318,13 +320,22 @@ class ShowTutorialsModel extends ChangeNotifier {
   //   }
   // }
 
-  void nextTap1(BuildContext context) {
+  void nextTap(BuildContext context) {
     if (_selectedIndex == tutorialList.length - 1) {
       Navigator.pop(context);
     } else {
       canShow = false;
       inspectChilds(selectedIndex = _selectedIndex + 1);
+      if (_maxCount < _selectedIndex) {
+        _maxCount++;
+        notifyListeners();
+      }
     }
+  }
+
+  void onSkipTap(BuildContext context) {
+    Navigator.pop(context);
+    print('The max count is $_maxCount');
   }
 
   void searchElement(int? selectedIndex) {
@@ -345,16 +356,16 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   Future<void> loadData() async {
-    // try {
-    _interactiveTutorialResponse = InteractiveTutorialResponse.fromJson(
-        await rootBundle.loadString(
-            'packages/flutter_upshot_plugin/assets/tutorial_json.json'));
+    try {
+      _interactiveTutorialResponse = InteractiveTutorialResponse.fromJson(
+          await rootBundle.loadString(
+              'packages/flutter_upshot_plugin/assets/tutorial_json.json'));
 
-    tutorialList.addAll(_interactiveTutorialResponse!.elements!);
-    notifyListeners();
-    // } catch (e) {
-    //   print('The exception is $e');
-    // }
+      tutorialList.addAll(_interactiveTutorialResponse!.elements!);
+      notifyListeners();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Color? getColor(String? hexColor) {

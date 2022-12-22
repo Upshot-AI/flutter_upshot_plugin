@@ -9,8 +9,6 @@ class ToolTipClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    const double borderRadius = 20;
-
     if (isUp) {
       var path = Path()
         ..moveTo(20, 20)
@@ -38,10 +36,9 @@ class ToolTipClipper extends CustomClipper<Path> {
     } else {
       var path = Path()
         ..moveTo(20, 0)
-        ..quadraticBezierTo(
-            0, 0, 0, borderRadius) // ToolTip topLeft borderRadius
+        ..quadraticBezierTo(0, 0, 0, 20) // ToolTip topLeft borderRadius
         ..lineTo(0, size.height - 40)
-        ..quadraticBezierTo(0, size.height - 20, borderRadius,
+        ..quadraticBezierTo(0, size.height - 20, 20,
             size.height - 20); // ToolTip bottomLeft borderRadius
       // Pointing arrow paths
       if (canShow) {
@@ -55,12 +52,12 @@ class ToolTipClipper extends CustomClipper<Path> {
       }
 
       ///////////////////////
-      path.lineTo(size.width - borderRadius, size.height - 20);
+      path.lineTo(size.width - 20, size.height - 20);
       path.quadraticBezierTo(size.width, size.height - 20, size.width,
           size.height - 40); // ToolTip bottomRight borderRadius
       path.lineTo(size.width, 20);
-      path.quadraticBezierTo(size.width, 0, size.width - borderRadius,
-          0); // ToolTip topRight borderRadius
+      path.quadraticBezierTo(
+          size.width, 0, size.width - 20, 0); // ToolTip topRight borderRadius
       return path;
     }
   }

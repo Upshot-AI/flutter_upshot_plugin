@@ -10,14 +10,13 @@ class ShowTutorials extends StatefulWidget {
   static void of(BuildContext context) async {
     assert(!context.owner!.debugBuilding,
         'Method called while building RenderTree.');
-    // try {
-    ShowTutorialsModel.instance.getScreenDetails(context);
-    await ShowTutorialsModel.instance.loadData();
-    ShowTutorialsModel.instance.inspectChilds(0);
-    // ShowTutorialsModel.instance.getAllElements(context);
-    // } catch (e) {
-    //   print('The main exception is $e');
-    // }
+    try {
+      ShowTutorialsModel.instance.getScreenDetails(context);
+      ShowTutorialsModel.instance.inspectChilds(0);
+      // ShowTutorialsModel.instance.getAllElements(context);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -52,7 +51,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
               },
               child: GestureDetector(
                 onTap: (m.interactiveTutorialResponse?.enableTap ?? false)
-                    ? () => m.nextTap1(context)
+                    ? () => m.nextTap(context)
                     : () {},
                 child: Stack(
                   children: [
@@ -60,12 +59,12 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                       painter: TransaprentCustomPainter(
                           toolTipGlobalKey: m.toolTipGlobalKey,
                           canShow: m.canShow,
-                          widgetDataClass: m.currentWidget!),
+                          widgetDataClass: m.currentWidget),
                       child: const SizedBox.expand(),
                     ),
                     CustomPaint(
                         painter: CustomBorderPaint(
-                            widgetDataClass: m.currentWidget!,
+                            widgetDataClass: m.currentWidget,
                             canShow: m.canShow,
                             color: m.tutorialList[m.selectedIndex].borderColor),
                         child: const SizedBox()),
@@ -82,7 +81,6 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                           isUp: m.getYAxis().isUp,
                           enableTap:
                               m.interactiveTutorialResponse?.enableTap ?? false,
-                          selectedIndex: m.selectedIndex,
                         ),
                       ),
                     ),

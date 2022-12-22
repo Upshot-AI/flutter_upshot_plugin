@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'show_tutorial/services/custom_transaparent_route.dart';
@@ -152,18 +155,15 @@ class FlutterUpshotPlugin {
     _channel.invokeListMethod("getUnreadNotificationsCount", limit);
   }
 
-  static void showTutorials(BuildContext context, String tag) {
-    ShowTutorials.of(context);
-    Navigator.push(context,
-        TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
-  }
-
-  static void demoMethod(BuildContext context) async {
-    // await ShowTutorialsModel.instance.loadData();
-    ShowTutorialsModel.context = context;
-    ShowTutorials.of(context);
-    // ShowTutorialsModel.instance.inspectChilds(0);
-    Navigator.push(context,
-        TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
+  static void showTutorials(BuildContext context, String tag) async {
+    await ShowTutorialsModel.instance.loadData();
+    if (ShowTutorialsModel.instance.tutorialList.isNotEmpty) {
+      ShowTutorialsModel.context = context;
+      ShowTutorials.of(context);
+      Navigator.push(context,
+          TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
+    } else {
+      log('No Tutorials to show');
+    }
   }
 }

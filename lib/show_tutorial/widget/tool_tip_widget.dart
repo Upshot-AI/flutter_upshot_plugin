@@ -5,13 +5,8 @@ import '../services/tool_tip_clipper.dart';
 /// [ToolTipWidget] is the widget which will be describing widget for the highlighted widget.
 class ToolTipWidget extends StatefulWidget {
   final bool isUp;
-  final int selectedIndex;
   final bool enableTap;
-  const ToolTipWidget(
-      {Key? key,
-      required this.isUp,
-      required this.selectedIndex,
-      required this.enableTap})
+  const ToolTipWidget({Key? key, required this.isUp, required this.enableTap})
       : super(key: key);
 
   @override
@@ -72,9 +67,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                 )),
             child: Container(
               decoration: BoxDecoration(
-                color: model.getColor(null) ??
-                    Colors.white.withOpacity(
-                        (tutorial.description?.opacity ?? 1).toDouble()),
+                color: Colors.white.withOpacity(0.7),
+
+                // color: model.getColor(null) ??
+                //     Colors.white.withOpacity(
+                //         (tutorial.description?.opacity ?? 1).toDouble()),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -91,8 +88,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                               : tutorial.description?.text ??
                                   'No Description found',
                           style: TextStyle(
-                              fontSize: (tutorial.description?.fontSize ?? 20)
-                                  .toDouble(),
+                              fontSize:
+                                  tutorial.description?.fontSize?.toDouble(),
                               color: model.getColor(null) ?? Colors.black),
                           // maxLines: 7,
                         ),
@@ -102,116 +99,153 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                   (widget.enableTap)
                       ? const SizedBox()
                       : Container(
-                          color: model.getColor(null) ??
-                              Colors.yellow.withOpacity(
-                                  (tutorial.footer?.opacity ?? 1).toDouble()),
+                          padding: const EdgeInsets.all(10),
+                          // color: Colors.yellow.withOpacity(0.7),
+                          // color: model.getColor(null) ??
+                          //     Colors.yellow.withOpacity(
+                          //         (tutorial.footer?.opacity ?? 1).toDouble()),
                           child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Row(
-                                  children: [
-                                    TextButton(
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: ElevatedButton(
                                       style: TextButton.styleFrom(
                                           backgroundColor:
                                               model.getColor(null)),
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text(
-                                        (footer?.skipButton?.title ?? '') == ''
-                                            ? 'Skip'
-                                            : footer!.skipButton!.title!,
-                                        style: TextStyle(
-                                          fontSize:
-                                              (footer?.skipButton?.fontSize ??
-                                                      20)
-                                                  .toDouble(),
-                                          color: model.getColor(null) ??
-                                              Colors.blue,
+                                      onPressed: () => model.onSkipTap(context),
+                                      child: FittedBox(
+                                        child: Text(
+                                          (footer?.skipButton?.title ?? '') ==
+                                                  ''
+                                              ? 'Skip'
+                                              : footer!.skipButton!.title!,
+                                          style: TextStyle(
+                                            fontSize: footer
+                                                ?.skipButton?.fontSize
+                                                ?.toDouble(),
+                                            color: model.getColor(null),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
-                                    const Spacer(),
-                                    0 < model.selectedIndex &&
-                                            model.selectedIndex <
-                                                model.tutorialList.length
-                                        ? ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    selectedIndex ==
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    flex: 9,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        0 < model.selectedIndex &&
+                                                model.selectedIndex <
+                                                    model.tutorialList.length
+                                            ? Flexible(
+                                                child: FittedBox(
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                          backgroundColor: selectedIndex ==
+                                                                  model.tutorialList
+                                                                          .length -
+                                                                      1
+                                                              ? model.getColor(
+                                                                      null) ??
+                                                                  Colors.blue
+                                                              : model.getColor(
+                                                                      null) ??
+                                                                  Colors.blue),
+                                                      onPressed: () {
+                                                        model.isVisibile =
+                                                            false;
+                                                        model.canShow = false;
+                                                        model.inspectChilds(model
+                                                                .selectedIndex =
+                                                            model.selectedIndex -
+                                                                1);
+                                                        // model.searchElement(
+                                                        //     model.selectedIndex =
+                                                        //         model.selectedIndex - 1);
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          model
+                                                              .getToolTipSize();
+                                                          model.isVisibile =
+                                                              true;
+                                                        });
+                                                      },
+                                                      child: Text(
+                                                        (footer?.prevButton
+                                                                        ?.title ??
+                                                                    '') ==
+                                                                ''
+                                                            ? 'Previous'
+                                                            : footer!
+                                                                .prevButton!
+                                                                .title!,
+                                                        style: TextStyle(
+                                                            fontSize: footer
+                                                                ?.prevButton
+                                                                ?.fontSize
+                                                                ?.toDouble()),
+                                                      )),
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          child: FittedBox(
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      selectedIndex ==
+                                                              model.tutorialList
+                                                                      .length -
+                                                                  1
+                                                          ? model.getColor(
+                                                                  null) ??
+                                                              Colors.blue
+                                                          : model.getColor(
+                                                                  null) ??
+                                                              Colors.blue),
+                                              onPressed: () {
+                                                model.isVisibile = false;
+                                                model.nextTap(context);
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  model.getToolTipSize();
+                                                  model.isVisibile = true;
+                                                });
+                                              },
+                                              child: Text(
+                                                (footer?.nextButton?.title ??
+                                                            '') ==
+                                                        ''
+                                                    ? 'Next'
+                                                    : footer!
+                                                        .nextButton!.title!,
+                                                style: TextStyle(
+                                                    fontSize: footer
+                                                        ?.nextButton?.fontSize
+                                                        ?.toDouble(),
+                                                    color: selectedIndex ==
                                                             model.tutorialList
                                                                     .length -
                                                                 1
                                                         ? model.getColor(
                                                                 null) ??
-                                                            Colors.blue
+                                                            Colors.white
                                                         : model.getColor(
                                                                 null) ??
-                                                            Colors.blue),
-                                            onPressed: () {
-                                              model.isVisibile = false;
-                                              model.canShow = false;
-                                              model.inspectChilds(
-                                                  model.selectedIndex =
-                                                      model.selectedIndex - 1);
-                                              // model.searchElement(
-                                              //     model.selectedIndex =
-                                              //         model.selectedIndex - 1);
-                                              WidgetsBinding.instance
-                                                  .addPostFrameCallback((_) {
-                                                model.getToolTipSize();
-                                                model.isVisibile = true;
-                                              });
-                                            },
-                                            child: Text(
-                                              footer?.prevButton?.title ?? '',
-                                              style: TextStyle(
-                                                  fontSize: (footer?.prevButton
-                                                              ?.fontSize ??
-                                                          20)
-                                                      .toDouble()),
-                                            ))
-                                        : const SizedBox(),
-                                    const SizedBox(width: 10),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: selectedIndex ==
-                                                    model.tutorialList.length -
-                                                        1
-                                                ? model.getColor(null) ??
-                                                    Colors.blue
-                                                : model.getColor(null) ??
-                                                    Colors.blue),
-                                        onPressed: () {
-                                          model.isVisibile = false;
-                                          model.nextTap1(context);
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback((_) {
-                                            model.getToolTipSize();
-                                            model.isVisibile = true;
-                                          });
-                                        },
-                                        child: Text(
-                                          (footer?.nextButton?.title ?? '') ==
-                                                  ''
-                                              ? 'Next'
-                                              : footer!.nextButton!.title!,
-                                          style: TextStyle(
-                                              fontSize: (footer?.nextButton
-                                                          ?.fontSize ??
-                                                      20)
-                                                  .toDouble(),
-                                              color: selectedIndex ==
-                                                      model.tutorialList
-                                                              .length -
-                                                          1
-                                                  ? model.getColor(null) ??
-                                                      Colors.white
-                                                  : model.getColor(null) ??
-                                                      Colors.white),
-                                        )),
-                                  ],
-                                ),
+                                                            Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
                               !widget.isUp
                                   ? const SizedBox(height: 20)
