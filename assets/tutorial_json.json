@@ -1,6 +1,6 @@
 
 {
-    "allowSkip": true,
+    "allowSkip": false,
     "enableTap": false,
     "bgImage":"https://cdn-icons-png.flaticon.com/128/87/87932.png",
     "scaleType":"pattern",
