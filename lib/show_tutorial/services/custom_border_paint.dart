@@ -7,6 +7,7 @@ class CustomBorderPaint extends CustomPainter {
   final String? color;
   final WidgetDataClass? widgetDataClass;
   final bool canShow;
+  final double strokeWidth = 1;
 
   const CustomBorderPaint(
       {required this.widgetDataClass, this.color, required this.canShow});
@@ -20,8 +21,11 @@ class CustomBorderPaint extends CustomPainter {
 
       canvas.drawRRect(
           RRect.fromRectAndRadius(
-              Rect.fromLTWH(widgetDataClass!.xAxis, widgetDataClass!.yAxis,
-                  widgetDataClass!.rect.width, widgetDataClass!.rect.height),
+              Rect.fromLTWH(
+                  widgetDataClass!.xAxis - strokeWidth,
+                  widgetDataClass!.yAxis - strokeWidth,
+                  widgetDataClass!.rect.width + 2 * strokeWidth,
+                  widgetDataClass!.rect.height + 2 * strokeWidth),
               Radius.zero),
           paint);
     }

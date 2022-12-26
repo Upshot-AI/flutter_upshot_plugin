@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'flutter_upshot_methodChannel.dart';
 import 'show_tutorial/services/custom_transaparent_route.dart';
 import 'show_tutorial/show_tutorial_view.dart';
 import 'show_tutorial/show_tutorials_viewmodel.dart';
@@ -11,11 +12,17 @@ import 'show_tutorial/show_tutorials_viewmodel.dart';
 class FlutterUpshotPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
 
+  FlutterUpshotPlugin() {
+    UpshotMethodChannelInternal();
+  }
+
   static void initializeUpshotUsingConfigFile() {
+    UpshotMethodChannelInternal();
     _channel.invokeMethod("initializeUpshotUsingConfigFile");
   }
 
   static void initialiseUpshotUsingOptions(Map options) {
+    UpshotMethodChannelInternal();
     _channel.invokeMethod("initializeUsingOptions", options);
   }
 
@@ -157,7 +164,7 @@ class FlutterUpshotPlugin {
 
   static void showTutorials(BuildContext context, String tag) async {
     await ShowTutorialsModel.instance.loadData();
-    if (ShowTutorialsModel.instance.tutorialList.isNotEmpty) {
+    if (UpshotMethodChannelInternal.data != null || true) {
       ShowTutorialsModel.context = context;
       ShowTutorials.of(context);
       Navigator.push(context,

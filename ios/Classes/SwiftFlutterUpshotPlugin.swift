@@ -3,6 +3,7 @@ import UIKit
 import Upshot
 
 public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         
         let channel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: registrar.messenger())
@@ -17,6 +18,14 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             UpshotHelper.defaultHelper.customizationData = data
             UpshotHelper.defaultHelper.registrar = registrar
         }
+        
+        let new_tutorial_json_key = registrar.lookupKey(forAsset: "assets/new_tutorial_json.json")
+        let new_tutorial_json_filePath =  Bundle.main.path(forResource: new_tutorial_json_key, ofType: nil)
+        if let path = new_tutorial_json_filePath {
+            let fileUrl = URL(fileURLWithPath: path)
+            let data = try? Data(contentsOf: fileUrl)
+            UpshotHelper.defaultHelper.dummyTutorialData = data            
+        }        
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -176,6 +185,23 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             
             let limit = call.arguments as? Int ?? 10
             UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit)
+
+        case "activityShown_Internal":
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.activityShown_Internal(payload: details)    
+            }
+        case "activitySkiped_Internal":
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.activitySkiped_Internal(payload: details)    
+            }
+        case "activityDismiss_Internal":
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.activityDismiss_Internal(payload: details)    
+            }
+        case "activityRedirection_Internal":
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.activityRedirection_Internal(payload: details)    
+            }
             
         default:
             result(FlutterMethodNotImplemented)

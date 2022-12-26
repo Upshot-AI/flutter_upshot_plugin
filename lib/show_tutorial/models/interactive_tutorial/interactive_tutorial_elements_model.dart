@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'description.dart';
-import 'footer.dart';
+import 'description_info.dart';
+import 'footer_info.dart';
 
-class Element {
+class InteractiveTutorialElementsModel {
   String? targetId;
   String? borderColor;
   int? position;
-  Description? description;
-  Footer? footer;
+  DescriptionInfo? description;
+  FooterInfo? footer;
 
-  Element({
+  InteractiveTutorialElementsModel({
     this.targetId,
     this.borderColor,
     this.position,
@@ -17,16 +17,18 @@ class Element {
     this.footer,
   });
 
-  factory Element.fromMap(Map<String, dynamic> data) => Element(
+  factory InteractiveTutorialElementsModel.fromMap(Map<String, dynamic> data) =>
+      InteractiveTutorialElementsModel(
         targetId: data['targetId'] as String?,
         borderColor: data['borderColor'] as String?,
         position: data['position'] as int?,
         description: data['description'] == null
             ? null
-            : Description.fromMap(data['description'] as Map<String, dynamic>),
+            : DescriptionInfo.fromMap(
+                data['description'] as Map<String, dynamic>),
         footer: data['footer'] == null
             ? null
-            : Footer.fromMap(data['footer'] as Map<String, dynamic>),
+            : FooterInfo.fromMap(data['footer'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toMap() => {
@@ -40,8 +42,9 @@ class Element {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [Element].
-  factory Element.fromJson(String data) {
-    return Element.fromMap(json.decode(data) as Map<String, dynamic>);
+  factory InteractiveTutorialElementsModel.fromJson(String data) {
+    return InteractiveTutorialElementsModel.fromMap(
+        json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`

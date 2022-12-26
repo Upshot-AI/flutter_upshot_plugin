@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-class NextButton {
+class ButtonInfo {
+  String? type;
   String? title;
   String? bgColor;
   int? opacity;
@@ -8,10 +9,12 @@ class NextButton {
   String? fontName;
   String? fontColor;
   String? fontStyle;
-  String? actionType;
-  String? action;
+  String? deeplinkType;
+  String? iOsUrl;
+  String? iosKeyValue;
 
-  NextButton({
+  ButtonInfo({
+    this.type,
     this.title,
     this.bgColor,
     this.opacity,
@@ -19,11 +22,13 @@ class NextButton {
     this.fontName,
     this.fontColor,
     this.fontStyle,
-    this.actionType,
-    this.action,
+    this.deeplinkType,
+    this.iOsUrl,
+    this.iosKeyValue,
   });
 
-  factory NextButton.fromMap(Map<String, dynamic> data) => NextButton(
+  factory ButtonInfo.fromMap(Map<String, dynamic> data) => ButtonInfo(
+        type: data['type'] as String?,
         title: data['title'] as String?,
         bgColor: data['bgColor'] as String?,
         opacity: data['opacity'] as int?,
@@ -31,11 +36,13 @@ class NextButton {
         fontName: data['fontName'] as String?,
         fontColor: data['fontColor'] as String?,
         fontStyle: data['fontStyle'] as String?,
-        actionType: data['actionType'] as String?,
-        action: data['action'] as String?,
+        deeplinkType: data['deeplink_type'] as String?,
+        iOsUrl: data['iOS_url'] as String?,
+        iosKeyValue: data['ios_key_value'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
+        'type': type,
         'title': title,
         'bgColor': bgColor,
         'opacity': opacity,
@@ -43,19 +50,20 @@ class NextButton {
         'fontName': fontName,
         'fontColor': fontColor,
         'fontStyle': fontStyle,
-        'actionType': actionType,
-        'action': action,
+        'deeplink_type': deeplinkType,
+        'iOS_url': iOsUrl,
+        'ios_key_value': iosKeyValue,
       };
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [NextButton].
-  factory NextButton.fromJson(String data) {
-    return NextButton.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [Button].
+  factory ButtonInfo.fromJson(String data) {
+    return ButtonInfo.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [NextButton] to a JSON string.
+  /// Converts [Button] to a JSON string.
   String toJson() => json.encode(toMap());
 }

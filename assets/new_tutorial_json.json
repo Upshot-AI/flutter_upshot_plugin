@@ -1,0 +1,65 @@
+
+{
+    "allowSkip": true,
+    "enableTap": false,
+    "bgImage":"",
+    "scaleType":"pattern / fill / fit",
+    "campaignId":"",
+    "activityId":"",
+    "allUsers":"",
+    "activityType":"",
+    "ruleId":"",
+    "jeId":"",
+    "elements":[
+      {
+        "targetId" :"Button2",
+        "borderColor":"",
+        "position":10,
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "buttons":[{
+            "type":"next",
+            "title":"NXT",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "deeplink_type":"web/next/call",
+            "iOS_url":"",
+            "ios_key_value":""
+          },
+          {
+            "type":"prev",
+            "title":"PRV",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+            {
+            "type":"skip",
+            "title":"SKP",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }]
+                  
+        }                             
+      }
+    ]
+  }

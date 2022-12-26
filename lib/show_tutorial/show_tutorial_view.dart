@@ -26,8 +26,10 @@ class ShowTutorials extends StatefulWidget {
 class _ShowTutorialsState extends State<ShowTutorials> {
   @override
   void initState() {
-    WidgetsBinding.instance.endOfFrame
-        .then((_) => ShowTutorialsModel.instance.getToolTipSize());
+    WidgetsBinding.instance.endOfFrame.then((_) => {
+          ShowTutorialsModel.instance.getToolTipSize(),
+          ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {})
+        });
     super.initState();
   }
 
@@ -50,7 +52,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                 }
               },
               child: GestureDetector(
-                onTap: (m.interactiveTutorialResponse?.enableTap ?? false)
+                onTap: (m.interactiveTutorialModel?.enableTap ?? false)
                     ? () => m.nextTap(context)
                     : () {},
                 child: Stack(
@@ -80,7 +82,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                           key: m.toolTipGlobalKey,
                           isUp: m.getYAxis().isUp,
                           enableTap:
-                              m.interactiveTutorialResponse?.enableTap ?? false,
+                              m.interactiveTutorialModel?.enableTap ?? false,
                         ),
                       ),
                     ),

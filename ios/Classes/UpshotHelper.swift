@@ -12,6 +12,7 @@ class UpshotHelper: NSObject {
     
     static var defaultHelper = UpshotHelper()
     var customizationData: Data?
+    var dummyTutorialData: Data?
     var registrar:FlutterPluginRegistrar?
 
     let customisation = UpshotCustomisation()
@@ -20,7 +21,16 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().initialize(withDelegate: self)
         customisation.registrar = registrar
         customisation.customiseData = customizationData
-        BKUIPreferences.preferences().delegate = customisation        
+        BKUIPreferences.preferences().delegate = customisation
+        
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController,
+            let data = dummyTutorialData {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: String(data: data, encoding: .utf8))
+            }
+        }
     }
     
     func initializeUsingOptions(options: [String: Any]) {
@@ -139,8 +149,17 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().dispatchEvents(withTimedEvents: timed, completionBlock: nil)
     }
     
-    func showActivity(activityType: BKActivityType, tag: String) {
-        
+    func showActivity(activityType: BKActivityType, tag: String) {                
+
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController,
+            let data = dummyTutorialData,
+           let json = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves) {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: json)
+            }
+        }
         BrandKinesis.sharedInstance().showActivity(with: activityType, andTag: tag)
     }
     
@@ -340,6 +359,22 @@ class UpshotHelper: NSObject {
                 }
             }
         }
+    }
+
+    func activityShown_Internal(payload: [String: Any]) {
+
+    }
+
+    func activitySkiped_Internal(payload: [String: Any]) {
+
+    }
+
+    func activityDismiss_Internal(payload: [String: Any]) {
+
+    }
+
+    func activityRedirection_Internal(payload: [String: Any]) {
+
     }
     
     func writeImageToTemp(image: UIImage, name: String) -> String {

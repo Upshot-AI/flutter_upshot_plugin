@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-class Description {
+class DescriptionInfo {
   String? text;
   String? bgColor;
   int? opacity;
   int? fontSize;
   String? fontName;
 
-  Description({
+  DescriptionInfo({
     this.text,
     this.bgColor,
     this.opacity,
@@ -15,7 +15,7 @@ class Description {
     this.fontName,
   });
 
-  factory Description.fromMap(Map<String, dynamic> data) => Description(
+  factory DescriptionInfo.fromMap(Map<String, dynamic> data) => DescriptionInfo(
         text: data['text'] as String?,
         bgColor: data['bgColor'] as String?,
         opacity: data['opacity'] as int?,
@@ -33,13 +33,13 @@ class Description {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [Description].
-  factory Description.fromJson(String data) {
-    return Description.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [DescriptionInfo].
+  factory DescriptionInfo.fromJson(String data) {
+    return DescriptionInfo.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [Description] to a JSON string.
+  /// Converts [DescriptionInfo] to a JSON string.
   String toJson() => json.encode(toMap());
 }

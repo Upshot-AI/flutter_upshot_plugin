@@ -1,3 +1,5 @@
+import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/button_info.dart';
+
 import '../services/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/show_tutorials_viewmodel.dart';
@@ -15,12 +17,13 @@ class ToolTipWidget extends StatefulWidget {
 }
 
 class _ToolTipWidgetState extends State<ToolTipWidget> {
+  ButtonInfo? nextButton, prevButton, skipButton;
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ShowTutorialInheritedNotifier.of(context).getToolTipSize();
     });
-    super.initState();
   }
 
   @override
@@ -49,7 +52,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                   model.currentWidget!.rect.height,
                 )),
             child: Image.network(
-              model.interactiveTutorialResponse!.bgImage!,
+              model.interactiveTutorialModel!.bgImage!,
               repeat: ImageRepeat.repeat,
               height: model.toolTipHeight,
               width: double.infinity,
@@ -68,12 +71,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                 )),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-
-                // color: model.getColor(null) ??
-                //     Colors.white.withOpacity(
-                //         (tutorial.description?.opacity ?? 1).toDouble()),
-              ),
+                  color: model.getColor(null)?.withOpacity(
+                          (tutorial.description?.opacity ?? 1).toDouble()) ??
+                      Colors.white.withOpacity(
+                          (tutorial.description?.opacity ?? 1).toDouble())),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +93,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                               fontSize:
                                   tutorial.description?.fontSize?.toDouble(),
                               color: model.getColor(null) ?? Colors.black),
-                          // maxLines: 7,
                         ),
                       ),
                     ),
@@ -101,10 +101,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                       ? const SizedBox()
                       : Container(
                           padding: const EdgeInsets.all(10),
-                          color: Colors.yellow.withOpacity(0.7),
-                          // color: model.getColor(null) ??
-                          //     Colors.yellow.withOpacity(
-                          //         (tutorial.footer?.opacity ?? 1).toDouble()),
+                          color: model.getColor(null)?.withOpacity(
+                                  (tutorial.footer?.opacity ?? 1).toDouble()) ??
+                              Colors.white.withOpacity(
+                                  (tutorial.footer?.opacity ?? 1).toDouble()),
                           child: Column(
                             children: [
                               Row(
@@ -113,17 +113,27 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                     flex: 3,
                                     child: ElevatedButton(
                                       style: TextButton.styleFrom(
-                                          backgroundColor: model.getColor(null),
+                                          backgroundColor: model
+                                                  .getColor(footer?.bgColor)
+                                                  ?.withOpacity((tutorial
+                                                              .footer
+                                                              ?.prevButton
+                                                              ?.opacity ??
+                                                          1)
+                                                      .toDouble()) ??
+                                              Colors.black,
                                           fixedSize: const Size.fromHeight(44)),
                                       onPressed: () => model.onSkipTap(context),
                                       child: AutoSizeText(
                                         (footer?.skipButton?.title ?? '') == ''
                                             ? 'Skip'
                                             : footer!.skipButton!.title!,
+                                        maxLines: 2,
                                         style: TextStyle(
                                           fontSize: footer?.skipButton?.fontSize
                                               ?.toDouble(),
-                                          color: model.getColor(null),
+                                          color: model.getColor(null) ??
+                                              Colors.white,
                                         ),
                                       ),
                                     ),
@@ -134,25 +144,17 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        0 < model.selectedIndex &&
-                                                model.selectedIndex <
-                                                    model.tutorialList.length
+                                        0 < model.selectedIndex
                                             ? Flexible(
                                                 flex: 4,
                                                 child: ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                        fixedSize: const Size
-                                                            .fromHeight(44),
-                                                        backgroundColor: selectedIndex ==
-                                                                model.tutorialList
-                                                                        .length -
-                                                                    1
-                                                            ? model.getColor(
-                                                                    null) ??
-                                                                Colors.blue
-                                                            : model.getColor(
-                                                                    null) ??
-                                                                Colors.blue),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            fixedSize: const Size
+                                                                .fromHeight(44),
+                                                            backgroundColor:
+                                                                model.getColor(
+                                                                    null)),
                                                     onPressed: () {
                                                       model.isVisibile = false;
                                                       model.canShow = false;
@@ -160,9 +162,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                               .selectedIndex =
                                                           model.selectedIndex -
                                                               1);
-                                                      // model.searchElement(
-                                                      //     model.selectedIndex =
-                                                      //         model.selectedIndex - 1);
                                                       WidgetsBinding.instance
                                                           .addPostFrameCallback(
                                                               (_) {
@@ -179,11 +178,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                           : footer!.prevButton!
                                                               .title!,
                                                       maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.visible,
+                                                      minFontSize: 20,
                                                       style: TextStyle(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
                                                           fontSize: footer
                                                               ?.prevButton
                                                               ?.fontSize

@@ -22,12 +22,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((duration) {
-      Future.delayed(const Duration(milliseconds: 0), () {
-        FlutterUpshotPlugin.showTutorials(context, '');
-      });
-    });
     super.initState();
+    FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterUpshotPlugin.showTutorials(context, '');
+    });
   }
 
   @override
@@ -78,10 +77,26 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  FlutterUpshotPlugin.showActivity(-1, '');
+                },
                 key: const ValueKey('Button1'),
                 child: const Text(
                   'Button1',
+                  style: TextStyle(fontSize: 30),
+                )),
+            TextButton(
+                onPressed: () {},
+                key: UpshotLabeledGlobalKey('Button2'),
+                child: const Text(
+                  'Button2',
+                  style: TextStyle(fontSize: 30),
+                )),
+            ElevatedButton(
+                onPressed: () {},
+                key: const UpshotGlobalKey('Button3'),
+                child: const Text(
+                  'Button3',
                   style: TextStyle(fontSize: 30),
                 )),
             Container(

@@ -6,6 +6,96 @@
     "scaleType":"pattern",
     "elements":[
       {
+        "targetId" :"Button2",
+        "borderColor":"",
+        "position":10,
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
+        "targetId" :"Button3",
+        "borderColor":"",
+        "position":10,
+        "description":{
+          "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "bgColor":"",
+          "opacity":1,
+          "fontSize":20,
+          "fontName":""        
+        },
+        "footer":{
+          "bgColor":"",
+          "opacity":1,
+          "nextButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":"",
+            "actionType":"web/none/call",
+            "action":""
+          },
+          "prevButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          },
+          "skipButton":{
+            "title":"",
+            "bgColor":"",
+            "opacity":1,
+            "fontSize":20,
+            "fontName":"",
+            "fontColor":"",
+            "fontStyle":""
+          }
+        }                             
+      },
+      {
         "targetId" :"appBarText",
         "borderColor":"",
         "position":10,
@@ -191,7 +281,7 @@
       {
         "targetId" :"value",
         "borderColor":"",
-        "position":10,
+        "position":50,
         
         "description":{
           "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",

@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_upshot_plugin/models/interactive_tutorial_response/interactive_tutorial_response.dart';
+import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show MethodChannel, rootBundle;
 import 'widget/tool_tip_widget.dart';
-import '../models/interactive_tutorial_response/element.dart'
+import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
 
 class ShowTutorialInheritedNotifier
@@ -29,6 +31,8 @@ class ShowTutorialInheritedNotifier
 }
 
 class ShowTutorialsModel extends ChangeNotifier {
+  static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
+
   static BuildContext? context;
   final GlobalKey toolTipGlobalKey = GlobalKey();
   double _screenHeight = 0.0;
@@ -39,10 +43,11 @@ class ShowTutorialsModel extends ChangeNotifier {
   double _appBarHeight = 0.0;
   bool hasAppHeight = false;
   bool hasBottomNavBarHeight = false;
-  final tutorialList = <interactive_tutorial.Element>[];
-  InteractiveTutorialResponse? _interactiveTutorialResponse;
-  InteractiveTutorialResponse? get interactiveTutorialResponse =>
-      _interactiveTutorialResponse;
+  final tutorialList =
+      <interactive_tutorial.InteractiveTutorialElementsModel>[];
+  InteractiveTutorialModel? _interactiveTutorialModel;
+  InteractiveTutorialModel? get interactiveTutorialModel =>
+      _interactiveTutorialModel;
   WidgetDataClass? _currentWidget;
   WidgetDataClass? get currentWidget => _currentWidget;
   set currentWidget(WidgetDataClass? details) {
@@ -83,7 +88,13 @@ class ShowTutorialsModel extends ChangeNotifier {
   /// Getting the [Offset] value for the [ToolTipWidget] to position it accordingly.
   ToolTipDataClass getYAxis() {
     late ToolTipDataClass toolTipDataClass;
-    final WidgetDataClass widgetDataClass = _currentWidget!;
+    late WidgetDataClass widgetDataClass;
+    if (_currentWidget != null) {
+      widgetDataClass = _currentWidget!;
+    } else {
+      _canShow = false;
+      notifyListeners();
+    }
 
     if (_canShow) {
       if (widgetDataClass.yAxis <= _appBarHeight) {
@@ -165,6 +176,7 @@ class ShowTutorialsModel extends ChangeNotifier {
   void getScreenDetails(BuildContext context) {
     _screenHeight = MediaQuery.of(context).size.height;
     _screenWidth = MediaQuery.of(context).size.width;
+    print('The screen height ');
     notifyListeners();
   }
 
@@ -230,6 +242,7 @@ class ShowTutorialsModel extends ChangeNotifier {
           if (getStringFromKey(rootWidget.key!)) {
             if (tutorialList[_selectedIndex].targetId ==
                 getStringValueFromKey(rootWidget.key!)) {
+              // if(rootWidget is ElevatedButton || rootWidget is Text)
               final offset = getOffset(child.renderObject!);
               _currentWidget = WidgetDataClass(
                   xAxis: offset.dx,
@@ -322,6 +335,8 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   void nextTap(BuildContext context) {
     if (_selectedIndex == tutorialList.length - 1) {
+      channel.invokeMethod("activityDismiss_Internal", {});
+      channel.invokeMethod("activityRedirection_Internal", {});
       Navigator.pop(context);
     } else {
       canShow = false;
@@ -336,6 +351,7 @@ class ShowTutorialsModel extends ChangeNotifier {
   void onSkipTap(BuildContext context) {
     Navigator.pop(context);
     print('The max count is $_maxCount');
+    channel.invokeMethod("activitySkiped_Internal", {});
   }
 
   void searchElement(int? selectedIndex) {
@@ -357,14 +373,14 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   Future<void> loadData() async {
     try {
-      _interactiveTutorialResponse = InteractiveTutorialResponse.fromJson(
+      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
           await rootBundle.loadString(
-              'packages/flutter_upshot_plugin/assets/tutorial_json.json'));
+              'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
 
-      tutorialList.addAll(_interactiveTutorialResponse!.elements!);
+      tutorialList.addAll(_interactiveTutorialModel!.elements!);
       notifyListeners();
     } catch (e) {
-      rethrow;
+      log('Error while loading assets');
     }
   }
 
