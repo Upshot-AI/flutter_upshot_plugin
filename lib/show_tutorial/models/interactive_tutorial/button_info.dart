@@ -11,6 +11,7 @@ class ButtonInfo {
   String? fontStyle;
   String? deeplinkType;
   String? iOsUrl;
+  int? actionType;
   String? iosKeyValue;
 
   ButtonInfo({
@@ -23,23 +24,24 @@ class ButtonInfo {
     this.fontColor,
     this.fontStyle,
     this.deeplinkType,
+    this.actionType,
     this.iOsUrl,
     this.iosKeyValue,
   });
 
   factory ButtonInfo.fromMap(Map<String, dynamic> data) => ButtonInfo(
-        type: data['type'] as String?,
-        title: data['title'] as String?,
-        bgColor: data['bgColor'] as String?,
-        opacity: data['opacity'] as int?,
-        fontSize: data['fontSize'] as int?,
-        fontName: data['fontName'] as String?,
-        fontColor: data['fontColor'] as String?,
-        fontStyle: data['fontStyle'] as String?,
-        deeplinkType: data['deeplink_type'] as String?,
-        iOsUrl: data['iOS_url'] as String?,
-        iosKeyValue: data['ios_key_value'] as String?,
-      );
+      type: data['type'] as String?,
+      title: data['title'] as String?,
+      bgColor: data['bgColor'] as String?,
+      opacity: data['opacity'] as int?,
+      fontSize: data['fontSize'] as int?,
+      fontName: data['fontName'] as String?,
+      fontColor: data['fontColor'] as String?,
+      fontStyle: data['fontStyle'] as String?,
+      deeplinkType: data['deeplink_type'] as String?,
+      iOsUrl: data['iOS_url'] as String?,
+      iosKeyValue: data['ios_key_value'] as String?,
+      actionType: data['action_type'] as int?);
 
   Map<String, dynamic> toMap() => {
         'type': type,
@@ -53,6 +55,7 @@ class ButtonInfo {
         'deeplink_type': deeplinkType,
         'iOS_url': iOsUrl,
         'ios_key_value': iosKeyValue,
+        'action_type': actionType,
       };
 
   /// `dart:convert`

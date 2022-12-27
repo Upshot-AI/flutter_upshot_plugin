@@ -242,7 +242,6 @@ class ShowTutorialsModel extends ChangeNotifier {
           if (getStringFromKey(rootWidget.key!)) {
             if (tutorialList[_selectedIndex].targetId ==
                 getStringValueFromKey(rootWidget.key!)) {
-              // if(rootWidget is ElevatedButton || rootWidget is Text)
               final offset = getOffset(child.renderObject!);
               _currentWidget = WidgetDataClass(
                   xAxis: offset.dx,
@@ -321,22 +320,33 @@ class ShowTutorialsModel extends ChangeNotifier {
     return '';
   }
 
-  // void nextTap(BuildContext context) {
-  //   if (_selectedIndex == tutorialList.length - 1) {
-  //     print('The list is ${tutorialList.length - 1}');
-  //     print('The selected index is $_selectedIndex');
-
-  //     Navigator.pop(context);
-  //   } else {
-  //     searchElement(_selectedIndex = _selectedIndex + 1);
-  //     notifyListeners();
-  //   }
-  // }
-
   void nextTap(BuildContext context) {
-    if (_selectedIndex == tutorialList.length - 1) {
-      channel.invokeMethod("activityDismiss_Internal", {});
-      channel.invokeMethod("activityRedirection_Internal", {});
+    if ((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) !=
+            6 ||
+        _selectedIndex == tutorialList.length - 1) {
+      channel.invokeMethod("activityDismiss_Internal", {
+        'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+        'activityId': _interactiveTutorialModel?.activityId ?? '',
+        'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+        'activityType': _interactiveTutorialModel?.activityType ?? '',
+        'msgId': _interactiveTutorialModel?.msgId ?? '',
+        'jeId': _interactiveTutorialModel?.jeId ?? '',
+        'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+        'rTag': _interactiveTutorialModel?.rTag ?? '',
+        'max_elements': _maxCount,
+        'skipped_element': _selectedIndex,
+        'total_elements': tutorialList.length
+      });
+      channel.invokeMethod("activityRedirection_Internal", {
+        'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+        'activityId': _interactiveTutorialModel?.activityId ?? '',
+        'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+        'activityType': _interactiveTutorialModel?.activityType ?? '',
+        'msgId': _interactiveTutorialModel?.msgId ?? '',
+        'jeId': _interactiveTutorialModel?.jeId ?? '',
+        'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+        'rTag': _interactiveTutorialModel?.rTag ?? '',
+      });
       Navigator.pop(context);
     } else {
       canShow = false;
@@ -350,8 +360,19 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   void onSkipTap(BuildContext context) {
     Navigator.pop(context);
-    print('The max count is $_maxCount');
-    channel.invokeMethod("activitySkiped_Internal", {});
+    channel.invokeMethod("activitySkiped_Internal", {
+      'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+      'activityId': _interactiveTutorialModel?.activityId ?? '',
+      'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+      'activityType': _interactiveTutorialModel?.activityType ?? '',
+      'msgId': _interactiveTutorialModel?.msgId ?? '',
+      'jeId': _interactiveTutorialModel?.jeId ?? '',
+      'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+      'rTag': _interactiveTutorialModel?.rTag ?? '',
+      'max_elements': _maxCount,
+      'skipped_element': _selectedIndex,
+      'total_elements': tutorialList.length
+    });
   }
 
   void searchElement(int? selectedIndex) {
@@ -381,6 +402,15 @@ class ShowTutorialsModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log('Error while loading assets');
+    }
+  }
+
+  void getData(String data) {
+    try {
+      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(data);
+      tutorialList.addAll(_interactiveTutorialModel?.elements ?? []);
+    } catch (e) {
+      log(e.toString());
     }
   }
 

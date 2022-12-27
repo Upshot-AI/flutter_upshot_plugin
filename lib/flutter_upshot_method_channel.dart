@@ -11,7 +11,7 @@ class UpshotMethodChannelInternal {
   static Future<void> _methodCallHandler(MethodCall call) async {
     if (call.method == "upshot_interactive_tutoInfo") {
       data = call.arguments as String;
-      // print('The data is $data');
+      print('THe data is $data');
     }
   }
 }

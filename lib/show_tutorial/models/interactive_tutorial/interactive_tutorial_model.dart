@@ -12,6 +12,8 @@ class InteractiveTutorialModel {
   String? activityType;
   String? ruleId;
   String? jeId;
+  String? msgId;
+  String? rTag;
   List<InteractiveTutorialElementsModel>? elements;
 
   InteractiveTutorialModel({
@@ -26,6 +28,8 @@ class InteractiveTutorialModel {
     this.ruleId,
     this.jeId,
     this.elements,
+    this.msgId,
+    this.rTag,
   });
 
   factory InteractiveTutorialModel.fromMap(Map<String, dynamic> data) {
@@ -40,6 +44,8 @@ class InteractiveTutorialModel {
       activityType: data['activityType'] as String?,
       ruleId: data['ruleId'] as String?,
       jeId: data['jeId'] as String?,
+      msgId: data['msgId'] as String?,
+      rTag: data['rTag'] as String?,
       elements: (data['elements'] as List<dynamic>?)
           ?.map((e) => InteractiveTutorialElementsModel.fromMap(
               e as Map<String, dynamic>))
@@ -58,6 +64,8 @@ class InteractiveTutorialModel {
         'activityType': activityType,
         'ruleId': ruleId,
         'jeId': jeId,
+        'msgId': msgId,
+        'rTag': rTag,
         'elements': elements?.map((e) => e.toMap()).toList(),
       };
 

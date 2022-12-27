@@ -13,7 +13,6 @@ class ShowTutorials extends StatefulWidget {
     try {
       ShowTutorialsModel.instance.getScreenDetails(context);
       ShowTutorialsModel.instance.inspectChilds(0);
-      // ShowTutorialsModel.instance.getAllElements(context);
     } catch (e) {
       rethrow;
     }
@@ -24,19 +23,30 @@ class ShowTutorials extends StatefulWidget {
 }
 
 class _ShowTutorialsState extends State<ShowTutorials> {
+  late ShowTutorialsModel model;
   @override
   void initState() {
-    WidgetsBinding.instance.endOfFrame.then((_) => {
-          ShowTutorialsModel.instance.getToolTipSize(),
-          ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {})
-        });
     super.initState();
+    model = ShowTutorialsModel.instance;
+    WidgetsBinding.instance.endOfFrame.then((_) => {
+          model.getToolTipSize(),
+          ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {
+            'campaignId': model.interactiveTutorialModel?.campaignId ?? '',
+            'activityId': model.interactiveTutorialModel?.activityId ?? '',
+            'allUsers': model.interactiveTutorialModel?.allUsers ?? '',
+            'activityType': model.interactiveTutorialModel?.activityType ?? '',
+            'msgId': model.interactiveTutorialModel?.msgId ?? '',
+            'jeId': model.interactiveTutorialModel?.jeId ?? '',
+            'ruleId': model.interactiveTutorialModel?.ruleId ?? '',
+            'rTag': model.interactiveTutorialModel?.rTag ?? '',
+          })
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return ShowTutorialInheritedNotifier(
-      viewModel: ShowTutorialsModel.instance,
+      viewModel: model,
       child: Builder(
         builder: (context) {
           final m = ShowTutorialInheritedNotifier.of(context);

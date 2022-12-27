@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'button_info.dart';
 
 class FooterInfo {
@@ -8,7 +7,6 @@ class FooterInfo {
   ButtonInfo? nextButton;
   ButtonInfo? prevButton;
   ButtonInfo? skipButton;
-  // List<ButtonInfo>? buttons;
 
   FooterInfo(
       {this.bgColor,
@@ -18,12 +16,9 @@ class FooterInfo {
       this.skipButton});
 
   factory FooterInfo.fromMap(Map<String, dynamic> data) {
-    var next = (data['buttons'] as List<dynamic>?)?.where((element) {
-      print(element[""]);
-      return element['type'] == 'next';
-    }).toList();
-    var nextObj = next?.first;
-    log("Footer Info ${next?.first.toString()}");
+    var next = (data['buttons'] as List<dynamic>?)
+        ?.where((element) => element['type'] == 'next')
+        .toList();
     var prev = (data['buttons'] as List<dynamic>?)
         ?.where((element) => element["type"] == "prev")
         .toList();
@@ -33,12 +28,6 @@ class FooterInfo {
     return FooterInfo(
         bgColor: data['bgColor'] as String?,
         opacity: data['opacity'] as int?,
-        // buttons: (data['buttons'] as List<dynamic>?)?.map((e) {
-        //   return ButtonInfo.fromMap(e as Map<String, dynamic>);
-        // }).toList(),
-        // nextButton: null,
-        // prevButton: null,
-        // skipButton: null
         nextButton: (next?.isNotEmpty ?? false)
             ? ButtonInfo.fromMap(next?.first)
             : null,
