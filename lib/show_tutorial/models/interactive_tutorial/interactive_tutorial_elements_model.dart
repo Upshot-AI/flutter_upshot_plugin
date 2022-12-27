@@ -6,8 +6,10 @@ class InteractiveTutorialElementsModel {
   String? targetId;
   String? borderColor;
   int? position;
+  int? scaleType;
   DescriptionInfo? description;
   FooterInfo? footer;
+  String? bgImage;
 
   InteractiveTutorialElementsModel({
     this.targetId,
@@ -15,13 +17,17 @@ class InteractiveTutorialElementsModel {
     this.position,
     this.description,
     this.footer,
+    this.bgImage,
+    this.scaleType,
   });
 
   factory InteractiveTutorialElementsModel.fromMap(Map<String, dynamic> data) =>
       InteractiveTutorialElementsModel(
-        targetId: data['targetId'] as String?,
+        targetId: data['android_target_id'] as String?,
         borderColor: data['borderColor'] as String?,
         position: data['position'] as int?,
+        bgImage: data['bgImage'] as String?,
+        scaleType: data['scaleType'] as int?,
         description: data['description'] == null
             ? null
             : DescriptionInfo.fromMap(
@@ -32,7 +38,7 @@ class InteractiveTutorialElementsModel {
       );
 
   Map<String, dynamic> toMap() => {
-        'targetId': targetId,
+        'android_target_id': targetId,
         'borderColor': borderColor,
         'position': position,
         'description': description?.toMap(),

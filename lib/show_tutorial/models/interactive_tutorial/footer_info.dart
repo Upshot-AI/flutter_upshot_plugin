@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'button_info.dart';
 
 class FooterInfo {
-  String? bgColor;
+  String? backgroundColor;
   int? opacity;
   ButtonInfo? nextButton;
   ButtonInfo? prevButton;
   ButtonInfo? skipButton;
 
   FooterInfo(
-      {this.bgColor,
+      {this.backgroundColor,
       this.opacity,
       this.nextButton,
       this.prevButton,
@@ -26,7 +26,7 @@ class FooterInfo {
         ?.where((element) => element["type"] == "skip")
         .toList();
     return FooterInfo(
-        bgColor: data['bgColor'] as String?,
+        backgroundColor: data['backgroundColor'] as String?,
         opacity: data['opacity'] as int?,
         nextButton: (next?.isNotEmpty ?? false)
             ? ButtonInfo.fromMap(next?.first)
@@ -40,7 +40,7 @@ class FooterInfo {
   }
 
   Map<String, dynamic> toMap() => {
-        'bgColor': bgColor,
+        'backgroundColor': backgroundColor,
         'opacity': opacity,
       };
 

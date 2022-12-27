@@ -1,5 +1,4 @@
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/button_info.dart';
-
 import '../services/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/show_tutorials_viewmodel.dart';
@@ -40,35 +39,50 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
       maintainSize: true,
       child: Stack(
         children: [
+          (tutorial.bgImage != null && tutorial.bgImage != "")
+              ? ClipPath(
+                  clipBehavior: Clip.antiAlias,
+                  clipper: ToolTipClipper(
+                      isUp: widget.isUp,
+                      canShow: model.canShow,
+                      rect: model.currentWidget != null
+                          ? Rect.fromLTWH(
+                              model.currentWidget!.xAxis,
+                              model.currentWidget!.yAxis,
+                              model.currentWidget!.rect.width,
+                              model.currentWidget!.rect.height,
+                            )
+                          : null),
+                  child: Image.network(
+                    tutorial.bgImage!,
+                    filterQuality: FilterQuality.high,
+                    fit: tutorial.scaleType == 2
+                        ? BoxFit.fill
+                        : tutorial.scaleType == 3
+                            ? BoxFit.contain
+                            : null,
+                    repeat: tutorial.scaleType == 1
+                        ? ImageRepeat.repeat
+                        : ImageRepeat.noRepeat,
+                    height: model.toolTipHeight,
+                    width: double.infinity,
+                  ),
+                )
+              : const SizedBox(),
           ClipPath(
             clipBehavior: Clip.antiAlias,
             clipper: ToolTipClipper(
-                isUp: widget.isUp,
-                canShow: model.canShow,
-                rect: Rect.fromLTWH(
-                  model.currentWidget!.xAxis,
-                  model.currentWidget!.yAxis,
-                  model.currentWidget!.rect.width,
-                  model.currentWidget!.rect.height,
-                )),
-            child: Image.network(
-              model.interactiveTutorialModel!.bgImage!,
-              repeat: ImageRepeat.repeat,
-              height: model.toolTipHeight,
-              width: double.infinity,
+              isUp: widget.isUp,
+              canShow: model.canShow,
+              rect: model.currentWidget != null
+                  ? Rect.fromLTWH(
+                      model.currentWidget!.xAxis,
+                      model.currentWidget!.yAxis,
+                      model.currentWidget!.rect.width,
+                      model.currentWidget!.rect.height,
+                    )
+                  : null,
             ),
-          ),
-          ClipPath(
-            clipBehavior: Clip.antiAlias,
-            clipper: ToolTipClipper(
-                isUp: widget.isUp,
-                canShow: model.canShow,
-                rect: Rect.fromLTWH(
-                  model.currentWidget!.xAxis,
-                  model.currentWidget!.yAxis,
-                  model.currentWidget!.rect.width,
-                  model.currentWidget!.rect.height,
-                )),
             child: Container(
               decoration: BoxDecoration(
                   color: model.getColor(null)?.withOpacity(
@@ -85,10 +99,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          (tutorial.description?.text ?? '') == ''
-                              ? 'No Description found'
-                              : tutorial.description?.text ??
-                                  'No Description found',
+                          model.descriptionText(tutorial.description?.text),
+                          // (tutorial.description?.text ?? '') == ''
+                          //     ? 'No Description found'
+                          //     : tutorial.description?.text ??
+                          //         'No Description found',
                           style: TextStyle(
                               fontSize:
                                   tutorial.description?.fontSize?.toDouble(),
@@ -114,7 +129,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                     child: ElevatedButton(
                                       style: TextButton.styleFrom(
                                           backgroundColor: model
-                                                  .getColor(footer?.bgColor)
+                                                  .getColor(
+                                                      footer?.backgroundColor)
                                                   ?.withOpacity((tutorial
                                                               .footer
                                                               ?.prevButton

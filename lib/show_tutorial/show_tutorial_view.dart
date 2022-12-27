@@ -57,7 +57,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                 if (m.selectedIndex == 0) {
                   return true;
                 } else {
-                  m.searchElement(m.selectedIndex = m.selectedIndex - 1);
+                  m.inspectChilds(m.selectedIndex = m.selectedIndex - 1);
                   return false;
                 }
               },

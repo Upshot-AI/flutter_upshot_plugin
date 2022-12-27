@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class ToolTipClipper extends CustomClipper<Path> {
   final bool isUp;
-  final Rect rect;
+  final Rect? rect;
   final bool canShow;
-  ToolTipClipper(
-      {required this.isUp, required this.rect, required this.canShow});
+  ToolTipClipper({required this.isUp, this.rect, required this.canShow});
 
   @override
   Path getClip(Size size) {
@@ -25,13 +24,13 @@ class ToolTipClipper extends CustomClipper<Path> {
 
       // Pointing arrow paths
       if (canShow) {
-        path.lineTo(rect.bottomCenter.dx - 5, 20);
-        path.lineTo(rect.bottomCenter.dx - 15, 7);
+        path.lineTo(rect!.bottomCenter.dx - 5, 20);
+        path.lineTo(rect!.bottomCenter.dx - 15, 7);
         path.quadraticBezierTo(
-            rect.bottomCenter.dx - 20, 0, rect.bottomCenter.dx - 25, 7);
+            rect!.bottomCenter.dx - 20, 0, rect!.bottomCenter.dx - 25, 7);
+        path.lineTo(rect!.bottomCenter.dx - 35, 20);
       }
 
-      path.lineTo(rect.bottomCenter.dx - 35, 20);
       return path;
     } else {
       var path = Path()
@@ -42,12 +41,12 @@ class ToolTipClipper extends CustomClipper<Path> {
             size.height - 20); // ToolTip bottomLeft borderRadius
       // Pointing arrow paths
       if (canShow) {
-        path.lineTo(rect.topCenter.dx - 35,
+        path.lineTo(rect!.topCenter.dx - 35,
             size.height - 20); // This is the start point for arrow
-        path.lineTo(rect.topCenter.dx - 25, size.height - 7);
-        path.quadraticBezierTo(rect.topCenter.dx - 20, size.height,
-            rect.topCenter.dx - 15, size.height - 7);
-        path.lineTo(rect.topCenter.dx - 5,
+        path.lineTo(rect!.topCenter.dx - 25, size.height - 7);
+        path.quadraticBezierTo(rect!.topCenter.dx - 20, size.height,
+            rect!.topCenter.dx - 15, size.height - 7);
+        path.lineTo(rect!.topCenter.dx - 5,
             size.height - 20); // This is the end points for arrow
       }
 

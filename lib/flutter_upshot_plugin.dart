@@ -1,29 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'flutter_upshot_method_channel.dart';
-import 'show_tutorial/services/custom_transaparent_route.dart';
-import 'show_tutorial/show_tutorial_view.dart';
-import 'show_tutorial/show_tutorials_viewmodel.dart';
 
 class FlutterUpshotPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
 
-  FlutterUpshotPlugin() {
-    UpshotMethodChannelInternal();
-  }
-
   static void initializeUpshotUsingConfigFile() {
-    UpshotMethodChannelInternal();
+    // _channel.invokeMethod("setTechnologyType");
     _channel.invokeMethod("initializeUpshotUsingConfigFile");
   }
 
   static void initialiseUpshotUsingOptions(Map options) {
-    UpshotMethodChannelInternal();
+    // _channel.invokeMethod("setTechnologyType");
     _channel.invokeMethod("initializeUsingOptions", options);
   }
 
@@ -101,9 +92,10 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod("dispatchInterval", interval);
   }
 
-  static void showActivity(int type, String tag) {
+  static void showActivity(int type, String tag, [BuildContext? context]) {
     Map values = {'type': type, 'tag': tag};
     _channel.invokeMethod("showActivity", values);
+    UpshotMethodChannelInternal(context: context);
   }
 
   static void showActivityWithId(String activityId) {
@@ -161,18 +153,5 @@ class FlutterUpshotPlugin {
 
   static void getUnreadNotificationsCount(int limit) {
     _channel.invokeListMethod("getUnreadNotificationsCount", limit);
-  }
-
-  static void showTutorials(BuildContext context, String tag) async {
-    await ShowTutorialsModel.instance.loadData();
-    if (UpshotMethodChannelInternal.data != null || true) {
-      // ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
-      ShowTutorialsModel.context = context;
-      ShowTutorials.of(context);
-      Navigator.push(context,
-          TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
-    } else {
-      log('No Tutorials to show');
-    }
   }
 }

@@ -58,6 +58,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
+    private MethodChannel internal_channel;
     private FlutterPluginBinding binding;
     private Handler handler;
     public static EventChannel.EventSink eventSinkChannel = null;
@@ -117,9 +118,13 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin");
+        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin");        
         channel.setMethodCallHandler(this);
-        this.context = flutterPluginBinding.getApplicationContext();
+
+        internal_channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin_internal");
+        internal_channel.setMethodCallHandler(this);
+
+        this.` = flutterPluginBinding.getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
         binding = flutterPluginBinding;
         FlutterLoader loader = FlutterInjector.instance().flutterLoader();
@@ -343,6 +348,24 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                                 e.printStackTrace();
                             }
                         }
+                    }
+                });
+            }
+
+             @Override
+            public void brandKinesisinternal(String data) {
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (data != null) {
+                            try {
+                                internal_channel.invokeMethod("upshot_interactive_tutoInfo", data);
+                            } catch (JSONException e) {
+                               e.printStackTrace();
+                            }
+                        }
+                        
                     }
                 });
             }
@@ -715,7 +738,29 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 //                    }
 //                });
             }
+
+            case "setTechnologyType": {
+                
+                //Call JAVA Funtion with value flutter
+                BrandKinesis.getBKInstance().setTechnologyType(context,"Flutter")
+            }
             break;
+
+            case "activityShown_Internal":
+            if let details = call.arguments as? [String: Any] {     
+
+            }
+        case "activitySkiped_Internal":
+            if let details = call.arguments as? [String: Any] {   
+
+            }
+        case "activityDismiss_Internal":
+            if let details = call.arguments as? [String: Any] {
+            }
+        case "activityRedirection_Internal":
+            if let details = call.arguments as? [String: Any] {
+            }
+
             default:
                 Log.d("Upshot", "No Method");
         }

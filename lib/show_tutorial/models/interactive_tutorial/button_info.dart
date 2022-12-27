@@ -3,50 +3,54 @@ import 'dart:convert';
 class ButtonInfo {
   String? type;
   String? title;
-  String? bgColor;
+  String? backgroundColor;
   int? opacity;
   int? fontSize;
   String? fontName;
   String? fontColor;
   String? fontStyle;
-  String? deeplinkType;
+  int? deeplinkType;
   String? iOsUrl;
-  int? actionType;
   String? iosKeyValue;
+  int? actionType;
+  List<String>? textStyle;
 
   ButtonInfo({
     this.type,
     this.title,
-    this.bgColor,
+    this.backgroundColor,
     this.opacity,
     this.fontSize,
     this.fontName,
     this.fontColor,
     this.fontStyle,
     this.deeplinkType,
-    this.actionType,
     this.iOsUrl,
     this.iosKeyValue,
+    this.actionType,
+    this.textStyle,
   });
 
   factory ButtonInfo.fromMap(Map<String, dynamic> data) => ButtonInfo(
-      type: data['type'] as String?,
-      title: data['title'] as String?,
-      bgColor: data['bgColor'] as String?,
-      opacity: data['opacity'] as int?,
-      fontSize: data['fontSize'] as int?,
-      fontName: data['fontName'] as String?,
-      fontColor: data['fontColor'] as String?,
-      fontStyle: data['fontStyle'] as String?,
-      deeplinkType: data['deeplink_type'] as String?,
-      iOsUrl: data['iOS_url'] as String?,
-      iosKeyValue: data['ios_key_value'] as String?,
-      actionType: data['action_type'] as int?);
+        type: data['type'] as String?,
+        title: data['title'] as String?,
+        backgroundColor: data['backgroundColor'] as String?,
+        opacity: data['opacity'] as int?,
+        fontSize: data['fontSize'] as int?,
+        fontName: data['fontName'] as String?,
+        fontColor: data['fontColor'] as String?,
+        fontStyle: data['fontStyle'] as String?,
+        deeplinkType: data['deeplink_type'] as int?,
+        iOsUrl: data['iOS_url'] as String?,
+        iosKeyValue: data['ios_key_value'] as String?,
+        actionType: data['actionType'] as int?,
+        textStyle: (data['textStyle'] as List<dynamic>?)?.cast<String>(),
+      );
 
   Map<String, dynamic> toMap() => {
         'type': type,
         'title': title,
-        'bgColor': bgColor,
+        'backgroundColor': backgroundColor,
         'opacity': opacity,
         'fontSize': fontSize,
         'fontName': fontName,
@@ -55,7 +59,8 @@ class ButtonInfo {
         'deeplink_type': deeplinkType,
         'iOS_url': iOsUrl,
         'ios_key_value': iosKeyValue,
-        'action_type': actionType,
+        'actionType': actionType,
+        'textStyle': textStyle,
       };
 
   /// `dart:convert`

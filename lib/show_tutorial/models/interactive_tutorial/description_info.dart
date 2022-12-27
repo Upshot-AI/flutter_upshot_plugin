@@ -3,7 +3,7 @@ import 'dart:convert';
 class DescriptionInfo {
   String? text;
   String? bgColor;
-  int? opacity;
+  double? opacity;
   int? fontSize;
   String? fontName;
 
@@ -18,7 +18,9 @@ class DescriptionInfo {
   factory DescriptionInfo.fromMap(Map<String, dynamic> data) => DescriptionInfo(
         text: data['text'] as String?,
         bgColor: data['bgColor'] as String?,
-        opacity: data['opacity'] as int?,
+        opacity: (data['opacity'] is int)
+            ? double.parse(data['opacity'].toString())
+            : data['opacity'] as double?,
         fontSize: data['fontSize'] as int?,
         fontName: data['fontName'] as String?,
       );

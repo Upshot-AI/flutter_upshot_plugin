@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
-import 'package:flutter/services.dart' show MethodChannel, rootBundle;
+import 'package:flutter/services.dart' show MethodChannel;
 import 'widget/tool_tip_widget.dart';
 import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
@@ -32,7 +30,6 @@ class ShowTutorialInheritedNotifier
 
 class ShowTutorialsModel extends ChangeNotifier {
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
-
   static BuildContext? context;
   final GlobalKey toolTipGlobalKey = GlobalKey();
   double _screenHeight = 0.0;
@@ -93,7 +90,6 @@ class ShowTutorialsModel extends ChangeNotifier {
       widgetDataClass = _currentWidget!;
     } else {
       _canShow = false;
-      notifyListeners();
     }
 
     if (_canShow) {
@@ -176,7 +172,6 @@ class ShowTutorialsModel extends ChangeNotifier {
   void getScreenDetails(BuildContext context) {
     _screenHeight = MediaQuery.of(context).size.height;
     _screenWidth = MediaQuery.of(context).size.width;
-    print('The screen height ');
     notifyListeners();
   }
 
@@ -321,9 +316,16 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   void nextTap(BuildContext context) {
-    if ((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) !=
-            6 ||
-        _selectedIndex == tutorialList.length - 1) {
+    if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) ==
+            6) &&
+        _selectedIndex < tutorialList.length - 1) {
+      canShow = false;
+      inspectChilds(_selectedIndex++);
+      if (_maxCount < _selectedIndex) {
+        _maxCount++;
+        notifyListeners();
+      }
+    } else {
       channel.invokeMethod("activityDismiss_Internal", {
         'campaignId': _interactiveTutorialModel?.campaignId ?? '',
         'activityId': _interactiveTutorialModel?.activityId ?? '',
@@ -346,16 +348,60 @@ class ShowTutorialsModel extends ChangeNotifier {
         'jeId': _interactiveTutorialModel?.jeId ?? '',
         'ruleId': _interactiveTutorialModel?.ruleId ?? '',
         'rTag': _interactiveTutorialModel?.rTag ?? '',
+        'iOS_url': _interactiveTutorialModel
+                ?.elements?[_selectedIndex].footer?.nextButton?.iOsUrl ??
+            '',
+        'deeplink_type': _interactiveTutorialModel
+                ?.elements?[_selectedIndex].footer?.nextButton?.deeplinkType ??
+            '',
+        "repeatCount": _interactiveTutorialModel?.repeatCount ?? -1,
+        "currentSession": _interactiveTutorialModel?.currentSession ?? -1,
+        "considerSkip": _interactiveTutorialModel?.considerSkip ?? -1,
+        "skipCount": _interactiveTutorialModel?.skipCount ?? -1,
       });
       Navigator.pop(context);
-    } else {
-      canShow = false;
-      inspectChilds(selectedIndex = _selectedIndex + 1);
-      if (_maxCount < _selectedIndex) {
-        _maxCount++;
-        notifyListeners();
-      }
     }
+    // if ((tutorialList[_selectedIndex].footer?.nextButton?.deeplinkType ?? 0) !=
+    //         6 ||
+    //     _selectedIndex == tutorialList.length - 1) {
+    //   channel.invokeMethod("activityDismiss_Internal", {
+    //     'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+    //     'activityId': _interactiveTutorialModel?.activityId ?? '',
+    //     'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+    //     'activityType': _interactiveTutorialModel?.activityType ?? '',
+    //     'msgId': _interactiveTutorialModel?.msgId ?? '',
+    //     'jeId': _interactiveTutorialModel?.jeId ?? '',
+    //     'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+    //     'rTag': _interactiveTutorialModel?.rTag ?? '',
+    //     'max_elements': _maxCount,
+    //     'skipped_element': _selectedIndex,
+    //     'total_elements': tutorialList.length
+    //   });
+    //   channel.invokeMethod("activityRedirection_Internal", {
+    //     'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+    //     'activityId': _interactiveTutorialModel?.activityId ?? '',
+    //     'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+    //     'activityType': _interactiveTutorialModel?.activityType ?? '',
+    //     'msgId': _interactiveTutorialModel?.msgId ?? '',
+    //     'jeId': _interactiveTutorialModel?.jeId ?? '',
+    //     'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+    //     'rTag': _interactiveTutorialModel?.rTag ?? '',
+    //     'iOS_url': _interactiveTutorialModel
+    //             ?.elements?[_selectedIndex].footer?.nextButton?.iOsUrl ??
+    //         '',
+    //     'deeplink_type': _interactiveTutorialModel
+    //             ?.elements?[_selectedIndex].footer?.nextButton?.deeplinkType ??
+    //         ''
+    //   });
+    //   Navigator.pop(context);
+    // } else {
+    //   canShow = false;
+    //   inspectChilds(selectedIndex = _selectedIndex + 1);
+    //   if (_maxCount < _selectedIndex) {
+    //     _maxCount++;
+    //     notifyListeners();
+    //   }
+    // }
   }
 
   void onSkipTap(BuildContext context) {
@@ -375,43 +421,44 @@ class ShowTutorialsModel extends ChangeNotifier {
     });
   }
 
-  void searchElement(int? selectedIndex) {
-    final String currentTutorial =
-        tutorialList[selectedIndex ?? _selectedIndex].targetId!;
-    for (int i = 0; i < keyList.length; i++) {
-      if (keyList[i].toLowerCase() == currentTutorial.toLowerCase()) {
-        _currentWidget = widgetList[i];
-        // locationList.add(_currentWidget!);
-        _canShow = true;
-        notifyListeners();
-        return;
-      }
-    }
-    // locationList.add(null);
-    _canShow = false;
-    notifyListeners();
-  }
+  // void searchElement(int? selectedIndex) {
+  //   final String currentTutorial =
+  //       tutorialList[selectedIndex ?? _selectedIndex].targetId!;
+  //   for (int i = 0; i < keyList.length; i++) {
+  //     if (keyList[i].toLowerCase() == currentTutorial.toLowerCase()) {
+  //       _currentWidget = widgetList[i];
+  //       // locationList.add(_currentWidget!);
+  //       _canShow = true;
+  //       notifyListeners();
+  //       return;
+  //     }
+  //   }
+  //   // locationList.add(null);
+  //   _canShow = false;
+  //   notifyListeners();
+  // }
 
-  Future<void> loadData() async {
-    try {
-      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
-          await rootBundle.loadString(
-              'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
+  // Future<void> loadData() async {
+  //   try {
+  //     _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
+  //         await rootBundle.loadString(
+  //             'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
 
-      tutorialList.addAll(_interactiveTutorialModel!.elements!);
-      notifyListeners();
-    } catch (e) {
-      log('Error while loading assets');
-    }
-  }
+  //     tutorialList.addAll(_interactiveTutorialModel!.elements!);
+  //     notifyListeners();
+  //   } catch (e) {
+  //     log('Error while loading assets');
+  //   }
+  // }
 
   void getData(String data) {
-    try {
-      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(data);
-      tutorialList.addAll(_interactiveTutorialModel?.elements ?? []);
-    } catch (e) {
-      log(e.toString());
-    }
+    //TODO: add try catch block
+    // try {
+    _interactiveTutorialModel = InteractiveTutorialModel.fromJson(data);
+    tutorialList.addAll(_interactiveTutorialModel?.elements ?? []);
+    // } catch (e) {
+    //   log(e.toString());
+    // }
   }
 
   Color? getColor(String? hexColor) {
@@ -430,5 +477,26 @@ class ShowTutorialsModel extends ChangeNotifier {
       return true;
     }
     return false;
+  }
+
+  String descriptionText(String? text) {
+    if (text != null && text != "") {
+      if (_interactiveTutorialModel?.inboxVariable != null &&
+          (_interactiveTutorialModel?.inboxVariable?.isNotEmpty ?? false)) {
+        Map<String, dynamic> inboxVariable =
+            _interactiveTutorialModel!.inboxVariable!;
+        for (var element in inboxVariable.keys) {
+          if (element != "" && text!.contains(element)) {
+            text = text.replaceAll(element, inboxVariable[element].toString());
+          }
+        }
+        // print(text);
+        return text!;
+      } else {
+        return text;
+      }
+    } else {
+      return '';
+    }
   }
 }

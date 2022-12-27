@@ -187,11 +187,11 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit)
 
         case "activityShown_Internal":
-            if let details = call.arguments as? [String: Any] {
+            if let details = call.arguments as? [String: Any] {                
                 UpshotHelper.defaultHelper.activityShown_Internal(payload: details)    
             }
         case "activitySkiped_Internal":
-            if let details = call.arguments as? [String: Any] {
+            if let details = call.arguments as? [String: Any] {                
                 UpshotHelper.defaultHelper.activitySkiped_Internal(payload: details)    
             }
         case "activityDismiss_Internal":
