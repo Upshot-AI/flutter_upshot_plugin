@@ -9,12 +9,12 @@ class FlutterUpshotPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
 
   static void initializeUpshotUsingConfigFile() {
-    _channel.invokeMethod("setTechnologyType");
+    // _channel.invokeMethod("setTechnologyType");
     _channel.invokeMethod("initializeUpshotUsingConfigFile");
   }
 
   static void initialiseUpshotUsingOptions(Map options) {
-    _channel.invokeMethod("setTechnologyType");
+    // _channel.invokeMethod("setTechnologyType");
     _channel.invokeMethod("initializeUsingOptions", options);
   }
 
@@ -94,8 +94,8 @@ class FlutterUpshotPlugin {
 
   static void showActivity(int type, String tag, [BuildContext? context]) {
     Map values = {'type': type, 'tag': tag};
-    _channel.invokeMethod("showActivity", values);
     UpshotMethodChannelInternal(context: context);
+    _channel.invokeMethod("showActivity", values);
   }
 
   static void showActivityWithId(String activityId) {

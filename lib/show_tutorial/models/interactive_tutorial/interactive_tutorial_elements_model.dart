@@ -27,7 +27,7 @@ class InteractiveTutorialElementsModel {
         borderColor: data['borderColor'] as String?,
         position: data['position'] as int?,
         bgImage: data['bgImage'] as String?,
-        scaleType: data['scaleType'] as int?,
+        scaleType: data['scaleType'] is int ? (data['scaleType'] as int?) : 1,
         description: data['description'] == null
             ? null
             : DescriptionInfo.fromMap(

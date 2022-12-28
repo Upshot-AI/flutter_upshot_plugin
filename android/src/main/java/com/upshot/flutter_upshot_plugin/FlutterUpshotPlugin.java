@@ -354,13 +354,15 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
             @Override
             public void brandKinesisInteractiveTutorialInfoForPlugin(String data) {
-
+                Log.d("brandKinesisInteractiveTutorialInfoForPlugin",data.toString());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (data != null) {
                             try {
                                 internal_channel.invokeMethod("upshot_interactive_tutoInfo", data);
+                                Log.d("upshot_interactive_tutoInfo","callback send");
+
                             } catch (Exception e) {
                                e.printStackTrace();
                             }
@@ -378,7 +380,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         switch (call.method) {
 
             case "initializeUpshotUsingConfigFile": {
-                if (UpshotApplication.initType == null) {
+                if (UpshotApplication.initType == null || UpshotApplication.initType.isEmpty()) {
                     helper.initializeUsingConfig(context);
                 }
                 UpshotApplication.initType = "Config";
@@ -387,7 +389,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             case "initializeUsingOptions": {
                 HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
                 UpshotApplication.initType = "Options";
-                if (UpshotApplication.options == null) {
+                if (UpshotApplication.options == null || UpshotApplication.options.isEmpty()) {
                     UpshotApplication.options = data;
                     helper.initialize(data, context);
                 }
@@ -748,26 +750,29 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
             case "activityShown_Internal":
                 {
-                    String payload=call.arguments.toString();
+                    HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+
                     BrandKinesis.getBKInstance().activityPresentedCallback(payload);
                     break;
                 }
                             
         case "activitySkiped_Internal":
                 {
-                    String payload=call.arguments.toString();
+                    HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+
                     BrandKinesis.getBKInstance().activitySkipCallback(payload);
                     break;
                 }
         case "activityDismiss_Internal":
                 {
-                    String payload=call.arguments.toString();
+                    HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+//                    String payload=call.arguments.toString();
                     BrandKinesis.getBKInstance().activityRespondCallback(payload);
                     break;
                 }
         case "activityRedirection_Internal":
             {
-                String payload=call.arguments.toString();
+                HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
                 BrandKinesis.getBKInstance().activityRedirectionCallback(payload);
                 break;
             }

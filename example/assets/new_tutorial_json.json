@@ -2,9 +2,7 @@
   "ruleId" : "",
   "name" : "one",
   "inboxVariables" : {
-    "@UserProfile-FirstName" : 1,
-    "@UserProfile-FirstName1" : "test1",
-    "":null
+    "@UserProfile-FirstName" : "Saiprasad"
   },
   "repeatCount" : 1,
   "currentSession" : 0,

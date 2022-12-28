@@ -340,17 +340,16 @@ class ShowTutorialsModel extends ChangeNotifier {
         'total_elements': tutorialList.length
       });
       channel.invokeMethod("activityRedirection_Internal", {
-        'campaignId': _interactiveTutorialModel?.campaignId ?? '',
-        'activityId': _interactiveTutorialModel?.activityId ?? '',
-        'allUsers': _interactiveTutorialModel?.allUsers ?? '',
-        'activityType': _interactiveTutorialModel?.activityType ?? '',
-        'msgId': _interactiveTutorialModel?.msgId ?? '',
-        'jeId': _interactiveTutorialModel?.jeId ?? '',
-        'ruleId': _interactiveTutorialModel?.ruleId ?? '',
-        'rTag': _interactiveTutorialModel?.rTag ?? '',
-        'iOS_url': _interactiveTutorialModel
-                ?.elements?[_selectedIndex].footer?.nextButton?.iOsUrl ??
-            '',
+        // 'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+        // 'activityId': _interactiveTutorialModel?.activityId ?? '',
+        // 'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+        // 'activityType': _interactiveTutorialModel?.activityType ?? '',
+        // 'msgId': _interactiveTutorialModel?.msgId ?? '',
+        // 'jeId': _interactiveTutorialModel?.jeId ?? '',
+        // 'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+        // 'rTag': _interactiveTutorialModel?.rTag ?? '',
+        'iOS_url':
+            tutorialList[_selectedIndex].footer?.nextButton?.iOsUrl ?? '',
         'deeplink_type': _interactiveTutorialModel
                 ?.elements?[_selectedIndex].footer?.nextButton?.deeplinkType ??
             '',

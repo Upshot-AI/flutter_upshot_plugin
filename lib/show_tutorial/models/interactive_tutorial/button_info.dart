@@ -36,7 +36,7 @@ class ButtonInfo {
         title: data['title'] as String?,
         backgroundColor: data['backgroundColor'] as String?,
         opacity: data['opacity'] as int?,
-        fontSize: data['fontSize'] as int?,
+        fontSize: (data['fontSize'] is int) ? (data['fontSize'] as int?) : 20,
         fontName: data['fontName'] as String?,
         fontColor: data['fontColor'] as String?,
         fontStyle: data['fontStyle'] as String?,

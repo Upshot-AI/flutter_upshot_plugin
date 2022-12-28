@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterUpshotPlugin.showActivity(-1, '', context);
     });

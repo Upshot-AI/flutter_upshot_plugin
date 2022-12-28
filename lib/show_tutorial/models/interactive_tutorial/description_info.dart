@@ -21,7 +21,7 @@ class DescriptionInfo {
         opacity: (data['opacity'] is int)
             ? double.parse(data['opacity'].toString())
             : data['opacity'] as double?,
-        fontSize: data['fontSize'] as int?,
+        fontSize: (data['fontSize'] is int) ? (data['fontSize'] as int?) : 20,
         fontName: data['fontName'] as String?,
       );
 
