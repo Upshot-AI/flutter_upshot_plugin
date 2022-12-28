@@ -124,7 +124,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         internal_channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin_internal");
         internal_channel.setMethodCallHandler(this);
 
-        this.` = flutterPluginBinding.getApplicationContext();
+        this.context = flutterPluginBinding.getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
         binding = flutterPluginBinding;
         FlutterLoader loader = FlutterInjector.instance().flutterLoader();
@@ -352,8 +352,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 });
             }
 
-             @Override
-            public void brandKinesisinternal(String data) {
+            @Override
+            public void brandKinesisInteractiveTutorialInfoForPlugin(String data) {
 
                 handler.post(new Runnable() {
                     @Override
@@ -361,7 +361,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                         if (data != null) {
                             try {
                                 internal_channel.invokeMethod("upshot_interactive_tutoInfo", data);
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                e.printStackTrace();
                             }
                         }
@@ -742,27 +742,37 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             case "setTechnologyType": {
                 
                 //Call JAVA Funtion with value flutter
-                BrandKinesis.getBKInstance().setTechnologyType(context,"Flutter")
+                BrandKinesis.getBKInstance().setTechnologyType(context,"Flutter");
             }
-            break;
+                break;
 
             case "activityShown_Internal":
-            if let details = call.arguments as? [String: Any] {     
-
-            }
+                {
+                    String payload=call.arguments.toString();
+                    BrandKinesis.getBKInstance().activityPresentedCallback(payload);
+                    break;
+                }
+                            
         case "activitySkiped_Internal":
-            if let details = call.arguments as? [String: Any] {   
-
-            }
+                {
+                    String payload=call.arguments.toString();
+                    BrandKinesis.getBKInstance().activitySkipCallback(payload);
+                    break;
+                }
         case "activityDismiss_Internal":
-            if let details = call.arguments as? [String: Any] {
-            }
+                {
+                    String payload=call.arguments.toString();
+                    BrandKinesis.getBKInstance().activityRespondCallback(payload);
+                    break;
+                }
         case "activityRedirection_Internal":
-            if let details = call.arguments as? [String: Any] {
+            {
+                String payload=call.arguments.toString();
+                BrandKinesis.getBKInstance().activityRedirectionCallback(payload);
+                break;
             }
-
-            default:
-                Log.d("Upshot", "No Method");
+        default:
+            Log.d("Upshot", "No Method");
         }
     }
 
