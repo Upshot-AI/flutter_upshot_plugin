@@ -21,7 +21,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ShowTutorialInheritedNotifier.of(context).getToolTipSize();
+      ShowTutorialsModel.instance.getToolTipSize();
     });
   }
 
@@ -31,7 +31,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
     int selectedIndex = model.selectedIndex;
     final tutorial = model.tutorialList[selectedIndex];
     final footer = model.tutorialList[selectedIndex].footer;
-    // final header=model.tutorialList[selectedIndex].description
     return Visibility(
       visible: model.isVisibile,
       maintainAnimation: true,

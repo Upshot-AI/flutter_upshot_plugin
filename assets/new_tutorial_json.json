@@ -112,7 +112,7 @@
         "buttons" : [
           {
             "fontSize" : 22,
-            "actionType" : 6,
+            "actionType" : 2,
             "title" : "next",
             "fontName" : "test_font",
             "fontColor" : "#2D2D2D",

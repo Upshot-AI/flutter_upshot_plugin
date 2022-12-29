@@ -39,8 +39,15 @@ class _ShowTutorialsState extends State<ShowTutorials> {
             'jeId': model.interactiveTutorialModel?.jeId ?? '',
             'ruleId': model.interactiveTutorialModel?.ruleId ?? '',
             'rTag': model.interactiveTutorialModel?.rTag ?? '',
-          })
+          }),
+          ShowTutorialsModel.instance.isTutorialPresent = true,
         });
+  }
+
+  @override
+  void dispose() {
+    ShowTutorialsModel.instance.disposeViewModel();
+    super.dispose();
   }
 
   @override
@@ -69,9 +76,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                   children: [
                     CustomPaint(
                       painter: TransaprentCustomPainter(
-                          toolTipGlobalKey: m.toolTipGlobalKey,
-                          canShow: m.canShow,
-                          widgetDataClass: m.currentWidget),
+                          canShow: m.canShow, widgetDataClass: m.currentWidget),
                       child: const SizedBox.expand(),
                     ),
                     CustomPaint(

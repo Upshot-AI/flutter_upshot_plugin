@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
-import 'package:flutter/services.dart' show MethodChannel;
+import 'package:flutter/services.dart' show MethodChannel, rootBundle;
 import 'widget/tool_tip_widget.dart';
 import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
@@ -31,7 +33,7 @@ class ShowTutorialInheritedNotifier
 class ShowTutorialsModel extends ChangeNotifier {
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
   static BuildContext? context;
-  final GlobalKey toolTipGlobalKey = GlobalKey();
+  final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
   double _screenHeight = 0.0;
   double _screenWidth = 0.0;
   double _toolTipHeight = 0.0;
@@ -49,6 +51,13 @@ class ShowTutorialsModel extends ChangeNotifier {
   WidgetDataClass? get currentWidget => _currentWidget;
   set currentWidget(WidgetDataClass? details) {
     _currentWidget = details;
+    notifyListeners();
+  }
+
+  bool _isTutorialPresent = false;
+  bool get isTutorialPresent => _isTutorialPresent;
+  set isTutorialPresent(bool val) {
+    _isTutorialPresent = val;
     notifyListeners();
   }
 
@@ -172,7 +181,8 @@ class ShowTutorialsModel extends ChangeNotifier {
   void getScreenDetails(BuildContext context) {
     _screenHeight = MediaQuery.of(context).size.height;
     _screenWidth = MediaQuery.of(context).size.width;
-    notifyListeners();
+    print('The screen dimension is $_screenHeight , $_screenWidth');
+    // notifyListeners();
   }
 
   bool isElementInAppBar(Element child) {
@@ -437,27 +447,26 @@ class ShowTutorialsModel extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  // Future<void> loadData() async {
-  //   try {
-  //     _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
-  //         await rootBundle.loadString(
-  //             'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
+  Future<void> loadData() async {
+    try {
+      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
+          await rootBundle.loadString(
+              'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
 
-  //     tutorialList.addAll(_interactiveTutorialModel!.elements!);
-  //     notifyListeners();
-  //   } catch (e) {
-  //     log('Error while loading assets');
-  //   }
-  // }
+      tutorialList.addAll(_interactiveTutorialModel!.elements!);
+      notifyListeners();
+    } catch (e) {
+      log('Error while loading assets');
+    }
+  }
 
   void getData(String data) {
-    //TODO: add try catch block
-    // try {
-    _interactiveTutorialModel = InteractiveTutorialModel.fromJson(data);
-    tutorialList.addAll(_interactiveTutorialModel?.elements ?? []);
-    // } catch (e) {
-    //   log(e.toString());
-    // }
+    try {
+      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(data);
+      tutorialList.addAll(_interactiveTutorialModel?.elements ?? []);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   Color? getColor(String? hexColor) {
@@ -497,5 +506,25 @@ class ShowTutorialsModel extends ChangeNotifier {
     } else {
       return '';
     }
+  }
+
+  void disposeViewModel() {
+    _screenHeight = 0.0;
+    _screenWidth = 0.0;
+    _toolTipHeight = 0.0;
+    _bottomNavHeight = 0.0;
+    _appBarHeight = 0.0;
+    hasAppHeight = false;
+    hasBottomNavBarHeight = false;
+    _isTutorialPresent = false;
+    tutorialList.clear();
+    _interactiveTutorialModel = null;
+    _currentWidget = null;
+    _isVisible = true;
+    _canShow = false;
+    _selectedIndex = 0;
+    _maxCount = 0;
+    widgetList.clear();
+    keyList.clear();
   }
 }

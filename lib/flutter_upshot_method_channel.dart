@@ -17,7 +17,9 @@ class UpshotMethodChannelInternal {
   Future<void> _methodCallHandler(MethodCall call) async {
     if (call.method == "upshot_interactive_tutoInfo") {
       data = call.arguments as String;
-      if (context != null && data != null) {
+      if (context != null &&
+          data != null &&
+          !ShowTutorialsModel.instance.isTutorialPresent) {
         showTutorials(context!, UpshotMethodChannelInternal.data!);
       } else {
         log('No Tutorials to show');
@@ -26,9 +28,9 @@ class UpshotMethodChannelInternal {
   }
 
   void showTutorials(BuildContext context, String data) async {
-    ShowTutorialsModel.instance.getData(data);
-    // ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
+    ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
     if (ShowTutorialsModel.instance.tutorialList.isNotEmpty) {
+      ShowTutorialsModel.instance.isTutorialPresent = true;
       ShowTutorialsModel.context = context;
       ShowTutorials.of(context);
       Navigator.push(context,

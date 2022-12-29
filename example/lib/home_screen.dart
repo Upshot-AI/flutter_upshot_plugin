@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_upshot_plugin/flutter_upshot_method_channel.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin_example/demo_screen.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text(
           'HomeScreen',
-          key: ValueKey('appBarText'),
+          key: ValueKey('customText1'),
           style: TextStyle(fontSize: 20),
         ),
       ),
@@ -117,7 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Text(
               '10',
-              key: GlobalKey(),
               style: Theme.of(context).textTheme.headline4,
             ),
             Text(

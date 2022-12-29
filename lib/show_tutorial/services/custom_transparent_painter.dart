@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'widget_data_class.dart';
 
 class TransaprentCustomPainter extends CustomPainter {
-  final GlobalKey toolTipGlobalKey;
   final WidgetDataClass? widgetDataClass;
   final double opacity = 0.5;
   final bool canShow;
 
   TransaprentCustomPainter(
-      {required this.toolTipGlobalKey,
-      required this.widgetDataClass,
-      required this.canShow});
+      {required this.widgetDataClass, required this.canShow});
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
