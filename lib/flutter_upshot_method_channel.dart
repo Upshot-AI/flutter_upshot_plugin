@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'show_tutorial/services/custom_transaparent_route.dart';
@@ -25,6 +26,10 @@ class UpshotMethodChannelInternal {
         log('No Tutorials to show');
       }
     }
+  }
+
+  void isValidResponse(Map<String, dynamic> json) {
+    var validKeys = ["campaignId", "activityId", "msgId"];
   }
 
   void showTutorials(BuildContext context, String data) async {

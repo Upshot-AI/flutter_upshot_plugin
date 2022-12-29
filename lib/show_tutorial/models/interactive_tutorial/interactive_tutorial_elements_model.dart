@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'description_info.dart';
 import 'footer_info.dart';
 
@@ -23,10 +24,18 @@ class InteractiveTutorialElementsModel {
 
   factory InteractiveTutorialElementsModel.fromMap(Map<String, dynamic> data) =>
       InteractiveTutorialElementsModel(
-        targetId: data['android_target_id'] as String?,
-        borderColor: data['borderColor'] as String?,
-        position: data['position'] as int?,
-        bgImage: data['bgImage'] as String?,
+        targetId: Platform.isAndroid
+            ? ((data['android_target_id'] is String)
+                ? data['android_target_id'] as String?
+                : "")
+            : ((data['ios_target_id'] is String)
+                ? data['ios_target_id'] as String?
+                : ""),
+        borderColor: (data['borderColor'] is String)
+            ? data['borderColor'] as String?
+            : "#DE3333",
+        position: (data['position'] is int) ? data['position'] as int? : 0,
+        bgImage: (data['bgImage'] is String) ? data['bgImage'] as String? : "",
         scaleType: data['scaleType'] is int ? (data['scaleType'] as int?) : 1,
         description: data['description'] == null
             ? null

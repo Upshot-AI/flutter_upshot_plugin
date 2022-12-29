@@ -21,16 +21,7 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().initialize(withDelegate: self)
         customisation.registrar = registrar
         customisation.customiseData = customizationData
-        BKUIPreferences.preferences().delegate = customisation
-        
-        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController,
-            let data = dummyTutorialData {
-            
-            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: String(data: data, encoding: .utf8))
-            }
-        }
+        BKUIPreferences.preferences().delegate = customisation                
     }
     
     func initializeUsingOptions(options: [String: Any]) {
@@ -78,7 +69,6 @@ class UpshotHelper: NSObject {
                 }
             }
         }
-       
     }
     
     func sendLogoutDetails() {
@@ -362,19 +352,19 @@ class UpshotHelper: NSObject {
     }
 
     func activityShown_Internal(payload: [String: Any]) {
-
+        BrandKinesis.sharedInstance().activityPresentedCallback(payload)
     }
 
     func activitySkiped_Internal(payload: [String: Any]) {
-
+        BrandKinesis.sharedInstance().activitySkipCallback(payload)
     }
 
     func activityDismiss_Internal(payload: [String: Any]) {
-
+        BrandKinesis.sharedInstance().activityRespondCallback(payload)
     }
 
     func activityRedirection_Internal(payload: [String: Any]) {
-
+        BrandKinesis.sharedInstance().activityRedirectionCallback(payload)
     }
     
     func writeImageToTemp(image: UIImage, name: String) -> String {
@@ -494,10 +484,6 @@ class UpshotHelper: NSObject {
     }
     
     func showInboxScreen(options: [String: Any]) {
-                
-        print("showInboxScreen-----------\(options)")
-        let path = Bundle.main.path(forResource: "UpshotInboxConfig", ofType: "json")
-        print("showInboxScreen path-------\(path)")
         BrandKinesis.sharedInstance().showInboxController(options)
     }
 
@@ -509,11 +495,15 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    var response: [String : Any] =  ["count":count]
+                    let response: [String : Any] =  ["count":count]
                     upshotChannel.invokeMethod("upshotUnreadNotificationsCount", arguments: response)
                 }
             }
         }
+    }
+    
+    func setTechnologyType() {
+        BrandKinesis.sharedInstance().setTechnologyType("flutter")
     }
     
     func jsonToString(json: [String: Any]) -> String? {
@@ -639,6 +629,17 @@ extension UpshotHelper: BrandKinesisDelegate {
             
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 upshotChannel.invokeMethod("upshotInboxActivityDismiss", arguments: activityPayload)
+            }
+        }
+    }
+    
+    func brandKinesisInteractiveTutorialInfo(forPlugin jsonData: String) {
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController,
+           let data = dummyTutorialData {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: String(data: data, encoding: .utf8))
             }
         }
     }

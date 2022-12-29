@@ -3,7 +3,7 @@ import 'button_info.dart';
 
 class FooterInfo {
   String? backgroundColor;
-  int? opacity;
+  double? opacity;
   ButtonInfo? nextButton;
   ButtonInfo? prevButton;
   ButtonInfo? skipButton;
@@ -26,8 +26,12 @@ class FooterInfo {
         ?.where((element) => element["type"] == "skip")
         .toList();
     return FooterInfo(
-        backgroundColor: data['backgroundColor'] as String?,
-        opacity: data['opacity'] as int?,
+        backgroundColor: (data['bgColor'] is String)
+            ? data['bgColor'] as String?
+            : "#FFFFFF",
+        opacity: (data['opacity'] is! double)
+            ? double.parse(data['opacity'].toString())
+            : data["opacity"] as double?,
         nextButton: (next?.isNotEmpty ?? false)
             ? ButtonInfo.fromMap(next?.first)
             : null,

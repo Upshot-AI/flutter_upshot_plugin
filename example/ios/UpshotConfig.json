@@ -1,0 +1,14 @@
+{
+    "appId": "92337bb3-3e74-4a2b-9694-b5b3345196dc",
+    "ownerId": "afdd77cf-2b04-4515-b5c7-d23df203249d",
+    "debugLogs": true,
+    "location": false,
+    "dispatchInterval": 60,
+    "exceptionalHandler": true,
+    "cellularData": true,
+    "dataRegion": "usa",
+    "endPoints": {
+        "api": "https://stageapi2.goupshot.com/webservices/",
+        "events": "https://stageevents2.goupshot.com"
+    }
+}

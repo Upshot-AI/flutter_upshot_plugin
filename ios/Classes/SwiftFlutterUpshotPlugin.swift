@@ -202,7 +202,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             if let details = call.arguments as? [String: Any] {
                 UpshotHelper.defaultHelper.activityRedirection_Internal(payload: details)    
             }
-            
+        case "setTechnologyType":
+            UpshotHelper.defaultHelper.setTechnologyType()
         default:
             result(FlutterMethodNotImplemented)
         }

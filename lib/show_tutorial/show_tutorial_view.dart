@@ -39,6 +39,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
             'jeId': model.interactiveTutorialModel?.jeId ?? '',
             'ruleId': model.interactiveTutorialModel?.ruleId ?? '',
             'rTag': model.interactiveTutorialModel?.rTag ?? '',
+            'tutorialType': model.interactiveTutorialModel?.tutorialType ?? 2
           }),
           ShowTutorialsModel.instance.isTutorialPresent = true,
         });

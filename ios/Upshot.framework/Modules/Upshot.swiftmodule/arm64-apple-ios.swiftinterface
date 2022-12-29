@@ -6,6 +6,7 @@ import Foundation
 import ImageIO
 import JavaScriptCore
 import MobileCoreServices
+import StoreKit
 import Swift
 import SystemConfiguration
 import UIKit
@@ -403,6 +404,15 @@ extension Upshot.MiniGameController : WebKit.WKNavigationDelegate {
   @_Concurrency.MainActor(unsafe) @objc dynamic public func webView(_ webView: WebKit.WKWebView, didFail navigation: WebKit.WKNavigation!, withError error: Swift.Error)
   @_Concurrency.MainActor(unsafe) @objc dynamic public func webView(_ webView: WebKit.WKWebView, didStartProvisionalNavigation navigation: WebKit.WKNavigation!)
 }
+@objc @_inheritsConvenienceInitializers public class RedirectionManager : ObjectiveC.NSObject, StoreKit.SKStoreProductViewControllerDelegate {
+  @objc public func redirectToPhone(phone: Swift.String)
+  @objc public func redirectToBrowser(url: Swift.String)
+  @objc public func webRedirection(url: Swift.String)
+  @objc public func redirectStore(storeId: Swift.Double)
+  @objc public func productViewControllerDidFinish(_ viewController: StoreKit.SKStoreProductViewController)
+  @objc override dynamic public init()
+  @objc deinit
+}
 @objc open class USTriviaWireframe : ObjectiveC.NSObject {
   @objc public init?(activity: Upshot.BKActivity? = nil, tag: Swift.String? = nil, sessionId: Swift.String? = nil, appuid: Swift.String = "")
   @objc public func make() -> Upshot.USTriviaView?
@@ -537,6 +547,14 @@ extension Foundation.Notification {
   public struct Key {
     public static let Task: Swift.String
   }
+}
+@objc @_inheritsConvenienceInitializers public class ActivityCallbackHandler : ObjectiveC.NSObject {
+  @objc public func activityPresentedCallback(with data: [Swift.String : Any])
+  @objc public func activitySkipCallback(with data: [Swift.String : Any])
+  @objc public func activityRespondCallback(with data: [Swift.String : Any])
+  @objc public func activityRedirectionCallback(with data: [Swift.String : Any])
+  @objc override dynamic public init()
+  @objc deinit
 }
 @objc @_inheritsConvenienceInitializers public class RewardsManager : ObjectiveC.NSObject {
   @objc override dynamic public init()

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 class DescriptionInfo {
   String? text;
@@ -16,13 +17,16 @@ class DescriptionInfo {
   });
 
   factory DescriptionInfo.fromMap(Map<String, dynamic> data) => DescriptionInfo(
-        text: data['text'] as String?,
-        bgColor: data['bgColor'] as String?,
-        opacity: (data['opacity'] is int)
+        text: (data['text'] is String) ? data['text'] as String? : "",
+        bgColor: (data['bgColor'] is String)
+            ? data['bgColor'] as String?
+            : "#FFFFFF",
+        opacity: (data['opacity'] is! double)
             ? double.parse(data['opacity'].toString())
-            : data['opacity'] as double?,
-        fontSize: (data['fontSize'] is int) ? (data['fontSize'] as int?) : 20,
-        fontName: data['fontName'] as String?,
+            : data["opacity"] as double?,
+        fontSize: (data['fontSize'] is int) ? (data['fontSize'] as int?) : 16,
+        fontName:
+            (data['fontName'] is String) ? data['fontName'] as String : '',
       );
 
   Map<String, dynamic> toMap() => {

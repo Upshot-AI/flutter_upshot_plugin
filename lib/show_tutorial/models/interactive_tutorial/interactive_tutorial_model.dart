@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'interactive_tutorial_elements_model.dart';
 
 class InteractiveTutorialModel {
-  bool? allowSkip;
   bool? enableTap;
-  String? scaleType;
   String? campaignId;
   String? activityId;
   int? allUsers;
@@ -13,22 +11,13 @@ class InteractiveTutorialModel {
   String? jeId;
   String? msgId;
   String? rTag;
-  String? name;
-  int? repeatCount;
-  int? currentSession;
-  int? considerSkip;
-  int? skipCount;
   int? exitMode;
-  int? activityTaken;
   int? tutorialType;
   Map<String, dynamic>? inboxVariable;
-  List<String>? tag;
   List<InteractiveTutorialElementsModel>? elements;
 
   InteractiveTutorialModel({
-    this.allowSkip,
     this.enableTap,
-    this.scaleType,
     this.campaignId,
     this.activityId,
     this.allUsers,
@@ -38,40 +27,28 @@ class InteractiveTutorialModel {
     this.elements,
     this.msgId,
     this.rTag,
-    this.activityTaken,
-    this.considerSkip,
-    this.currentSession,
     this.exitMode,
-    this.name,
-    this.repeatCount,
-    this.skipCount,
-    this.tag,
     this.tutorialType,
     this.inboxVariable,
   });
 
   factory InteractiveTutorialModel.fromMap(Map<String, dynamic> data) {
     return InteractiveTutorialModel(
-      allowSkip: data['allowSkip'] as bool?,
-      enableTap: data['enableTap'] as bool?,
-      scaleType: data['scaleType'] as String?,
-      campaignId: data['campaignId'] as String?,
-      activityId: data['activityId'] as String?,
-      allUsers: data['allUsers'] as int?,
-      activityType: data['activityType'] as int?,
-      ruleId: data['ruleId'] as String?,
-      jeId: data['jeId'] as String?,
-      msgId: data['msgId'] as String?,
-      rTag: data['rTag'] as String?,
-      activityTaken: data[''] as int?,
-      considerSkip: data[''] as int?,
-      currentSession: data[''] as int?,
-      exitMode: data[''] as int?,
-      name: data[''] as String?,
-      repeatCount: data[''] as int?,
-      skipCount: data[''] as int?,
-      tutorialType: data[''] as int?,
-      tag: (data['tag'] as List<dynamic>?)?.cast<String>(),
+      campaignId:
+          (data['campaignId'] is String) ? data['campaignId'] as String? : "",
+      activityId:
+          (data['activityId'] is String) ? data['activityId'] as String? : "",
+      msgId: (data['msgId'] is String) ? data['msgId'] as String? : "",
+      ruleId: (data['ruleId'] is String) ? data['ruleId'] as String? : "",
+      jeId: (data['jeId'] is String) ? data['jeId'] as String? : "",
+      allUsers: (data['allUsers'] is int) ? data['allUsers'] as int? : 1,
+      activityType:
+          (data['activityType'] is int) ? data['activityType'] as int? : 7,
+      rTag: (data['rTag'] is String) ? data['rTag'] as String? : "",
+      exitMode: (data['exitMode'] is int) ? data['exitMode'] as int? : 1,
+      enableTap: (data['exitMode'] as int?) == 2,
+      tutorialType:
+          (data['tutorialType'] is int) ? data['tutorialType'] as int? : 2,
       inboxVariable: data['inboxVariables'] != null
           ? (data['inboxVariables'] as Map<String, dynamic>)
           : null,
@@ -83,9 +60,7 @@ class InteractiveTutorialModel {
   }
 
   Map<String, dynamic> toMap() => {
-        'allowSkip': allowSkip,
         'enableTap': enableTap,
-        'scaleType': scaleType,
         'campaignId': campaignId,
         'activityId': activityId,
         'allUsers': allUsers,

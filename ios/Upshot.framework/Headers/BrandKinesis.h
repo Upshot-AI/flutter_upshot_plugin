@@ -303,6 +303,18 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
 - (void)getUnreadNotificationsCount:(NSInteger)pushLimit onCompletion:(void (^_Nullable)(NSInteger  pushCount))completionBlock;
 
 
+//* Internal Methods For Plugin*//
+
+- (void)setTechnologyType:(NSString *_Nonnull)type;
+
+- (void)activityPresentedCallback:(NSDictionary *_Nonnull)payload;
+
+- (void)activitySkipCallback:(NSDictionary *_Nonnull)payload;
+
+- (void)activityRespondCallback:(NSDictionary *_Nonnull)payload;
+
+- (void)activityRedirectionCallback:(NSDictionary *_Nonnull)payload;
+
 @end
 
 
@@ -337,6 +349,8 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
 - (nonnull NSArray *)brandKinesisExludeActivitiesForShare;
 
 - (void)brandKinesisCarouselPushClickPayload:(NSDictionary *_Nonnull)payload;
+
+- (void)brandKinesisInteractiveTutorialInfoForPlugin:(nonnull NSString *)jsonData;
 
 
 /*!

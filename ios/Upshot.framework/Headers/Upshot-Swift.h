@@ -200,6 +200,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import Foundation;
 @import ObjectiveC;
+@import StoreKit;
 @import UIKit;
 @import WebKit;
 #endif
@@ -221,8 +222,18 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@protocol UIViewControllerTransitionCoordinator;
 @class NSString;
+
+SWIFT_CLASS("_TtC6Upshot23ActivityCallbackHandler")
+@interface ActivityCallbackHandler : NSObject
+- (void)activityPresentedCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activitySkipCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRespondCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRedirectionCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@protocol UIViewControllerTransitionCoordinator;
 @class NSBundle;
 @class NSCoder;
 
@@ -321,6 +332,18 @@ SWIFT_CLASS("_TtC6Upshot24PushAmplificationHandler")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class SKStoreProductViewController;
+
+SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
+@interface RedirectionManager : NSObject <SKStoreProductViewControllerDelegate>
+- (void)redirectToPhoneWithPhone:(NSString * _Nonnull)phone;
+- (void)redirectToBrowserWithUrl:(NSString * _Nonnull)url;
+- (void)webRedirectionWithUrl:(NSString * _Nonnull)url;
+- (void)redirectStoreWithStoreId:(double)storeId;
+- (void)productViewControllerDidFinish:(SKStoreProductViewController * _Nonnull)viewController;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
 
 SWIFT_CLASS("_TtC6Upshot14RewardsManager")
 @interface RewardsManager : NSObject
@@ -394,42 +417,6 @@ SWIFT_CLASS("_TtC6Upshot15SessionDelegate")
 /// If this header was not provided, the value is NSURLSessionTransferSizeUnknown.
 ///
 - (void)URLSession:(NSURLSession * _Nonnull)session downloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes;
-@end
-
-@class NSURLSessionStreamTask;
-@class NSInputStream;
-@class NSOutputStream;
-
-SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.11) SWIFT_AVAILABILITY(ios,introduced=9.0)
-@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionStreamDelegate>
-/// Tells the delegate that the read side of the connection has been closed.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session readClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
-/// Tells the delegate that the write side of the connection has been closed.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session writeClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
-/// Tells the delegate that the system has determined that a better route to the host is available.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session betterRouteDiscoveredForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
-/// Tells the delegate that the stream task has been completed and provides the unopened stream objects.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-/// \param inputStream The new input stream.
-///
-/// \param outputStream The new output stream.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session streamTask:(NSURLSessionStreamTask * _Nonnull)streamTask didBecomeInputStream:(NSInputStream * _Nonnull)inputStream outputStream:(NSOutputStream * _Nonnull)outputStream;
 @end
 
 @class NSURLSessionDataTask;
@@ -507,6 +494,42 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 /// \param session The session that no longer has any outstanding requests.
 ///
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession * _Nonnull)session;
+@end
+
+@class NSURLSessionStreamTask;
+@class NSInputStream;
+@class NSOutputStream;
+
+SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.11) SWIFT_AVAILABILITY(ios,introduced=9.0)
+@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionStreamDelegate>
+/// Tells the delegate that the read side of the connection has been closed.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session readClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
+/// Tells the delegate that the write side of the connection has been closed.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session writeClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
+/// Tells the delegate that the system has determined that a better route to the host is available.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session betterRouteDiscoveredForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
+/// Tells the delegate that the stream task has been completed and provides the unopened stream objects.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+/// \param inputStream The new input stream.
+///
+/// \param outputStream The new output stream.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session streamTask:(NSURLSessionStreamTask * _Nonnull)streamTask didBecomeInputStream:(NSInputStream * _Nonnull)inputStream outputStream:(NSOutputStream * _Nonnull)outputStream;
 @end
 
 @class NSURLSessionTask;
@@ -672,10 +695,10 @@ SWIFT_CLASS("_TtC6Upshot12USTriviaView")
 @end
 
 
+
 @interface USTriviaView (SWIFT_EXTENSION(Upshot))
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator;
 @end
-
 
 
 SWIFT_CLASS("_TtC6Upshot17USTriviaWireframe")
@@ -893,6 +916,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import Foundation;
 @import ObjectiveC;
+@import StoreKit;
 @import UIKit;
 @import WebKit;
 #endif
@@ -914,8 +938,18 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@protocol UIViewControllerTransitionCoordinator;
 @class NSString;
+
+SWIFT_CLASS("_TtC6Upshot23ActivityCallbackHandler")
+@interface ActivityCallbackHandler : NSObject
+- (void)activityPresentedCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activitySkipCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRespondCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRedirectionCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@protocol UIViewControllerTransitionCoordinator;
 @class NSBundle;
 @class NSCoder;
 
@@ -1014,6 +1048,18 @@ SWIFT_CLASS("_TtC6Upshot24PushAmplificationHandler")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class SKStoreProductViewController;
+
+SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
+@interface RedirectionManager : NSObject <SKStoreProductViewControllerDelegate>
+- (void)redirectToPhoneWithPhone:(NSString * _Nonnull)phone;
+- (void)redirectToBrowserWithUrl:(NSString * _Nonnull)url;
+- (void)webRedirectionWithUrl:(NSString * _Nonnull)url;
+- (void)redirectStoreWithStoreId:(double)storeId;
+- (void)productViewControllerDidFinish:(SKStoreProductViewController * _Nonnull)viewController;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
 
 SWIFT_CLASS("_TtC6Upshot14RewardsManager")
 @interface RewardsManager : NSObject
@@ -1087,42 +1133,6 @@ SWIFT_CLASS("_TtC6Upshot15SessionDelegate")
 /// If this header was not provided, the value is NSURLSessionTransferSizeUnknown.
 ///
 - (void)URLSession:(NSURLSession * _Nonnull)session downloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes;
-@end
-
-@class NSURLSessionStreamTask;
-@class NSInputStream;
-@class NSOutputStream;
-
-SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.11) SWIFT_AVAILABILITY(ios,introduced=9.0)
-@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionStreamDelegate>
-/// Tells the delegate that the read side of the connection has been closed.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session readClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
-/// Tells the delegate that the write side of the connection has been closed.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session writeClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
-/// Tells the delegate that the system has determined that a better route to the host is available.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session betterRouteDiscoveredForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
-/// Tells the delegate that the stream task has been completed and provides the unopened stream objects.
-/// \param session The session.
-///
-/// \param streamTask The stream task.
-///
-/// \param inputStream The new input stream.
-///
-/// \param outputStream The new output stream.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session streamTask:(NSURLSessionStreamTask * _Nonnull)streamTask didBecomeInputStream:(NSInputStream * _Nonnull)inputStream outputStream:(NSOutputStream * _Nonnull)outputStream;
 @end
 
 @class NSURLSessionDataTask;
@@ -1200,6 +1210,42 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 /// \param session The session that no longer has any outstanding requests.
 ///
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession * _Nonnull)session;
+@end
+
+@class NSURLSessionStreamTask;
+@class NSInputStream;
+@class NSOutputStream;
+
+SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.11) SWIFT_AVAILABILITY(ios,introduced=9.0)
+@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionStreamDelegate>
+/// Tells the delegate that the read side of the connection has been closed.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session readClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
+/// Tells the delegate that the write side of the connection has been closed.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session writeClosedForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
+/// Tells the delegate that the system has determined that a better route to the host is available.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session betterRouteDiscoveredForStreamTask:(NSURLSessionStreamTask * _Nonnull)streamTask;
+/// Tells the delegate that the stream task has been completed and provides the unopened stream objects.
+/// \param session The session.
+///
+/// \param streamTask The stream task.
+///
+/// \param inputStream The new input stream.
+///
+/// \param outputStream The new output stream.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session streamTask:(NSURLSessionStreamTask * _Nonnull)streamTask didBecomeInputStream:(NSInputStream * _Nonnull)inputStream outputStream:(NSOutputStream * _Nonnull)outputStream;
 @end
 
 @class NSURLSessionTask;
@@ -1365,10 +1411,10 @@ SWIFT_CLASS("_TtC6Upshot12USTriviaView")
 @end
 
 
+
 @interface USTriviaView (SWIFT_EXTENSION(Upshot))
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator;
 @end
-
 
 
 SWIFT_CLASS("_TtC6Upshot17USTriviaWireframe")

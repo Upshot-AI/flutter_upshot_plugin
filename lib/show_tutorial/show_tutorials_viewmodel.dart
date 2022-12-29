@@ -345,28 +345,22 @@ class ShowTutorialsModel extends ChangeNotifier {
         'jeId': _interactiveTutorialModel?.jeId ?? '',
         'ruleId': _interactiveTutorialModel?.ruleId ?? '',
         'rTag': _interactiveTutorialModel?.rTag ?? '',
-        'max_elements': _maxCount,
-        'skipped_element': _selectedIndex,
-        'total_elements': tutorialList.length
+        'maxSlideIndex': _maxCount,
+        'skipedIndex': _selectedIndex,
+        'totalScreenCount': tutorialList.length,
+        'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
       });
       channel.invokeMethod("activityRedirection_Internal", {
-        // 'campaignId': _interactiveTutorialModel?.campaignId ?? '',
-        // 'activityId': _interactiveTutorialModel?.activityId ?? '',
-        // 'allUsers': _interactiveTutorialModel?.allUsers ?? '',
-        // 'activityType': _interactiveTutorialModel?.activityType ?? '',
-        // 'msgId': _interactiveTutorialModel?.msgId ?? '',
-        // 'jeId': _interactiveTutorialModel?.jeId ?? '',
-        // 'ruleId': _interactiveTutorialModel?.ruleId ?? '',
-        // 'rTag': _interactiveTutorialModel?.rTag ?? '',
-        'iOS_url':
+        'actionType':
+            tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0,
+        'inboxVariables': interactiveTutorialModel?.inboxVariable ?? {},
+        'deeplink_url':
             tutorialList[_selectedIndex].footer?.nextButton?.iOsUrl ?? '',
         'deeplink_type': _interactiveTutorialModel
                 ?.elements?[_selectedIndex].footer?.nextButton?.deeplinkType ??
-            '',
-        "repeatCount": _interactiveTutorialModel?.repeatCount ?? -1,
-        "currentSession": _interactiveTutorialModel?.currentSession ?? -1,
-        "considerSkip": _interactiveTutorialModel?.considerSkip ?? -1,
-        "skipCount": _interactiveTutorialModel?.skipCount ?? -1,
+            1,
+        'deeplink_keyValue':
+            tutorialList[_selectedIndex].footer?.nextButton?.iosKeyValue ?? {}
       });
       Navigator.pop(context);
     }
@@ -424,9 +418,10 @@ class ShowTutorialsModel extends ChangeNotifier {
       'jeId': _interactiveTutorialModel?.jeId ?? '',
       'ruleId': _interactiveTutorialModel?.ruleId ?? '',
       'rTag': _interactiveTutorialModel?.rTag ?? '',
-      'max_elements': _maxCount,
-      'skipped_element': _selectedIndex,
-      'total_elements': tutorialList.length
+      'maxSlideIndex': _maxCount,
+      'skipedIndex': _selectedIndex,
+      'totalScreenCount': tutorialList.length,
+      'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
     });
   }
 
