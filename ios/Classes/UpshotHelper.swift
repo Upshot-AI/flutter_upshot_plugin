@@ -11,8 +11,8 @@ import Upshot
 class UpshotHelper: NSObject {
     
     static var defaultHelper = UpshotHelper()
+    
     var customizationData: Data?
-    var dummyTutorialData: Data?
     var registrar:FlutterPluginRegistrar?
 
     let customisation = UpshotCustomisation()
@@ -140,16 +140,7 @@ class UpshotHelper: NSObject {
     }
     
     func showActivity(activityType: BKActivityType, tag: String) {                
-
-        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController,
-            let data = dummyTutorialData,
-           let json = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves) {
-            
-            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: json)
-            }
-        }
+       
         BrandKinesis.sharedInstance().showActivity(with: activityType, andTag: tag)
     }
     
@@ -633,13 +624,13 @@ extension UpshotHelper: BrandKinesisDelegate {
         }
     }
     
-    func brandKinesisInteractiveTutorialInfo(forPlugin jsonData: String) {
-        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController,
-           let data = dummyTutorialData {
+    func brandKinesisInteractiveTutorialInfo(forPlugin jsonString: String) {
+        
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
             
             let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
-                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: String(data: data, encoding: .utf8))
+                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: jsonString)
             }
         }
     }

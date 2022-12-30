@@ -17,15 +17,7 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             let data = try? Data(contentsOf: fileUrl)
             UpshotHelper.defaultHelper.customizationData = data
             UpshotHelper.defaultHelper.registrar = registrar
-        }
-        
-        let new_tutorial_json_key = registrar.lookupKey(forAsset: "assets/new_tutorial_json.json")
-        let new_tutorial_json_filePath =  Bundle.main.path(forResource: new_tutorial_json_key, ofType: nil)
-        if let path = new_tutorial_json_filePath {
-            let fileUrl = URL(fileURLWithPath: path)
-            let data = try? Data(contentsOf: fileUrl)
-            UpshotHelper.defaultHelper.dummyTutorialData = data            
-        }        
+        }                    
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
