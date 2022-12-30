@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/footer_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
@@ -466,7 +467,8 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   Color? getColor(String? hexColor) {
     if ((hexColor?.isNotEmpty ?? false) && hexColor != "") {
-      return Color(int.parse('0xFF${hexColor!.substring(1)}'));
+      hexColor!.replaceFirst('#', '');
+      return Color(int.parse('0xFF${hexColor.substring(1)}'));
     }
     return null;
   }
@@ -521,5 +523,41 @@ class ShowTutorialsModel extends ChangeNotifier {
     _maxCount = 0;
     widgetList.clear();
     keyList.clear();
+  }
+
+  bool shouldShowSkip(FooterInfo? footerInfo) {
+    if (footerInfo != null) {
+      String skipButtonTitle = footerInfo.skipButton?.title ?? '';
+      String prevButtonTitle = footerInfo.prevButton?.title ?? '';
+      String nextButtonTitle = footerInfo.nextButton?.title ?? '';
+
+      if (prevButtonTitle == '' && nextButtonTitle == '') {
+        return true;
+      } else if (skipButtonTitle != '') {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  bool shouldShowPrevButton(String? title) {
+    if (_selectedIndex == 0 ||
+        tutorialList.length == 1 ||
+        (title ?? '') == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool showNextButton(String? title) {
+    if ((title ?? '') == '') {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

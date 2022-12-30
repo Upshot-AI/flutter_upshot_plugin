@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_upshot_plugin/flutter_upshot_method_channel.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin_example/demo_screen.dart';
@@ -24,8 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterUpshotPlugin.showActivity(-1, '', context);
     });
@@ -37,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text(
           'HomeScreen',
-          key: ValueKey('customText1'),
+          key: ValueKey('element_1'),
           style: TextStyle(fontSize: 20),
         ),
       ),
@@ -102,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(fontSize: 30),
                 )),
             Container(
-              key: UpshotLabeledGlobalKey('container'),
+              key: UpshotLabeledGlobalKey('element_3'),
               color: Colors.red,
               width: 200,
               height: 600,
@@ -269,9 +266,9 @@ class _HomeScreenState extends State<HomeScreen> {
               style: Theme.of(context).textTheme.headline4,
             ),
             Text(
-              'Demo Text',
+              'element_2',
               style: const TextStyle(fontSize: 30),
-              key: UpshotLabeledGlobalKey('DemoText'),
+              key: UpshotLabeledGlobalKey('element_2'),
             ),
           ],
         ),

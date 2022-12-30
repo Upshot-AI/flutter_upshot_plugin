@@ -3,6 +3,7 @@ package com.upshot.flutter_upshot_plugin;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.brandkinesis.BKProperties;
 import com.brandkinesis.BrandKinesis;
@@ -58,6 +59,7 @@ public class UpshotApplication extends FlutterApplication {
 
     private void initializeUsingConfig() {
         try {
+            Log.d("Upshot", "initializeUsingConfig:");
             BrandKinesis.initialiseBrandKinesis(this, null);
         } catch (Exception e) {
             e.printStackTrace();

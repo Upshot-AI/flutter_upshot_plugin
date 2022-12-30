@@ -18,10 +18,60 @@ class _DemoClassState extends State<DemoClass> {
     FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
   }
 
+  Color? getColor(String? hexColor) {
+    if ((hexColor?.isNotEmpty ?? false) && hexColor != "") {
+      hexColor!.replaceFirst('#', '');
+      return Color(int.parse('0xFF${hexColor.substring(1)}'));
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('AppBar')),
+      bottomNavigationBar: BottomNavigationBar(
+        key: const Key('navDrawer'),
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+              size: 25,
+              key: Key('drawer1'),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.abc_outlined,
+              color: Colors.black,
+              size: 25,
+              key: Key('drawer6'),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.map,
+              color: Colors.black,
+              size: 25,
+              key: Key('drawer2'),
+            ),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.local_post_office,
+              color: Colors.black,
+              size: 25,
+              key: Key('drawer3'),
+            ),
+            label: 'Notification',
+          ),
+        ],
+      ),
       body: Column(
         children: [
           ElevatedButton(
@@ -29,6 +79,11 @@ class _DemoClassState extends State<DemoClass> {
                 MaterialPageRoute(builder: (context) => const HomeScreen())),
             child: const Text('Pres'),
           ),
+          Container(
+            width: 100,
+            height: 100,
+            color: getColor('#0E9F54'),
+          )
         ],
       ),
     );

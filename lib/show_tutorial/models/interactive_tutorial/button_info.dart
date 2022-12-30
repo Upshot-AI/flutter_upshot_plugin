@@ -10,7 +10,7 @@ class ButtonInfo {
   int? fontSize;
   String? fontName;
   String? fontColor;
-  List? fontStyle;
+  List<String>? fontStyle;
   int? deeplinkType;
   String? iOsUrl;
   Map<String, dynamic>? iosKeyValue;
@@ -34,8 +34,8 @@ class ButtonInfo {
 
   factory ButtonInfo.fromMap(Map<String, dynamic> data) => ButtonInfo(
         type: (data['type'] is String) ? data['type'] as String? : "",
-        title: (data['title'] is String) ? data["title"] as String? : "",
-        backgroundColor: (data['bgColor'] is String)
+        title: (data['text'] is String) ? data["text"] as String? : "",
+        backgroundColor: (data['bgColor'] is String?)
             ? data['bgColor'] as String?
             : "#4687B3",
         opacity: (data['opacity'] is! double)
@@ -47,8 +47,9 @@ class ButtonInfo {
         fontColor: (data['fontColor'] is String)
             ? data['fontColor'] as String?
             : "#FFFFFF",
-        fontStyle:
-            (data['fontStyle'] is List) ? data['fontStyle'] as List? : [],
+        fontStyle: (data['fontStyle'] is List)
+            ? (data['fontStyle'] as List<dynamic>).cast<String>()
+            : [],
         deeplinkType:
             (data['deeplink_type'] is int) ? data['deeplink_type'] as int? : 1,
         iOsUrl: (Platform.isAndroid)

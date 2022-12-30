@@ -24,13 +24,8 @@ class InteractiveTutorialElementsModel {
 
   factory InteractiveTutorialElementsModel.fromMap(Map<String, dynamic> data) =>
       InteractiveTutorialElementsModel(
-        targetId: Platform.isAndroid
-            ? ((data['android_target_id'] is String)
-                ? data['android_target_id'] as String?
-                : "")
-            : ((data['ios_target_id'] is String)
-                ? data['ios_target_id'] as String?
-                : ""),
+        targetId:
+            (data['target_id'] is String?) ? data['target_id'] as String? : '',
         borderColor: (data['borderColor'] is String)
             ? data['borderColor'] as String?
             : "#DE3333",
