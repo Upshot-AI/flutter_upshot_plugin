@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: Theme.of(context).textTheme.headline4,
             ),
             Text(
-              'element_2',
+              'element_3',
               style: const TextStyle(fontSize: 30),
               key: UpshotLabeledGlobalKey('element_2'),
             ),

@@ -45,8 +45,8 @@ class InteractiveTutorialModel {
       activityType:
           (data['activityType'] is int) ? data['activityType'] as int? : 7,
       rTag: (data['rTag'] is String) ? data['rTag'] as String? : "",
-      exitMode: (data['exitMode'] is int) ? data['exitMode'] as int? : 1,
-      enableTap: (data['exitMode'] as int?) == 2,
+      exitMode: (data['exit_mode'] is int) ? data['exit_mode'] as int? : 1,
+      enableTap: (data['exit_mode'] as int?) == 2,
       tutorialType:
           (data['tutorialType'] is int) ? data['tutorialType'] as int? : 2,
       inboxVariable: data['inboxVariables'] != null

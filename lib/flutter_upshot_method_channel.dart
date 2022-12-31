@@ -20,7 +20,9 @@ class UpshotMethodChannelInternal {
       if (context != null &&
           data != null &&
           !ShowTutorialsModel.instance.isTutorialPresent) {
-        showTutorials(context!, UpshotMethodChannelInternal.data!);
+        Future.delayed(const Duration(milliseconds: 200), () {
+          showTutorials(context!, UpshotMethodChannelInternal.data!);
+        });
       } else {
         log('No Tutorials to show');
       }

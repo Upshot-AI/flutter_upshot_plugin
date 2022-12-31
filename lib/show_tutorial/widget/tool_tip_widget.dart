@@ -103,18 +103,34 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                           child: Html(
                             data: model
                                 .descriptionText(tutorial.description?.text),
-                          )
-                          // Text(
-                          //   model.descriptionText(tutorial.description?.text),
-                          //   // (tutorial.description?.text ?? '') == ''
-                          //   //     ? 'No Description found'
-                          //   //     : tutorial.description?.text ??
-                          //   //         'No Description found',
-                          //   style: TextStyle(
-                          //       fontSize:
-                          //           tutorial.description?.fontSize?.toDouble()),
-                          // ),
-                          ),
+                            style: {
+                              "div": Style(
+                                  fontSize: FontSize(
+                                      (tutorial.description?.fontSize)
+                                          ?.toDouble()),
+                                  fontFamily: tutorial.description?.fontName),
+                              "p": Style(
+                                  fontSize: FontSize(
+                                      (tutorial.description?.fontSize)
+                                          ?.toDouble()),
+                                  fontFamily: tutorial.description?.fontName),
+                              "span": Style(
+                                  fontSize: FontSize(
+                                      (tutorial.description?.fontSize)
+                                          ?.toDouble()),
+                                  fontFamily: tutorial.description?.fontName),
+                              "li": Style(
+                                  fontSize: FontSize(
+                                      (tutorial.description?.fontSize)
+                                          ?.toDouble()),
+                                  fontFamily: tutorial.description?.fontName),
+                              "ul": Style(
+                                  fontSize: FontSize(
+                                      (tutorial.description?.fontSize)
+                                          ?.toDouble()),
+                                  fontFamily: tutorial.description?.fontName),
+                            },
+                          )),
                     ),
                   ),
                   (widget.enableTap)
@@ -137,7 +153,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                       ? Flexible(
                                           flex: 3,
                                           child: ElevatedButton(
-                                            style: TextButton.styleFrom(
+                                            style: ElevatedButton.styleFrom(
                                                 backgroundColor: model
                                                         .getColor(footer
                                                             ?.skipButton
@@ -158,32 +174,27 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                           '') ==
                                                       ''
                                                   ? 'Skip'
-                                                  : '${footer!.skipButton!.title!}',
+                                                  : footer!.skipButton!.title!,
                                               maxLines: 2,
                                               style: TextStyle(
+                                                fontFamily: footer
+                                                    ?.skipButton?.fontName,
                                                 fontSize: footer
                                                     ?.skipButton?.fontSize
                                                     ?.toDouble(),
-                                                fontStyle: footer?.skipButton
-                                                            ?.fontStyle
-                                                            ?.contains(
-                                                                'italic') ??
-                                                        false
+                                                fontStyle: model.isItalic(footer
+                                                        ?.skipButton?.fontStyle)
                                                     ? FontStyle.italic
                                                     : null,
-                                                decoration: footer?.skipButton
-                                                            ?.fontStyle
-                                                            ?.contains(
-                                                                'underline') ??
-                                                        false
+                                                decoration: model.isUnderline(
+                                                            footer?.skipButton
+                                                                ?.fontStyle) &&
+                                                        true
                                                     ? TextDecoration.overline
                                                     : null,
-                                                fontWeight: footer?.skipButton
-                                                            ?.fontStyle
-                                                            ?.contains(
-                                                                'bold') ??
-                                                        false
-                                                    ? FontWeight.bold
+                                                fontWeight: model.isBold(footer
+                                                        ?.skipButton?.fontStyle)
+                                                    ? FontWeight.w800
                                                     : null,
                                                 color: model.getColor(footer
                                                         ?.skipButton
@@ -241,36 +252,32 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                           '') ==
                                                                       ''
                                                                   ? 'Previous'
-                                                                  : '${footer!.prevButton!.title!}',
+                                                                  : footer!
+                                                                      .prevButton!
+                                                                      .title!,
                                                               maxLines: 2,
                                                               minFontSize: 20,
                                                               style: TextStyle(
-                                                                fontStyle: footer
-                                                                            ?.prevButton
-                                                                            ?.fontStyle
-                                                                            ?.contains(
-                                                                                'italic') ??
-                                                                        false
+                                                                fontFamily: footer
+                                                                    ?.skipButton
+                                                                    ?.fontName,
+                                                                fontStyle: model.isItalic(footer
+                                                                        ?.prevButton
+                                                                        ?.fontStyle)
                                                                     ? FontStyle
                                                                         .italic
                                                                     : null,
-                                                                decoration: footer
-                                                                            ?.prevButton
-                                                                            ?.fontStyle
-                                                                            ?.contains(
-                                                                                'underline') ??
-                                                                        false
+                                                                decoration: model.isUnderline(footer
+                                                                        ?.prevButton
+                                                                        ?.fontStyle)
                                                                     ? TextDecoration
                                                                         .overline
                                                                     : null,
-                                                                fontWeight: footer
-                                                                            ?.prevButton
-                                                                            ?.fontStyle
-                                                                            ?.contains(
-                                                                                'bold') ??
-                                                                        false
+                                                                fontWeight: model.isBold(footer
+                                                                        ?.prevButton
+                                                                        ?.fontStyle)
                                                                     ? FontWeight
-                                                                        .bold
+                                                                        .w800
                                                                     : null,
                                                                 fontSize: footer
                                                                     ?.prevButton
@@ -315,25 +322,24 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                 '') ==
                                                             ''
                                                         ? 'Next'
-                                                        : '${footer!.nextButton!.title!}',
+                                                        : footer!
+                                                            .nextButton!.title!,
                                                     maxLines: 2,
                                                     style: TextStyle(
-                                                        fontStyle: footer?.nextButton?.fontStyle?.contains('italic') ?? false
+                                                        fontFamily: footer
+                                                            ?.skipButton
+                                                            ?.fontName,
+                                                        fontStyle: model.isItalic(footer?.nextButton?.fontStyle)
                                                             ? FontStyle.italic
                                                             : null,
-                                                        decoration:
-                                                            footer?.nextButton?.fontStyle?.contains('underline') ??
-                                                                    false
-                                                                ? TextDecoration
-                                                                    .overline
-                                                                : null,
-                                                        fontWeight: footer
-                                                                    ?.nextButton
-                                                                    ?.fontStyle
-                                                                    ?.contains(
-                                                                        'bold') ??
-                                                                false
-                                                            ? FontWeight.bold
+                                                        decoration: model.isUnderline(footer?.nextButton?.fontStyle)
+                                                            ? TextDecoration
+                                                                .overline
+                                                            : null,
+                                                        fontWeight: model.isBold(footer
+                                                                ?.nextButton
+                                                                ?.fontStyle)
+                                                            ? FontWeight.w800
                                                             : null,
                                                         fontSize: footer
                                                             ?.nextButton

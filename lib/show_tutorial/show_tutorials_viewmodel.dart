@@ -273,44 +273,6 @@ class ShowTutorialsModel extends ChangeNotifier {
     }
   }
 
-  /// Getting all the [Widget] from the current [BuildContext].
-  // void getAllElements(BuildContext context) async {
-  //   await loadData();
-  //   void inspectRecursively(Element child) {
-  //     if (child.widget is BottomNavigationBar) {
-  //       _bottomNavHeight = child.size?.height ?? 0.0;
-  //     }
-  //     final rootWidget = child.widget;
-  //     if (rootWidget.key != null && (tutorialList.isNotEmpty)) {
-  //       if (getStringFromKey(rootWidget.key!)) {
-  //         final offset = getOffset(child.renderObject!);
-  //         final layoutDetails = WidgetDataClass(
-  //             yAxis: offset.dy,
-  //             xAxis: offset.dx,
-  //             rect: child.renderObject!.paintBounds,
-  //             child: child);
-
-  //         print('-----------------------------');
-  //         print('The type is ${rootWidget.runtimeType}');
-  //         print('The size is ${child.renderObject!.paintBounds.size}');
-  //         print('The key type is ${rootWidget.key.runtimeType}');
-  //         print('The key is ${rootWidget.key}');
-  //         print('The offset is ${getOffset(child.renderObject!)}');
-  //         print('-----------------------------');
-
-  //         keyList.add(getStringValueFromKey(rootWidget.key!));
-  //         widgetList.add(layoutDetails);
-  //       }
-  //     }
-
-  //     child.visitChildren(inspectRecursively);
-  //   }
-
-  //   // ignore: use_build_context_synchronously
-  //   context.visitChildElements(inspectRecursively);
-  //   searchElement(0);
-  // }
-
   String getStringValueFromKey(Key key) {
     if (key is UpshotLabeledGlobalKey) {
       return key.value;
@@ -559,5 +521,17 @@ class ShowTutorialsModel extends ChangeNotifier {
     } else {
       return true;
     }
+  }
+
+  bool isBold(List? fonyStyle) {
+    return fonyStyle?.contains('bold') ?? false;
+  }
+
+  bool isItalic(List? fontStyle) {
+    return fontStyle?.contains('italic') ?? false;
+  }
+
+  bool isUnderline(List? fontStyle) {
+    return fontStyle?.contains('underline') ?? false;
   }
 }

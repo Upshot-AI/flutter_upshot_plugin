@@ -354,7 +354,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
             @Override
             public void brandKinesisInteractiveTutorialInfoForPlugin(String data) {
-                Log.d("brandKinesisInteractiveTutorialInfoForPlugin",data.toString());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
