@@ -21,7 +21,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       ShowTutorialsModel.instance.getToolTipSize();
     });
   }
@@ -154,7 +154,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                           flex: 3,
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                backgroundColor: model
+                                                primary: model
                                                         .getColor(footer
                                                             ?.skipButton
                                                             ?.backgroundColor)
@@ -223,8 +223,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                     const Size
                                                                             .fromHeight(
                                                                         44),
-                                                                backgroundColor:
-                                                                    model.getColor(footer
+                                                                primary: model
+                                                                    .getColor(footer
                                                                         ?.prevButton
                                                                         ?.backgroundColor)),
                                                             onPressed: () {
@@ -238,7 +238,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                           1);
                                                               WidgetsBinding
                                                                   .instance
-                                                                  .addPostFrameCallback(
+                                                                  ?.addPostFrameCallback(
                                                                       (_) {
                                                                 model
                                                                     .getToolTipSize();
@@ -302,15 +302,14 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                       fixedSize:
                                                           const Size.fromHeight(
                                                               44),
-                                                      backgroundColor:
-                                                          model.getColor(footer
-                                                              ?.nextButton
+                                                      primary: model.getColor(
+                                                          footer?.nextButton
                                                               ?.backgroundColor)),
                                                   onPressed: () {
                                                     model.isVisibile = false;
                                                     model.nextTap(context);
                                                     WidgetsBinding.instance
-                                                        .addPostFrameCallback(
+                                                        ?.addPostFrameCallback(
                                                             (_) {
                                                       model.getToolTipSize();
                                                       model.isVisibile = true;

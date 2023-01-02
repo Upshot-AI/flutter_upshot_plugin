@@ -28,7 +28,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   void initState() {
     super.initState();
     model = ShowTutorialsModel.instance;
-    WidgetsBinding.instance.endOfFrame.then((_) => {
+    WidgetsBinding.instance?.endOfFrame.then((_) => {
           model.getToolTipSize(),
           ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {
             'campaignId': model.interactiveTutorialModel?.campaignId ?? '',

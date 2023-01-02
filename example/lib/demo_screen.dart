@@ -45,7 +45,7 @@ class _DemoClassState extends State<DemoClass> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.abc_outlined,
+              Icons.ac_unit,
               color: Colors.black,
               size: 25,
               key: Key('drawer6'),

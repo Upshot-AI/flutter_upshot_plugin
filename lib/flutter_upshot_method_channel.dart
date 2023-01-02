@@ -20,7 +20,7 @@ class UpshotMethodChannelInternal {
       if (context != null &&
           data != null &&
           !ShowTutorialsModel.instance.isTutorialPresent) {
-        Future.delayed(const Duration(milliseconds: 200), () {
+        Future.delayed(const Duration(milliseconds: 400), () {
           showTutorials(context!, UpshotMethodChannelInternal.data!);
         });
       } else {
