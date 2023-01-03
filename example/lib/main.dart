@@ -1,9 +1,8 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/upshotConstants.dart';
@@ -61,8 +60,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initializeBrandKinesisWithOptions() async {
     Map optionsMap = {
-      UpshotInitOptions.appId: "de8b0f3d-5fe8-44ab-95eb-8220b74f9f03",
-      UpshotInitOptions.ownerId: "b8662993-d078-4b5b-abc6-deefc9f6734d",
+      UpshotInitOptions.appId: "44cf9d1c-4d48-4e9b-b017-f5d021972ec7",
+      UpshotInitOptions.ownerId: "169b91dc-5813-44ef-9348-954d05739ecd",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,

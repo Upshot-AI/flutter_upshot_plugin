@@ -38,33 +38,75 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontSize: 20),
         ),
       ),
-      bottomNavigationBar:
-          BottomNavigationBar(key: const Key('navDrawer'), items: const [
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: Colors.black,
-              size: 25,
-              key: Key('drawer1'),
-            ),
-            label: 'Home'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.map,
-              color: Colors.black,
-              size: 25,
-              key: Key('drawer2'),
-            ),
-            label: 'Map'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.local_post_office,
-              color: Colors.black,
-              size: 25,
-              key: Key('drawer3'),
-            ),
-            label: 'Notification'),
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+          key: const Key('navDrawer'),
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer1'),
+                ),
+                label: 'drawer1'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.map,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer2'),
+                ),
+                label: 'drawer2'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.local_post_office,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer3'),
+                ),
+                label: 'drawer3'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer4'),
+                ),
+                label: 'drawer4'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer5'),
+                ),
+                label: 'drawer5'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer6'),
+                ),
+                label: 'drawer6'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer7'),
+                ),
+                label: 'drawer7'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                  size: 25,
+                  key: Key('drawer8'),
+                ),
+                label: 'drawer8'),
+          ]),
       body: SingleChildScrollView(
         child: Column(
           // controller: controller,
@@ -77,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: () {
-                  FlutterUpshotPlugin.showActivity(-1, '');
+                  FlutterUpshotPlugin.showActivity(-1, 'Feature');
                 },
                 key: const ValueKey('Button1'),
                 child: const Text(

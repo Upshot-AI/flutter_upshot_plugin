@@ -1,15 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show MethodChannel, rootBundle;
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/footer_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
-import 'package:flutter/services.dart' show MethodChannel, rootBundle;
-import 'widget/tool_tip_widget.dart';
+
 import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
+import 'widget/tool_tip_widget.dart';
 
 class ShowTutorialInheritedNotifier
     extends InheritedNotifier<ShowTutorialsModel> {
@@ -133,7 +134,7 @@ class ShowTutorialsModel extends ChangeNotifier {
       toolTipDataClass = ToolTipDataClass(
           isUp: false,
           yAxis: _screenHeight *
-              ((tutorialList[_selectedIndex].position ?? 50) / 100));
+              (1 - ((tutorialList[_selectedIndex].position ?? 50) / 100)));
     }
     print('The yAxis is ${toolTipDataClass.yAxis}');
     return toolTipDataClass;
@@ -405,18 +406,18 @@ class ShowTutorialsModel extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> loadData() async {
-    try {
-      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
-          await rootBundle.loadString(
-              'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
-
-      tutorialList.addAll(_interactiveTutorialModel!.elements!);
-      notifyListeners();
-    } catch (e) {
-      log('Error while loading assets');
-    }
-  }
+  // Future<void> loadData() async {
+  //   try {
+  //     _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
+  //         await rootBundle.loadString(
+  //             'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
+  //
+  //     tutorialList.addAll(_interactiveTutorialModel!.elements!);
+  //     notifyListeners();
+  //   } catch (e) {
+  //     log('Error while loading assets');
+  //   }
+  // }
 
   void getData(String data) {
     try {

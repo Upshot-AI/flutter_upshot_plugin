@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/button_info.dart';
-import '../services/auto_size_text.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/show_tutorials_viewmodel.dart';
+
+import '../services/auto_size_text.dart';
 import '../services/tool_tip_clipper.dart';
 
 /// [ToolTipWidget] is the widget which will be describing widget for the highlighted widget.
@@ -110,10 +111,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                           ?.toDouble()),
                                   fontFamily: tutorial.description?.fontName),
                               "p": Style(
-                                  fontSize: FontSize(
-                                      (tutorial.description?.fontSize)
-                                          ?.toDouble()),
-                                  fontFamily: tutorial.description?.fontName),
+                                fontSize: FontSize(
+                                    (tutorial.description?.fontSize)
+                                        ?.toDouble()),
+                                fontFamily: tutorial.description?.fontName,
+                              ),
                               "span": Style(
                                   fontSize: FontSize(
                                       (tutorial.description?.fontSize)
@@ -190,7 +192,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                             footer?.skipButton
                                                                 ?.fontStyle) &&
                                                         true
-                                                    ? TextDecoration.overline
+                                                    ? TextDecoration.underline
                                                     : null,
                                                 fontWeight: model.isBold(footer
                                                         ?.skipButton?.fontStyle)
@@ -214,9 +216,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                 footer?.prevButton?.title)
                                             ? Flexible(
                                                 child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
                                                   children: [
-                                                    Expanded(
-                                                        // flex: 4,
+                                                    Flexible(
                                                         child: ElevatedButton(
                                                             style: ElevatedButton.styleFrom(
                                                                 fixedSize:
@@ -271,7 +274,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                         ?.prevButton
                                                                         ?.fontStyle)
                                                                     ? TextDecoration
-                                                                        .overline
+                                                                        .underline
                                                                     : null,
                                                                 fontWeight: model.isBold(footer
                                                                         ?.prevButton
@@ -333,12 +336,12 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                             : null,
                                                         decoration: model.isUnderline(footer?.nextButton?.fontStyle)
                                                             ? TextDecoration
-                                                                .overline
+                                                                .underline
                                                             : null,
                                                         fontWeight: model.isBold(footer
                                                                 ?.nextButton
                                                                 ?.fontStyle)
-                                                            ? FontWeight.w800
+                                                            ? FontWeight.bold
                                                             : null,
                                                         fontSize: footer
                                                             ?.nextButton
@@ -368,5 +371,14 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
         ],
       ),
     );
+  }
+}
+
+class Demo extends StatelessWidget {
+  const Demo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
