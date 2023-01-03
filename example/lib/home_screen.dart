@@ -12,34 +12,35 @@ class DemoApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
+class HomeScreen extends StatelessWidget {
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       FlutterUpshotPlugin.showActivity(-1, '', context);
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'HomeScreen',
-          key: ValueKey('element_1'),
-          style: TextStyle(fontSize: 20),
-        ),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, key: UpshotGlobalKey('')),
+            onPressed: () => Navigator.pop(context)),
+
+        actions: [
+          const Text(
+            'Home',
+            key: Key('tabbar_home'),
+            style: TextStyle(fontSize: 20),
+          ),
+          // Icon(Icons.logout, key: UpshotLabeledGlobalKey('logout'))
+        ],
+        // title: const Text(
+        //   'HomeScreen',
+        //   key: Key('arrow_back'),
+        //   style: TextStyle(fontSize: 20),
+        // ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          key: const Key('navDrawer'),
+          key: const Key(''),
           type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(

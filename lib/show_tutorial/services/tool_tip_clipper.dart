@@ -18,17 +18,32 @@ class ToolTipClipper extends CustomClipper<Path> {
         ..lineTo(size.width - 20, size.height)
         ..quadraticBezierTo(size.width, size.height, size.width,
             size.height - 20) // ToolTip bottomRight borderRadius
-        ..lineTo(size.width, 40)
-        ..quadraticBezierTo(size.width, 20, size.width - 20,
+        ..lineTo(size.width, 40);
+      if (!canShow) {
+        path.quadraticBezierTo(size.width, 20, size.width - 20,
             20); // ToolTip topRight borderRadius
+      }
 
       // Pointing arrow paths
       if (canShow) {
-        path.lineTo(rect!.bottomCenter.dx - 5, 20);
-        path.lineTo(rect!.bottomCenter.dx - 15, 7);
-        path.quadraticBezierTo(
-            rect!.bottomCenter.dx - 20, 0, rect!.bottomCenter.dx - 25, 7);
-        path.lineTo(rect!.bottomCenter.dx - 35, 20);
+        if (rect!.bottomCenter.dx >= size.width) {
+          path.lineTo(size.width, 5);
+          path.lineTo(size.width - 15, 20);
+          // path.quadraticBezierTo(size.width - 10, 5, size.width - 15, 20);
+        } else {
+          path.quadraticBezierTo(size.width, 20, size.width - 20,
+              20); // ToolTip topRight borderRadius
+          path.lineTo(rect!.bottomCenter.dx - 5, 20);
+          path.lineTo(rect!.bottomCenter.dx - 15, 7);
+          path.quadraticBezierTo(
+              rect!.bottomCenter.dx - 20, 0, rect!.bottomCenter.dx - 25, 7);
+        }
+
+        if (rect!.bottomCenter.dx - 35 < 0) {
+          path.lineTo(0, 40);
+        } else {
+          path.lineTo(rect!.bottomCenter.dx - 35, 20);
+        }
       }
 
       return path;

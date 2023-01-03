@@ -31,7 +31,7 @@ class _DemoClassState extends State<DemoClass> {
     return Scaffold(
       appBar: AppBar(title: const Text('AppBar')),
       bottomNavigationBar: BottomNavigationBar(
-        key: const Key('navDrawer'),
+        key: const Key('tabbar_home'),
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
@@ -75,8 +75,8 @@ class _DemoClassState extends State<DemoClass> {
       body: Column(
         children: [
           ElevatedButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const HomeScreen())),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeScreen())),
             child: const Text('Pres'),
           ),
           Container(

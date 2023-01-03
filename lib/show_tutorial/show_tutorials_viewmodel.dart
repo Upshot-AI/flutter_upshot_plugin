@@ -134,7 +134,7 @@ class ShowTutorialsModel extends ChangeNotifier {
       toolTipDataClass = ToolTipDataClass(
           isUp: false,
           yAxis: _screenHeight *
-              (1 - ((tutorialList[_selectedIndex].position ?? 50) / 100)));
+              (((tutorialList[_selectedIndex].position ?? 50) / 100)));
     }
     print('The yAxis is ${toolTipDataClass.yAxis}');
     return toolTipDataClass;
