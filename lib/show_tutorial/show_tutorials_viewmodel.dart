@@ -36,6 +36,7 @@ class ShowTutorialsModel extends ChangeNotifier {
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
+  double _statusBarHeight = 0.0;
   double _screenHeight = 0.0;
   double _screenWidth = 0.0;
   double _toolTipHeight = 0.0;
@@ -131,10 +132,18 @@ class ShowTutorialsModel extends ChangeNotifier {
         toolTipDataClass = _getValue(widgetDataClass);
       }
     } else {
-      toolTipDataClass = ToolTipDataClass(
-          isUp: false,
-          yAxis: _screenHeight *
-              (((tutorialList[_selectedIndex].position ?? 50) / 100)));
+      final positionValue = _screenHeight *
+          (1 - ((tutorialList[_selectedIndex].position ?? 50) / 100));
+
+      if (positionValue + _toolTipHeight > _screenHeight) {
+        toolTipDataClass = ToolTipDataClass(
+            isUp: false, yAxis: _screenHeight - _toolTipHeight);
+      } else if (positionValue <= _statusBarHeight) {
+        toolTipDataClass =
+            ToolTipDataClass(isUp: false, yAxis: _statusBarHeight);
+      } else {
+        toolTipDataClass = ToolTipDataClass(isUp: false, yAxis: positionValue);
+      }
     }
     print('The yAxis is ${toolTipDataClass.yAxis}');
     return toolTipDataClass;
@@ -181,8 +190,10 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   /// Getting the device's [Size] using current [BuildContext]
   void getScreenDetails(BuildContext context) {
-    _screenHeight = MediaQuery.of(context).size.height;
-    _screenWidth = MediaQuery.of(context).size.width;
+    final mediaQueryData = MediaQuery.of(context);
+    _screenHeight = mediaQueryData.size.height;
+    _screenWidth = mediaQueryData.size.width;
+    _statusBarHeight = mediaQueryData.viewPadding.top;
     print('The screen dimension is $_screenHeight , $_screenWidth');
     // notifyListeners();
   }

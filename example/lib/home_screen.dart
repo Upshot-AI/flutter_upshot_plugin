@@ -12,102 +12,131 @@ class DemoApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      FlutterUpshotPlugin.showActivity(-1, 'exitIntent', context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      FlutterUpshotPlugin.showActivity(-1, '', context);
-    });
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back, key: UpshotGlobalKey('')),
-            onPressed: () => Navigator.pop(context)),
-
+        leading: Row(
+          children: [
+            Expanded(
+              child: IconButton(
+                  icon: Icon(Icons.arrow_back,
+                      key: UpshotGlobalKey('arrow_back')),
+                  onPressed: () => Navigator.pop(context)),
+            ),
+            Expanded(
+              child: IconButton(
+                  icon: Icon(Icons.arrow_back,
+                      key: UpshotGlobalKey('arrow_back1')),
+                  onPressed: () => Navigator.pop(context)),
+            ),
+          ],
+        ),
         actions: [
           const Text(
-            'Home',
-            key: Key('tabbar_home'),
+            'Ho',
+            key: Key('logout1'),
+            style: TextStyle(fontSize: 20),
+          ),
+          const SizedBox(width: 10),
+          const Text(
+            'Ho',
+            key: Key('logout'),
             style: TextStyle(fontSize: 20),
           ),
           // Icon(Icons.logout, key: UpshotLabeledGlobalKey('logout'))
         ],
-        // title: const Text(
-        //   'HomeScreen',
-        //   key: Key('arrow_back'),
-        //   style: TextStyle(fontSize: 20),
-        // ),
+        centerTitle: true,
+        title: const Text(
+          'HomeScreen',
+          key: Key('appbar_text'),
+          style: TextStyle(fontSize: 20),
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          key: const Key(''),
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer1'),
-                ),
-                label: 'drawer1'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.map,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer2'),
-                ),
-                label: 'drawer2'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.local_post_office,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer3'),
-                ),
-                label: 'drawer3'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer4'),
-                ),
-                label: 'drawer4'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer5'),
-                ),
-                label: 'drawer5'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer6'),
-                ),
-                label: 'drawer6'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer7'),
-                ),
-                label: 'drawer7'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                  size: 25,
-                  key: Key('drawer8'),
-                ),
-                label: 'drawer8'),
-          ]),
+      // bottomNavigationBar: BottomNavigationBar(
+      //     key: const Key('main_drawer'),
+      //     type: BottomNavigationBarType.fixed,
+      //     items: const [
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer1'),
+      //           ),
+      //           label: 'drawer1'),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.map,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer2'),
+      //           ),
+      //           label: 'drawer2'),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.local_post_office,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer3'),
+      //           ),
+      //           label: 'drawer3'),
+      //       // BottomNavigationBarItem(
+      //       //     icon: Icon(
+      //       //       Icons.home,
+      //       //       color: Colors.black,
+      //       //       size: 25,
+      //       //       key: Key('drawer4'),
+      //       //     ),
+      //       //     label: 'drawer4'),
+      //       // BottomNavigationBarItem(
+      //       //     icon: Icon(
+      //       //       Icons.home,
+      //       //       color: Colors.black,
+      //       //       size: 25,
+      //       //       key: Key('drawer5'),
+      //       //     ),
+      //       //     label: 'drawer5'),
+      //       // BottomNavigationBarItem(
+      //       //     icon: Icon(
+      //       //       Icons.home,
+      //       //       color: Colors.black,
+      //       //       size: 25,
+      //       //       key: Key('drawer6'),
+      //       //     ),
+      //       //     label: 'drawer6'),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer7'),
+      //           ),
+      //           label: 'drawer7'),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer8'),
+      //           ),
+      //           label: 'drawer8'),
+      //     ]),
       body: SingleChildScrollView(
         child: Column(
           // controller: controller,
@@ -120,7 +149,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: () {
-                  FlutterUpshotPlugin.showActivity(-1, 'Feature');
+                  FlutterUpshotPlugin.showActivity(-1, 'Profile');
                 },
                 key: const ValueKey('Button1'),
                 child: const Text(
@@ -313,6 +342,49 @@ class HomeScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 30),
               key: UpshotLabeledGlobalKey('element_2'),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: SafeArea(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      key: ValueKey('drawer1'),
+                      width: 20,
+                      height: 20,
+                    ),
+                    SizedBox(
+                      key: ValueKey('drawer2'),
+                      width: 30,
+                      height: 30,
+                    ),
+                    SizedBox(
+                      key: ValueKey(''),
+                      width: 30,
+                      height: 30,
+                    ),
+                    SizedBox(
+                      key: ValueKey('1'),
+                      width: 30,
+                      height: 30,
+                    ),
+                    SizedBox(
+                      key: ValueKey('drawer3'),
+                      width: 30,
+                      height: 30,
+                    ),
+                    SizedBox(
+                      key: ValueKey('drawer4'),
+                      width: 30,
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 200,
+            )
           ],
         ),
       ),

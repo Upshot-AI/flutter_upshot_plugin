@@ -95,7 +95,6 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                             maxHeight: MediaQuery.of(context).size.height * 0.5,
                             minHeight: 50),
                         child: ToolTipWidget(
-                          key: m.toolTipGlobalKey,
                           isUp: m.getYAxis().isUp,
                           enableTap:
                               m.interactiveTutorialModel?.enableTap ?? false,

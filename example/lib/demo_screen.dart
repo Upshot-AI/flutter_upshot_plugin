@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
+import 'package:flutter_upshot_plugin/upshotConstants.dart';
 import 'home_screen.dart';
 
 class DemoClass extends StatefulWidget {
@@ -15,7 +16,20 @@ class _DemoClassState extends State<DemoClass> {
   @override
   void initState() {
     super.initState();
-    FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
+    initializeBrandKinesisWithOptions();
+    // FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
+  }
+
+  void initializeBrandKinesisWithOptions() {
+    Map<String, dynamic> optionsMap = {
+      UpshotInitOptions.appId: "cbc8c46d-0a21-4559-a30e-98540e41a1d5",
+      UpshotInitOptions.ownerId: "169b91dc-5813-44ef-9348-954d05739ecd",
+      UpshotInitOptions.enableDebuglogs: false,
+      UpshotInitOptions.enableLocation: false,
+      UpshotInitOptions.enableCrashlogs: true,
+      UpshotInitOptions.enableExternalStorage: false
+    };
+    FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
   }
 
   Color? getColor(String? hexColor) {

@@ -85,6 +85,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                   : null,
             ),
             child: Container(
+              key: model.toolTipGlobalKey,
               decoration: BoxDecoration(
                   color: model
                           .getColor(tutorial.description?.bgColor)
@@ -106,10 +107,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                 .descriptionText(tutorial.description?.text),
                             style: {
                               "div": Style(
-                                  fontSize: FontSize(
-                                      (tutorial.description?.fontSize)
-                                          ?.toDouble()),
-                                  fontFamily: tutorial.description?.fontName),
+                                fontSize: FontSize(
+                                    (tutorial.description?.fontSize)
+                                        ?.toDouble()),
+                                fontFamily: tutorial.description?.fontName,
+                              ),
                               "p": Style(
                                 fontSize: FontSize(
                                     (tutorial.description?.fontSize)
@@ -117,10 +119,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                 fontFamily: tutorial.description?.fontName,
                               ),
                               "span": Style(
-                                  fontSize: FontSize(
-                                      (tutorial.description?.fontSize)
-                                          ?.toDouble()),
-                                  fontFamily: tutorial.description?.fontName),
+                                fontSize: FontSize(
+                                    (tutorial.description?.fontSize)
+                                        ?.toDouble()),
+                                fontFamily: tutorial.description?.fontName,
+                              ),
                               "li": Style(
                                   fontSize: FontSize(
                                       (tutorial.description?.fontSize)
@@ -156,6 +159,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                           flex: 3,
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
+                                                splashFactory:
+                                                    NoSplash.splashFactory,
                                                 primary: model
                                                         .getColor(footer
                                                             ?.skipButton
@@ -222,6 +227,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                     Flexible(
                                                         child: ElevatedButton(
                                                             style: ElevatedButton.styleFrom(
+                                                                splashFactory:
+                                                                    NoSplash
+                                                                        .splashFactory,
                                                                 fixedSize:
                                                                     const Size
                                                                             .fromHeight(
@@ -259,7 +267,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                       .prevButton!
                                                                       .title!,
                                                               maxLines: 2,
-                                                              minFontSize: 20,
                                                               style: TextStyle(
                                                                 fontFamily: footer
                                                                     ?.skipButton
@@ -302,6 +309,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                 // flex: 3,
                                                 child: ElevatedButton(
                                                   style: ElevatedButton.styleFrom(
+                                                      splashFactory: NoSplash
+                                                          .splashFactory,
                                                       fixedSize:
                                                           const Size.fromHeight(
                                                               44),

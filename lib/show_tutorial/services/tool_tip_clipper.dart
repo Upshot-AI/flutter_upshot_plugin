@@ -29,7 +29,6 @@ class ToolTipClipper extends CustomClipper<Path> {
         if (rect!.bottomCenter.dx >= size.width) {
           path.lineTo(size.width, 5);
           path.lineTo(size.width - 15, 20);
-          // path.quadraticBezierTo(size.width - 10, 5, size.width - 15, 20);
         } else {
           path.quadraticBezierTo(size.width, 20, size.width - 20,
               20); // ToolTip topRight borderRadius
@@ -39,7 +38,7 @@ class ToolTipClipper extends CustomClipper<Path> {
               rect!.bottomCenter.dx - 20, 0, rect!.bottomCenter.dx - 25, 7);
         }
 
-        if (rect!.bottomCenter.dx - 35 < 0) {
+        if (rect!.bottomCenter.dx - 35 < 20) {
           path.lineTo(0, 40);
         } else {
           path.lineTo(rect!.bottomCenter.dx - 35, 20);
@@ -50,23 +49,40 @@ class ToolTipClipper extends CustomClipper<Path> {
     } else {
       var path = Path()
         ..moveTo(20, 0)
-        ..quadraticBezierTo(0, 0, 0, 20) // ToolTip topLeft borderRadius
-        ..lineTo(0, size.height - 40)
-        ..quadraticBezierTo(0, size.height - 20, 20,
-            size.height - 20); // ToolTip bottomLeft borderRadius
+        ..quadraticBezierTo(0, 0, 0, 20); // ToolTip topLeft borderRadius
+      if (canShow && (rect!.topCenter.dx - 35 <= 0)) {
+        path.lineTo(0, size.height - 20);
+      } else {
+        path.lineTo(0, size.height - 40);
+      }
+      path.quadraticBezierTo(0, size.height - 20, 20,
+          size.height - 20); // ToolTip bottomLeft borderRadius
       // Pointing arrow paths
       if (canShow) {
         path.lineTo(rect!.topCenter.dx - 35,
             size.height - 20); // This is the start point for arrow
-        path.lineTo(rect!.topCenter.dx - 25, size.height - 7);
-        path.quadraticBezierTo(rect!.topCenter.dx - 20, size.height,
-            rect!.topCenter.dx - 15, size.height - 7);
+        if (rect!.topCenter.dx - 35 <= 0) {
+          path.lineTo(rect!.topCenter.dx - 25, size.height - 7);
+          path.lineTo(rect!.topCenter.dx - 30, size.height);
+        } else if (rect!.topCenter.dx >= size.width) {
+          path.lineTo(size.width, size.height);
+        } else {
+          path.lineTo(rect!.topCenter.dx - 25, size.height - 7);
+
+          path.quadraticBezierTo(rect!.topCenter.dx - 20, size.height,
+              rect!.topCenter.dx - 15, size.height - 7);
+        }
         path.lineTo(rect!.topCenter.dx - 5,
             size.height - 20); // This is the end points for arrow
       }
 
       ///////////////////////
-      path.lineTo(size.width - 20, size.height - 20);
+      if (canShow && rect!.topCenter.dx >= size.width) {
+        path.lineTo(size.width, size.height - 20);
+      } else {
+        path.lineTo(size.width - 20, size.height - 20);
+      }
+
       path.quadraticBezierTo(size.width, size.height - 20, size.width,
           size.height - 40); // ToolTip bottomRight borderRadius
       path.lineTo(size.width, 20);
