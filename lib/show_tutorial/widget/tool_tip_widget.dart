@@ -167,7 +167,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                             ?.backgroundColor)
                                                         ?.withOpacity((tutorial
                                                                     .footer
-                                                                    ?.prevButton
+                                                                    ?.skipButton
                                                                     ?.opacity ??
                                                                 1)
                                                             .toDouble()) ??
