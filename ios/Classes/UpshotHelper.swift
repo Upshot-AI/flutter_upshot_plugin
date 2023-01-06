@@ -141,6 +141,7 @@ class UpshotHelper: NSObject {
     
     func showActivity(activityType: BKActivityType, tag: String) {                
        
+//        showAlert(title: "Activity Request", message: tag)
         BrandKinesis.sharedInstance().showActivity(with: activityType, andTag: tag)
     }
     
@@ -507,6 +508,17 @@ class UpshotHelper: NSObject {
         }
         return nil
     }
+    
+    func showAlert(title: String, message: String) {
+        
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            
+            let alertController: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(action)
+            controller.present(alertController, animated: false, completion: nil)
+        }
+    }
 }
 
 extension UpshotHelper: BrandKinesisDelegate {
@@ -627,10 +639,10 @@ extension UpshotHelper: BrandKinesisDelegate {
     func brandKinesisInteractiveTutorialInfo(forPlugin jsonString: String) {
         
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
-            
             let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: jsonString)
+                self.showAlert(title: "Activity Request", message: jsonString)
             }
         }
     }
