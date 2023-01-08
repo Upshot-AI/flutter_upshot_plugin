@@ -417,18 +417,18 @@ class ShowTutorialsModel extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  // Future<void> loadData() async {
-  //   try {
-  //     _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
-  //         await rootBundle.loadString(
-  //             'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
-  //
-  //     tutorialList.addAll(_interactiveTutorialModel!.elements!);
-  //     notifyListeners();
-  //   } catch (e) {
-  //     log('Error while loading assets');
-  //   }
-  // }
+  Future<void> loadData() async {
+    try {
+      _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
+          await rootBundle.loadString(
+              'packages/flutter_upshot_plugin/assets/new_tutorial_json.json'));
+
+      tutorialList.addAll(_interactiveTutorialModel!.elements!);
+      notifyListeners();
+    } catch (e) {
+      log('Error while loading assets');
+    }
+  }
 
   void getData(String data) {
     try {
@@ -499,11 +499,11 @@ class ShowTutorialsModel extends ChangeNotifier {
     keyList.clear();
   }
 
-  bool shouldShowSkip(FooterInfo? footerInfo) {
-    if (footerInfo != null) {
-      String skipButtonTitle = footerInfo.skipButton?.title ?? '';
-      String prevButtonTitle = footerInfo.prevButton?.title ?? '';
-      String nextButtonTitle = footerInfo.nextButton?.title ?? '';
+  bool shouldShowSkip(FooterInfo? footer) {
+    if (footer != null) {
+      String skipButtonTitle = footer.skipButton?.title ?? '';
+      String prevButtonTitle = footer.prevButton?.title ?? '';
+      String nextButtonTitle = footer.nextButton?.title ?? '';
 
       if (prevButtonTitle == '' && nextButtonTitle == '') {
         return true;

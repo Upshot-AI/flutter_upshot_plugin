@@ -642,7 +642,7 @@ extension UpshotHelper: BrandKinesisDelegate {
             let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: jsonString)
-                self.showAlert(title: "Activity Request", message: jsonString)
+                // self.showAlert(title: "Activity Request", message: jsonString)
             }
         }
     }

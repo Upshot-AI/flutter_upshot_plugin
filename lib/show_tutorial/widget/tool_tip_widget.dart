@@ -38,23 +38,24 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
       maintainAnimation: true,
       maintainState: true,
       maintainSize: true,
-      child: Stack(
-        children: [
-          (tutorial.bgImage != null && tutorial.bgImage != "")
-              ? ClipPath(
-                  clipBehavior: Clip.antiAlias,
-                  clipper: ToolTipClipper(
-                      isUp: widget.isUp,
-                      canShow: model.canShow,
-                      rect: model.currentWidget != null
-                          ? Rect.fromLTWH(
-                              model.currentWidget!.xAxis,
-                              model.currentWidget!.yAxis,
-                              model.currentWidget!.rect.width,
-                              model.currentWidget!.rect.height,
-                            )
-                          : null),
-                  child: Image.network(
+      child: ClipPath(
+        clipBehavior: Clip.antiAlias,
+        clipper: ToolTipClipper(
+          isUp: widget.isUp,
+          canShow: model.canShow,
+          rect: model.currentWidget != null
+              ? Rect.fromLTWH(
+                  model.currentWidget!.xAxis,
+                  model.currentWidget!.yAxis,
+                  model.currentWidget!.rect.width,
+                  model.currentWidget!.rect.height,
+                )
+              : null,
+        ),
+        child: Stack(
+          children: [
+            (tutorial.bgImage != null && tutorial.bgImage != "")
+                ? Image.network(
                     tutorial.bgImage!,
                     filterQuality: FilterQuality.high,
                     fit: tutorial.scaleType == 2
@@ -67,84 +68,86 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                         : ImageRepeat.noRepeat,
                     height: model.toolTipHeight,
                     width: double.infinity,
-                  ),
-                )
-              : const SizedBox(),
-          ClipPath(
-            clipBehavior: Clip.antiAlias,
-            clipper: ToolTipClipper(
-              isUp: widget.isUp,
-              canShow: model.canShow,
-              rect: model.currentWidget != null
-                  ? Rect.fromLTWH(
-                      model.currentWidget!.xAxis,
-                      model.currentWidget!.yAxis,
-                      model.currentWidget!.rect.width,
-                      model.currentWidget!.rect.height,
-                    )
-                  : null,
-            ),
-            child: Container(
+                  )
+                : const SizedBox(),
+            Container(
+              // decoration: BoxDecoration(
+              //     color: model
+              //             .getColor(tutorial.description?.bgColor)
+              //             ?.withOpacity((tutorial.description?.opacity ?? 1)
+              //                 .toDouble()) ??
+              //         Colors.white.withOpacity(
+              //             (tutorial.description?.opacity ?? 1).toDouble())),
               key: model.toolTipGlobalKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  widget.isUp ? const SizedBox(height: 20) : const SizedBox(),
                   Flexible(
                     child: SingleChildScrollView(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: model
-                                .getColor(tutorial.description?.bgColor)
-                                ?.withOpacity((tutorial.description?.opacity ?? 1)
-                                .toDouble()) ??
-                                Colors.white.withOpacity(
-                                    (tutorial.description?.opacity ?? 1).toDouble())),
-                        child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Html(
-                              data: model
-                                  .descriptionText(tutorial.description?.text),
-                              style: {
-                                "div": Style(
-                                  fontSize: FontSize(
-                                      (tutorial.description?.fontSize)
-                                          ?.toDouble()),
-                                  fontFamily: tutorial.description?.fontName,
-                                ),
-                                "p": Style(
-                                  fontSize: FontSize(
-                                      (tutorial.description?.fontSize)
-                                          ?.toDouble()),
-                                  fontFamily: tutorial.description?.fontName,
-                                ),
-                                "span": Style(
-                                  fontSize: FontSize(
-                                      (tutorial.description?.fontSize)
-                                          ?.toDouble()),
-                                  fontFamily: tutorial.description?.fontName,
-                                ),
-                                "li": Style(
+                      child: Column(
+                        children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                  color: model
+                                          .getColor(
+                                              tutorial.description?.bgColor)
+                                          ?.withOpacity(
+                                              (tutorial.description?.opacity ??
+                                                      1)
+                                                  .toDouble()) ??
+                                      Colors.white.withOpacity(
+                                          (tutorial.description?.opacity ?? 1)
+                                              .toDouble())),
+                              padding: widget.isUp
+                                  ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
+                                  : const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Html(
+                                data: model.descriptionText(
+                                    tutorial.description?.text),
+                                style: {
+                                  "div": Style(
                                     fontSize: FontSize(
                                         (tutorial.description?.fontSize)
                                             ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName),
-                                "ul": Style(
+                                    fontFamily: tutorial.description?.fontName,
+                                  ),
+                                  "p": Style(
                                     fontSize: FontSize(
                                         (tutorial.description?.fontSize)
                                             ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName),
-                              },
-                            )),
+                                    fontFamily: tutorial.description?.fontName,
+                                  ),
+                                  "span": Style(
+                                    fontSize: FontSize(
+                                        (tutorial.description?.fontSize)
+                                            ?.toDouble()),
+                                    fontFamily: tutorial.description?.fontName,
+                                  ),
+                                  "li": Style(
+                                      fontSize: FontSize(
+                                          (tutorial.description?.fontSize)
+                                              ?.toDouble()),
+                                      fontFamily:
+                                          tutorial.description?.fontName),
+                                  "ul": Style(
+                                      fontSize: FontSize(
+                                          (tutorial.description?.fontSize)
+                                              ?.toDouble()),
+                                      fontFamily:
+                                          tutorial.description?.fontName),
+                                },
+                              )),
+                        ],
                       ),
-
                     ),
                   ),
                   (widget.enableTap)
                       ? const SizedBox()
                       : Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: !widget.isUp
+                              ? const EdgeInsets.fromLTRB(10, 10, 10, 30)
+                              : const EdgeInsets.fromLTRB(10, 10, 10, 10),
                           color: model
                                   .getColor(footer?.backgroundColor)
                                   ?.withOpacity((tutorial.footer?.opacity ?? 1)
@@ -166,16 +169,14 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                 splashFactory:
                                                     NoSplash.splashFactory,
                                                 primary: model
-                                                        .getColor(footer
-                                                            ?.skipButton
-                                                            ?.backgroundColor)
-                                                        ?.withOpacity((tutorial
-                                                                    .footer
-                                                                    ?.skipButton
-                                                                    ?.opacity ??
-                                                                1)
-                                                            .toDouble()) ??
-                                                    Colors.black,
+                                                    .getColor(footer?.skipButton
+                                                        ?.backgroundColor)
+                                                    ?.withOpacity((tutorial
+                                                                .footer
+                                                                ?.skipButton
+                                                                ?.opacity ??
+                                                            1)
+                                                        .toDouble()),
                                                 fixedSize:
                                                     const Size.fromHeight(44)),
                                             onPressed: () =>
@@ -198,9 +199,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                     ? FontStyle.italic
                                                     : null,
                                                 decoration: model.isUnderline(
-                                                            footer?.skipButton
-                                                                ?.fontStyle) &&
-                                                        true
+                                                        footer?.skipButton
+                                                            ?.fontStyle)
                                                     ? TextDecoration.underline
                                                     : null,
                                                 fontWeight: model.isBold(footer
@@ -230,21 +230,20 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                   children: [
                                                     Flexible(
                                                         child: ElevatedButton(
-                                                            style: ElevatedButton.styleFrom(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
                                                               elevation: 0.0,
-                                                                splashFactory:
-                                                                    NoSplash
-                                                                        .splashFactory,
-                                                                fixedSize:
-                                                                    const Size
-                                                                            .fromHeight(
-                                                                        44),
-                                                                primary: model
-                                                                    .getColor(footer
-                                                                        ?.prevButton
-                                                                        ?.backgroundColor)?.
-                                                                withOpacity((tutorial.footer?.
-                                                                prevButton?.opacity ?? 1).toDouble()) ?? Colors.black),
+                                                              splashFactory:
+                                                                  NoSplash
+                                                                      .splashFactory,
+                                                              fixedSize: const Size
+                                                                  .fromHeight(44),
+                                                              primary: model
+                                                                  .getColor(footer
+                                                                      ?.prevButton
+                                                                      ?.backgroundColor),
+                                                            ),
                                                             onPressed: () {
                                                               model.isVisibile =
                                                                   false;
@@ -276,7 +275,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                               maxLines: 2,
                                                               style: TextStyle(
                                                                 fontFamily: footer
-                                                                    ?.prevButton
+                                                                    ?.skipButton
                                                                     ?.fontName,
                                                                 fontStyle: model.isItalic(footer
                                                                         ?.prevButton
@@ -322,12 +321,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                       fixedSize:
                                                           const Size.fromHeight(
                                                               44),
-                                                      primary: model
-                                                          .getColor(footer
-                                                          ?.nextButton
-                                                          ?.backgroundColor)?.
-                                                      withOpacity((tutorial.footer?.
-                                                      nextButton?.opacity ?? 1).toDouble()) ?? Colors.black),
+                                                      primary: model.getColor(
+                                                          footer?.nextButton
+                                                              ?.backgroundColor)),
                                                   onPressed: () {
                                                     model.isVisibile = false;
                                                     model.nextTap(context);
@@ -349,7 +345,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                     maxLines: 2,
                                                     style: TextStyle(
                                                         fontFamily: footer
-                                                            ?.nextButton
+                                                            ?.skipButton
                                                             ?.fontName,
                                                         fontStyle: model.isItalic(footer?.nextButton?.fontStyle)
                                                             ? FontStyle.italic
@@ -378,27 +374,18 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                   ),
                                 ],
                               ),
-                              !widget.isUp
-                                  ? const SizedBox(height: 20)
-                                  : const SizedBox(),
+                              // !widget.isUp
+                              //     ? const SizedBox(height: 20)
+                              //     : const SizedBox(),
                             ],
                           ),
                         ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-  }
-}
-
-class Demo extends StatelessWidget {
-  const Demo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

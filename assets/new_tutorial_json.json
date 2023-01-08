@@ -1,233 +1,410 @@
 {
-  "ruleId" : "",
-  "name" : "one",
-  "inboxVariables" : {
-    "@UserProfile-FirstName" : "Saiprasad"
+  "ruleId": "",
+  "exit_mode": 4,
+  "inboxVariables": {
+
   },
-  "repeatCount" : 1,
-  "currentSession" : 0,
-  "considerSkip" : 0,
-  "skipCount" : 1,
-  "activityType" : 7,
-  "rTag" : "Upshot_AppLaunch",
-  "activityId" : "631eff6fc4fab517008b45ae",
-  "exitMode" : 4,
-  "tag" : [
-    "ActionTag",
-    "Help",
-    "ShakeYourPhone",
-    "Upshot_AppLaunch",
-    "Upshot_Authenticated",
-    "Upshot_DeviceShake",
-    "Upshot_Loaded",
-    "addToCart",
-    "cart",
-    "checkout",
-    "exitIntent",
-    "help",
-    "home",
-    "login",
-    "menu",
-    "payment",
-    "test",
-    "wishlist"
+  "name": "client_demo_2_clone",
+  "activityType": 7,
+  "rTag": "Profile",
+  "activityId": "63b8152f5b09f718008b456d",
+  "tag": [
+    "Profile"
   ],
-  "campaignId" : "63a9bb3443c2ea5d018b4568",
-  "allUsers" : 1,
-  "activityTaken" : 0,
-  "jeId" : "",
-  "msgId" : "63a9c19c2667335a008b4567",
-  "elements" : [
+  "campaignId": "63b8156f5b09f713008b456b",
+  "allUsers": 1,
+  "jeId": "",
+  "msgId": "63b858f406315344008b456f",
+  "elements": [
     {
-      "android_target_id" : "demoValue",
-      "position" : 10,
-      "footer" : {
-        "opacity" : 1,
-        "backgroundColor" : "#2D2D2D",
-        "buttons" : [
+      "target_id": "arrow_back",
+      "position": 100,
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "bgImage": "",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 0.5,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
+      },
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 1,
+        "buttons": [
           {
-            "fontSize" : 22,
-            "key_value" : {
-              "fsa" : "sS"
-            },
-            "deeplink_type" : 2,
-            "actionType" : 6,
-            "title" : "next",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "next",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
             ]
           },
           {
-            "fontSize" : 22,
-            "title" : "skip",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "skip",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
-            ]
-          },
-          {
-            "fontSize" : 22,
-            "title" : "prev",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "prev",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#ffffff",
+            "bgColor": "#4687B3",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+
             ]
           }
         ]
-      },
-      "scaleType" : 1,
-      "borderColor" : "#2D2D2D",
-      "iOS_target_id" : "customText1",
-      "description" : {
-        "fontSize" : 22,
-        "fontName" : "test_font",
-        "backgroundColor" : "#2D2D2D",
-        "opacity" : 0.59999999999999998,
-        "text" : "<p style='font-family: Arial,proxima-nova,sans-serif;'>HI <span><span class='noneditable' contenteditable='false'>@UserProfile-FirstName<\/span><\/span><\/span>&nbsp;<\/p>"
-      },
-      "bgImage" : "https://media.goupshot.com/bk-purpletalk/upshot/aic/5d4d3f3f51c1e.png"
+      }
     },
     {
-      "android_target_id" : "DemoText",
-      "position" : 10,
-      "footer" : {
-        "opacity" : 1,
-        "backgroundColor" : "#2D2D2D",
-        "buttons" : [
+      "target_id": "arrow_back1",
+      "position": 100,
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
+      },
+      "bgImage": "https://www.woolha.com/media/2021/03/flutter-display-image-from-file-1200x627.jpg",
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 0.2,
+        "buttons": [
           {
-            "fontSize" : 22,
-            "actionType" : 2,
-            "title" : "next",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "next",
-            "opacity" : 1,
-            "textStyle" : [
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 0,
+            "fontStyle": [
               "bold",
-              "italic"
-            ],
-            "backgroundColor" : "#2D2D2D"
-          },
-          {
-            "fontSize" : 22,
-            "title" : "skip",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "skip",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
+              "underline"
+
             ]
           },
           {
-            "fontSize" : 22,
-            "title" : "prev",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "prev",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Skip",
+            "fontColor": "#000000",
+            "bgColor": "#073B5E",
+            "type": "skip",
+            "opacity": 0,
+            "fontStyle": [
+              "bold"
+
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#ffffff",
+            "bgColor": "#4687B3",
+            "type": "prev",
+            "opacity": 0,
+            "fontStyle": [
+              "underline"
             ]
           }
         ]
-      },
-      "scaleType" : 1,
-      "borderColor" : "#2D2D2D",
-      "iOS_target_id" : "customText1",
-      "description" : {
-        "fontSize" : 22,
-        "fontName" : "test_font",
-        "backgroundColor" : "#2D2D2D",
-        "opacity" : 0.59999999999999998,
-        "text" : "<p style='font-family: Arial,proxima-nova,sans-serif;'>HI <span><span class='noneditable' contenteditable='false'>@UserProfile-FirstName<\/span><\/span><\/span>&nbsp;<\/p>"
-      },
-      "bgImage" : "https:\/\/media.goupshot.com\/preprod-bk\/5e89df111607d91f008b4567\/si\/1617628432001.jpg"
+      }
+
     },
     {
-      "android_target_id" : "customText1",
-      "position" : 10,
-      "footer" : {
-        "opacity" : 1,
-        "backgroundColor" : "#2D2D2D",
-        "buttons" : [
+      "target_id": "userprofile_submit",
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 0.5,
+        "buttons": [
           {
-            "textStyle" : [
-              "bold",
-              "italic"
-            ],
-            "full_url" : "https:\/\/purpletalk.goupshot.com\/",
-            "backgroundColor" : "#2D2D2D",
-            "url" : "https:\/\/purpletalk.goupshot.com\/",
-            "type" : "next",
-            "title" : "next",
-            "opacity" : 1,
-            "fontColor" : "#2D2D2D",
-            "fontSize" : 22,
-            "fontName" : "test_font",
-            "actionType" : 2,
-            "deeplink_type" : 1
-          },
-          {
-            "fontSize" : 22,
-            "title" : "skip",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "skip",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
             ]
           },
           {
-            "fontSize" : 22,
-            "title" : "prev",
-            "fontName" : "test_font",
-            "fontColor" : "#2D2D2D",
-            "type" : "prev",
-            "opacity" : 1,
-            "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
-              "bold",
-              "italic"
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Skip",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "skip",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#ffffff",
+            "bgColor": "#4687B3",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+
             ]
           }
         ]
       },
-      "scaleType" : 1,
-      "borderColor" : "#2D2D2D",
-      "iOS_target_id" : "customText1",
-      "description" : {
-        "fontSize" : 22,
-        "fontName" : "test_font",
-        "backgroundColor" : "#2D2D2D",
-        "opacity" : 0.59999999999999998,
-        "text" : "<p style='font-family: Arial,proxima-nova,sans-serif;'>HI <span><span class='noneditable' contenteditable='false'>@UserProfile-FirstName<\/span><\/span><\/span>&nbsp;<\/p>"
+      "position": 100,
+      "scaleType": 2,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 0.1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
       },
-      "bgImage" : "https:\/\/media.goupshot.com\/preprod-bk\/5e89df111607d91f008b4567\/si\/1617628432001.jpg"
+      "bgImage": "https://www.woolha.com/media/2021/03/flutter-display-image-from-file-1200x627.jpg"
+    },
+    {
+      "target_id": "userprofile_submit1",
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 1,
+        "buttons": [
+          {
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          }
+        ]
+      },
+      "position": 0,
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Once added param Click on submit to update it</span></p>"
+      },
+      "bgImage": ""
+    },
+    {
+      "target_id": "sizedBox1",
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 1,
+        "buttons": [
+          {
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Got It",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          }
+        ]
+      },
+      "position": 0,
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000; text-align: left;\"><span style=\"color: #ecf0f1;\">Click To logout from the dashboard&nbsp;</span></p>"
+      },
+      "bgImage": ""
+    },
+    {
+      "target_id": "sizedBox2",
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 1,
+        "buttons": [
+          {
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#ffffff",
+            "bgColor": "#4687B3",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+
+            ]
+          }
+        ]
+      },
+      "position": 100,
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
+      },
+      "bgImage": ""
+    },
+    {
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 1,
+        "buttons": [
+          {
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#ffffff",
+            "bgColor": "#4687B3",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+
+            ]
+          }
+        ]
+      },
+      "position": 100,
+      "target_id": "sizedBox3",
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
+      },
+      "bgImage": ""
+    },{
+      "target_id": "sizedBox4",
+      "footer": {
+        "bgColor": "#EFF2F5",
+        "opacity": 1,
+        "buttons": [
+          {
+            "actionType": 6,
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Next",
+            "fontColor": "#EAF0F5",
+            "bgColor": "#073B5E",
+            "type": "next",
+            "opacity": 1,
+            "fontStyle": [
+              "bold"
+            ]
+          },
+          {
+            "fontSize": 12,
+            "fontName": "",
+            "text": "Prev",
+            "fontColor": "#ffffff",
+            "bgColor": "#4687B3",
+            "type": "prev",
+            "opacity": 1,
+            "fontStyle": [
+
+            ]
+          }
+        ]
+      },
+      "position": 100,
+      "scaleType": 3,
+      "borderColor": "#1A73AF",
+      "description": {
+        "fontSize": 12,
+        "bgColor": "#073B5E",
+        "fontName": "",
+        "opacity": 1,
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
+      },
+      "bgImage": ""
     }
   ],
-  "tutorialType" : 1
+  "tutorialType": 2
 }
