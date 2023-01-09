@@ -145,7 +145,7 @@ class ShowTutorialsModel extends ChangeNotifier {
         toolTipDataClass = ToolTipDataClass(isUp: false, yAxis: positionValue);
       }
     }
-    print('The yAxis is ${toolTipDataClass.yAxis}');
+    log('The yAxis is ${toolTipDataClass.yAxis}');
     return toolTipDataClass;
   }
 
@@ -184,7 +184,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     final renderBox =
         toolTipGlobalKey.currentContext!.findRenderObject() as RenderBox;
     _toolTipHeight = renderBox.size.height;
-    print('The tool tip size is $_toolTipHeight');
+    log('The tool tip size is $_toolTipHeight');
     notifyListeners();
   }
 
@@ -193,8 +193,10 @@ class ShowTutorialsModel extends ChangeNotifier {
     final mediaQueryData = MediaQuery.of(context);
     _screenHeight = mediaQueryData.size.height;
     _screenWidth = mediaQueryData.size.width;
-    _statusBarHeight = mediaQueryData.viewPadding.top;
-    print('The screen dimension is $_screenHeight , $_screenWidth');
+    if (_statusBarHeight == 0.0) {
+      _statusBarHeight = mediaQueryData.viewPadding.top;
+    }
+    log('The screen dimension is $_screenHeight , $_screenWidth');
     // notifyListeners();
   }
 
@@ -243,7 +245,7 @@ class ShowTutorialsModel extends ChangeNotifier {
               .contains('_scaffoldslot.bottomnavigationbar')) {
             _bottomNavHeight = child.size!.height;
             hasBottomNavBarHeight = true;
-            print('The bottom nav bar height is $_bottomNavHeight');
+            log('The bottom nav bar height is $_bottomNavHeight');
           }
           if (child.widget.key
               .toString()
@@ -251,7 +253,7 @@ class ShowTutorialsModel extends ChangeNotifier {
               .contains('_scaffoldslot.appbar')) {
             _appBarHeight = child.size!.height;
             hasAppHeight = true;
-            print('The app bar height is $_appBarHeight');
+            log('The app bar height is $_appBarHeight');
           }
         }
 
@@ -267,13 +269,13 @@ class ShowTutorialsModel extends ChangeNotifier {
                   rect: child.renderObject!.paintBounds,
                   child: child);
               _canShow = true;
-              print('-----------------------------');
-              print('The types is ${rootWidget.runtimeType}');
-              print('The sizes is ${child.renderObject!.paintBounds.size}');
-              print('The keys type is ${rootWidget.key.runtimeType}');
-              print('The keys is ${rootWidget.key}');
-              print('The offsets is ${getOffset(child.renderObject!)}');
-              print('-----------------------------');
+              // print('-----------------------------');
+              // print('The types is ${rootWidget.runtimeType}');
+              // print('The sizes is ${child.renderObject!.paintBounds.size}');
+              // print('The keys type is ${rootWidget.key.runtimeType}');
+              // print('The keys is ${rootWidget.key}');
+              // print('The offsets is ${getOffset(child.renderObject!)}');
+              // print('-----------------------------');
               notifyListeners();
             }
           }
@@ -311,33 +313,38 @@ class ShowTutorialsModel extends ChangeNotifier {
         notifyListeners();
       }
     } else {
-      channel.invokeMethod("activityDismiss_Internal", {
-        'campaignId': _interactiveTutorialModel?.campaignId ?? '',
-        'activityId': _interactiveTutorialModel?.activityId ?? '',
-        'allUsers': _interactiveTutorialModel?.allUsers ?? '',
-        'activityType': _interactiveTutorialModel?.activityType ?? '',
-        'msgId': _interactiveTutorialModel?.msgId ?? '',
-        'jeId': _interactiveTutorialModel?.jeId ?? '',
-        'ruleId': _interactiveTutorialModel?.ruleId ?? '',
-        'rTag': _interactiveTutorialModel?.rTag ?? '',
-        'maxSlideIndex': _maxCount,
-        'skipedIndex': _selectedIndex,
-        'totalScreenCount': tutorialList.length,
-        'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
-      });
-      channel.invokeMethod("activityRedirection_Internal", {
-        'actionType':
-            tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0,
-        'inboxVariables': interactiveTutorialModel?.inboxVariable ?? {},
-        'deeplink_url':
-            tutorialList[_selectedIndex].footer?.nextButton?.iOsUrl ?? '',
-        'deeplink_type': _interactiveTutorialModel
-                ?.elements?[_selectedIndex].footer?.nextButton?.deeplinkType ??
-            1,
-        'deeplink_keyValue':
-            tutorialList[_selectedIndex].footer?.nextButton?.iosKeyValue ?? {}
-      });
-      Navigator.pop(context);
+      if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) !=
+          6)) {
+        channel.invokeMethod("activityDismiss_Internal", {
+          'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+          'activityId': _interactiveTutorialModel?.activityId ?? '',
+          'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+          'activityType': _interactiveTutorialModel?.activityType ?? '',
+          'msgId': _interactiveTutorialModel?.msgId ?? '',
+          'jeId': _interactiveTutorialModel?.jeId ?? '',
+          'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+          'rTag': _interactiveTutorialModel?.rTag ?? '',
+          'maxSlideIndex': _maxCount,
+          'skipedIndex': _selectedIndex,
+          'totalScreenCount': tutorialList.length,
+          'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
+        });
+        channel.invokeMethod("activityRedirection_Internal", {
+          'actionType':
+              tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0,
+          'inboxVariables': interactiveTutorialModel?.inboxVariable ?? {},
+          'deeplink_url':
+              tutorialList[_selectedIndex].footer?.nextButton?.iOsUrl ?? '',
+          'deeplink_type': _interactiveTutorialModel?.elements?[_selectedIndex]
+                  .footer?.nextButton?.deeplinkType ??
+              1,
+          'deeplink_keyValue':
+              tutorialList[_selectedIndex].footer?.nextButton?.iosKeyValue ?? {}
+        });
+        Navigator.pop(context);
+      } else {
+        Navigator.pop(context);
+      }
     }
     // if ((tutorialList[_selectedIndex].footer?.nextButton?.deeplinkType ?? 0) !=
     //         6 ||

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'services/custom_border_paint.dart';
 import 'services/custom_transparent_painter.dart';
@@ -28,6 +30,9 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   void initState() {
     super.initState();
     model = ShowTutorialsModel.instance;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      log('The eror is $details');
+    };
     WidgetsBinding.instance?.endOfFrame.then((_) => {
           model.getToolTipSize(),
           ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {

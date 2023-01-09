@@ -29,9 +29,9 @@ class UpshotMethodChannelInternal {
     }
   }
 
-  void isValidResponse(Map<String, dynamic> json) {
-    var validKeys = ["campaignId", "activityId", "msgId"];
-  }
+  // void isValidResponse(Map<String, dynamic> json) {
+  //   var validKeys = ["campaignId", "activityId", "msgId"];
+  // }
 
   void showTutorials(BuildContext context, String data) async {
     ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
