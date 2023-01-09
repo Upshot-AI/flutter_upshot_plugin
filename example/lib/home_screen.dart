@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //             Icons.home,
       //             color: Colors.black,
       //             size: 25,
-      //             key: Key('drawer1'),
+      //             key: Key('tabbar_home'),
       //           ),
       //           label: 'drawer1'),
       //       BottomNavigationBarItem(
@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //             Icons.map,
       //             color: Colors.black,
       //             size: 25,
-      //             key: Key('drawer2'),
+      //             key: Key('tabbar_maps'),
       //           ),
       //           label: 'drawer2'),
       //       BottomNavigationBarItem(
@@ -96,22 +96,22 @@ class _HomeScreenState extends State<HomeScreen> {
       //             key: Key('drawer3'),
       //           ),
       //           label: 'drawer3'),
-      //       // BottomNavigationBarItem(
-      //       //     icon: Icon(
-      //       //       Icons.home,
-      //       //       color: Colors.black,
-      //       //       size: 25,
-      //       //       key: Key('drawer4'),
-      //       //     ),
-      //       //     label: 'drawer4'),
-      //       // BottomNavigationBarItem(
-      //       //     icon: Icon(
-      //       //       Icons.home,
-      //       //       color: Colors.black,
-      //       //       size: 25,
-      //       //       key: Key('drawer5'),
-      //       //     ),
-      //       //     label: 'drawer5'),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer4'),
+      //           ),
+      //           label: 'drawer4'),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home,
+      //             color: Colors.black,
+      //             size: 25,
+      //             key: Key('drawer5'),
+      //           ),
+      //           label: 'drawer5'),
       //       // BottomNavigationBarItem(
       //       //     icon: Icon(
       //       //       Icons.home,
@@ -120,22 +120,22 @@ class _HomeScreenState extends State<HomeScreen> {
       //       //       key: Key('drawer6'),
       //       //     ),
       //       //     label: 'drawer6'),
-      //       BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home,
-      //             color: Colors.black,
-      //             size: 25,
-      //             key: Key('drawer7'),
-      //           ),
-      //           label: 'drawer7'),
-      //       BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home,
-      //             color: Colors.black,
-      //             size: 25,
-      //             key: Key('drawer8'),
-      //           ),
-      //           label: 'drawer8'),
+      //       // BottomNavigationBarItem(
+      //       //     icon: Icon(
+      //       //       Icons.home,
+      //       //       color: Colors.black,
+      //       //       size: 25,
+      //       //       key: Key('drawer7'),
+      //       //     ),
+      //       //     label: 'drawer7'),
+      //       // BottomNavigationBarItem(
+      //       //     icon: Icon(
+      //       //       Icons.home,
+      //       //       color: Colors.black,
+      //       //       size: 25,
+      //       //       key: Key('drawer8'),
+      //       //     ),
+      //       //     label: 'drawer8'),
       //     ]),
       body: SingleChildScrollView(
         child: Column(
@@ -343,37 +343,43 @@ class _HomeScreenState extends State<HomeScreen> {
               key: UpshotLabeledGlobalKey('element_2'),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SafeArea(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      key: ValueKey('drawer1'),
-                      width: 20,
-                      height: 20,
-                    ),
-                    SizedBox(
-                      key: ValueKey('drawer2'),
+                    Container(
+                      color: Colors.black,
+                      key: ValueKey('sdsa'),
                       width: 30,
                       height: 30,
                     ),
-                    SizedBox(
-                      key: ValueKey(''),
+                    Container(
+                      color: Colors.black,
+                      key: ValueKey('tabbar_map'),
                       width: 30,
                       height: 30,
                     ),
-                    SizedBox(
+                    Container(
+                      color: Colors.black,
+                      key: ValueKey('sd'),
+                      width: 30,
+                      height: 30,
+                    ),
+                    Container(
+                      color: Colors.black,
                       key: ValueKey('1'),
                       width: 30,
                       height: 30,
                     ),
-                    SizedBox(
+                    Container(
+                      color: Colors.black,
                       key: ValueKey('drawer3'),
                       width: 30,
                       height: 30,
                     ),
-                    SizedBox(
+                    Container(
+                      color: Colors.black,
                       key: ValueKey('drawer4'),
                       width: 30,
                       height: 30,

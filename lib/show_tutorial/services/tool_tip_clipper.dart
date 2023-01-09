@@ -60,7 +60,13 @@ class ToolTipClipper extends CustomClipper<Path> {
       if (canShow && (rect!.topCenter.dx - 35 <= 0)) {
         path.lineTo(0, size.height);
       } else if (canShow && (rect!.topCenter.dx - 35 <= 10)) {
-        path.lineTo(0, size.height - 40);
+        if (rect!.topCenter.dx - 35 >= 5) {
+          path.lineTo(0, size.height - 40);
+        } else {
+          path.lineTo(0, size.height - 20);
+        }
+        path.quadraticBezierTo(0, size.height - 20, rect!.topCenter.dx - 35,
+            size.height - 20); // ToolTip bottomLeft borderRadius
       } else {
         path.lineTo(0, size.height - 40);
         path.quadraticBezierTo(0, size.height - 20, 20,
@@ -72,7 +78,7 @@ class ToolTipClipper extends CustomClipper<Path> {
         path.lineTo(rect!.topCenter.dx - 35,
             size.height - 20); // This is the start point for arrow
         if (rect!.topCenter.dx - 35 <= 0) {
-          path.lineTo(0, size.height - 7);
+          path.lineTo(0, size.height);
           path.lineTo(rect!.topCenter.dx - 30, size.height);
         } else if (rect!.topCenter.dx >= size.width) {
           path.lineTo(size.width, size.height);

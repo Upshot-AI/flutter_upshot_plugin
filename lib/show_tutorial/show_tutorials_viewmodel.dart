@@ -37,6 +37,7 @@ class ShowTutorialsModel extends ChangeNotifier {
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
   double _statusBarHeight = 0.0;
+  // double get statusbarHeight=>_statusBarHeight;
   double _screenHeight = 0.0;
   double _screenWidth = 0.0;
   double _toolTipHeight = 0.0;
@@ -95,7 +96,7 @@ class ShowTutorialsModel extends ChangeNotifier {
   static ShowTutorialsModel get instance => _instance;
 
   /// Getting the [Offset] value for the [ToolTipWidget] to position it accordingly.
-  ToolTipDataClass getYAxis() {
+  ToolTipDataClass getYAxis({double statusBarHeight = 0.0}) {
     late ToolTipDataClass toolTipDataClass;
     late WidgetDataClass widgetDataClass;
     if (_currentWidget != null) {
@@ -135,7 +136,9 @@ class ShowTutorialsModel extends ChangeNotifier {
       final positionValue = _screenHeight *
           (1 - ((tutorialList[_selectedIndex].position ?? 50) / 100));
 
-      if (positionValue + _toolTipHeight > _screenHeight) {
+      statusBarHeight =
+          statusBarHeight == 0.0 ? _statusBarHeight : statusBarHeight;
+      if (positionValue + _toolTipHeight > _statusBarHeight) {
         toolTipDataClass = ToolTipDataClass(
             isUp: false, yAxis: _screenHeight - _toolTipHeight);
       } else if (positionValue <= _statusBarHeight) {
@@ -196,7 +199,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     if (_statusBarHeight == 0.0) {
       _statusBarHeight = mediaQueryData.viewPadding.top;
     }
-    log('The screen dimension is $_screenHeight , $_screenWidth');
+    log('The screen dimensions is $_screenHeight , $_screenWidth,$_statusBarHeight');
     // notifyListeners();
   }
 

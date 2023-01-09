@@ -70,7 +70,14 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                 if (m.selectedIndex == 0) {
                   return true;
                 } else {
-                  m.inspectChilds(m.selectedIndex = m.selectedIndex - 1);
+                  model.isVisibile = false;
+                  model.canShow = false;
+                  model.inspectChilds(
+                      model.selectedIndex = model.selectedIndex - 1);
+                  WidgetsBinding.instance?.addPostFrameCallback((_) {
+                    model.getToolTipSize();
+                    model.isVisibile = true;
+                  });
                   return false;
                 }
               },
@@ -92,7 +99,11 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                             color: m.tutorialList[m.selectedIndex].borderColor),
                         child: const SizedBox()),
                     Positioned(
-                      top: m.getYAxis().yAxis,
+                      top: m
+                          .getYAxis(
+                              statusBarHeight:
+                                  MediaQuery.of(context).padding.top)
+                          .yAxis,
                       left: 20,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(

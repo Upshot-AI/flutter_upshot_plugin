@@ -242,7 +242,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                               primary: model
                                                                   .getColor(footer
                                                                       ?.prevButton
-                                                                      ?.backgroundColor),
+                                                                      ?.backgroundColor)
+                                                                  ?.withOpacity(
+                                                                      (footer?.prevButton?.opacity ??
+                                                                              1)
+                                                                          .toDouble()),
                                                             ),
                                                             onPressed: () {
                                                               model.isVisibile =
@@ -275,7 +279,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                               maxLines: 2,
                                                               style: TextStyle(
                                                                 fontFamily: footer
-                                                                    ?.skipButton
+                                                                    ?.prevButton
                                                                     ?.fontName,
                                                                 fontStyle: model.isItalic(footer
                                                                         ?.prevButton
@@ -314,16 +318,24 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                             ? Flexible(
                                                 // flex: 3,
                                                 child: ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                      elevation: 0.0,
-                                                      splashFactory: NoSplash
-                                                          .splashFactory,
-                                                      fixedSize:
-                                                          const Size.fromHeight(
-                                                              44),
-                                                      primary: model.getColor(
-                                                          footer?.nextButton
-                                                              ?.backgroundColor)),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    elevation: 0.0,
+                                                    splashFactory:
+                                                        NoSplash.splashFactory,
+                                                    fixedSize:
+                                                        const Size.fromHeight(
+                                                            44),
+                                                    primary: model
+                                                        .getColor(footer
+                                                            ?.nextButton
+                                                            ?.backgroundColor)
+                                                        ?.withOpacity((footer
+                                                                    ?.nextButton
+                                                                    ?.opacity ??
+                                                                1)
+                                                            .toDouble()),
+                                                  ),
                                                   onPressed: () {
                                                     model.isVisibile = false;
                                                     model.nextTap(context);
@@ -345,7 +357,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                     maxLines: 2,
                                                     style: TextStyle(
                                                         fontFamily: footer
-                                                            ?.skipButton
+                                                            ?.nextButton
                                                             ?.fontName,
                                                         fontStyle: model.isItalic(footer?.nextButton?.fontStyle)
                                                             ? FontStyle.italic
@@ -374,9 +386,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                   ),
                                 ],
                               ),
-                              // !widget.isUp
-                              //     ? const SizedBox(height: 20)
-                              //     : const SizedBox(),
                             ],
                           ),
                         ),
