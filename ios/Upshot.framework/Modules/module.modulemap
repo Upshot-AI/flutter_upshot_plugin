@@ -28,6 +28,6 @@ framework module Upshot {
 }
 
 module Upshot.Swift {
-    header "Upshot-Swift.h"
-    requires objc
+  header "Upshot-Swift.h"
+  requires objc
 }

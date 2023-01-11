@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      FlutterUpshotPlugin.showActivity(-1, 'Feature', context);
+      FlutterUpshotPlugin.showActivity(-1, '', context);
     });
   }
 
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: () {
-                  FlutterUpshotPlugin.showActivity(-1, 'Profile');
+                  FlutterUpshotPlugin.showActivity(-1, '');
                 },
                 key: const ValueKey('Button1'),
                 child: const Text(

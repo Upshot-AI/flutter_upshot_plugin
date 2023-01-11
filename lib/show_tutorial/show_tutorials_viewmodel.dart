@@ -135,15 +135,15 @@ class ShowTutorialsModel extends ChangeNotifier {
     } else {
       final positionValue = _screenHeight *
           (1 - ((tutorialList[_selectedIndex].position ?? 50) / 100));
-
+      // log('The status bar height is $statusBarHeight');
       statusBarHeight =
           statusBarHeight == 0.0 ? _statusBarHeight : statusBarHeight;
-      if (positionValue + _toolTipHeight > _statusBarHeight) {
+      if (positionValue + _toolTipHeight > _screenHeight) {
         toolTipDataClass = ToolTipDataClass(
             isUp: false, yAxis: _screenHeight - _toolTipHeight);
-      } else if (positionValue <= _statusBarHeight) {
+      } else if (positionValue <= statusBarHeight) {
         toolTipDataClass =
-            ToolTipDataClass(isUp: false, yAxis: _statusBarHeight);
+            ToolTipDataClass(isUp: false, yAxis: statusBarHeight);
       } else {
         toolTipDataClass = ToolTipDataClass(isUp: false, yAxis: positionValue);
       }
@@ -346,6 +346,20 @@ class ShowTutorialsModel extends ChangeNotifier {
         });
         Navigator.pop(context);
       } else {
+        channel.invokeMethod("activityDismiss_Internal", {
+          'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+          'activityId': _interactiveTutorialModel?.activityId ?? '',
+          'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+          'activityType': _interactiveTutorialModel?.activityType ?? '',
+          'msgId': _interactiveTutorialModel?.msgId ?? '',
+          'jeId': _interactiveTutorialModel?.jeId ?? '',
+          'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+          'rTag': _interactiveTutorialModel?.rTag ?? '',
+          'maxSlideIndex': _maxCount,
+          'skipedIndex': _selectedIndex,
+          'totalScreenCount': tutorialList.length,
+          'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
+        });
         Navigator.pop(context);
       }
     }

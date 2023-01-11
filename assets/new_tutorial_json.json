@@ -1,410 +1,117 @@
 {
-  "ruleId": "",
-  "exit_mode": 4,
-  "inboxVariables": {
-
-  },
-  "name": "client_demo_2_clone",
-  "activityType": 7,
-  "rTag": "Profile",
-  "activityId": "63b8152f5b09f718008b456d",
+  "tutorialType": 2,
+  "name": "Positions Test-1",
   "tag": [
-    "Profile"
+    "Feature"
   ],
-  "campaignId": "63b8156f5b09f713008b456b",
-  "allUsers": 1,
-  "jeId": "",
-  "msgId": "63b858f406315344008b456f",
+  "exit_mode": 4,
+  "inboxVariables": {},
   "elements": [
     {
-      "target_id": "arrow_back",
+      "target_id": "",
+      "borderColor": "#166EA0",
       "position": 100,
+      "bgImage": "https://media.goupshot.com/preprod-bk/6059b3f29dada4ff008b4567/si/1619192100281.jpeg",
       "scaleType": 3,
-      "borderColor": "#1A73AF",
-      "bgImage": "",
       "description": {
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000; text-align: left;\"><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-1:For Testing - !@#$%^&amp;*</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-2:For Demo; -&nbsp;</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-3:For Trial - ()_+~`</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>11234567890-={}[]:\";'&lt;&gt;,.?/|\\<br />100%</strong></em></span></p>",
+        "bgColor": "#8E9295",
+        "opacity": 0,
         "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 0.5,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
+        "fontName": ""
       },
       "footer": {
-        "bgColor": "#EFF2F5",
+        "bgColor": "#E21946",
         "opacity": 1,
         "buttons": [
           {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
             "type": "next",
+            "text": " Next Step",
+            "bgColor": "#5E6566",
             "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
+            "fontSize": 16,
             "fontColor": "#ffffff",
-            "bgColor": "#4687B3",
-            "type": "prev",
-            "opacity": 1,
-            "fontStyle": [
-
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "target_id": "arrow_back1",
-      "position": 100,
-      "scaleType": 3,
-      "borderColor": "#1A73AF",
-      "description": {
-        "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
-      },
-      "bgImage": "https://www.woolha.com/media/2021/03/flutter-display-image-from-file-1200x627.jpg",
-      "footer": {
-        "bgColor": "#EFF2F5",
-        "opacity": 0.2,
-        "buttons": [
-          {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "next",
-            "opacity": 0,
             "fontStyle": [
               "bold",
+              "italic",
               "underline"
-
-            ]
+            ],
+            "fontName": "",
+            "actionType": 6
           },
           {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Skip",
-            "fontColor": "#000000",
-            "bgColor": "#073B5E",
-            "type": "skip",
-            "opacity": 0,
-            "fontStyle": [
-              "bold"
-
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
-            "fontColor": "#ffffff",
-            "bgColor": "#4687B3",
             "type": "prev",
-            "opacity": 0,
+            "text": "Prev Button",
+            "bgColor": "#7F077F",
+            "opacity": 0.7,
+            "fontSize": 16,
+            "fontColor": "#EBF2F2",
             "fontStyle": [
+              "bold",
+              "italic",
               "underline"
-            ]
+            ],
+            "fontName": ""
           }
         ]
       }
-
     },
     {
-      "target_id": "userprofile_submit",
-      "footer": {
-        "bgColor": "#EFF2F5",
-        "opacity": 0.5,
-        "buttons": [
-          {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "next",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Skip",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "skip",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
-            "fontColor": "#ffffff",
-            "bgColor": "#4687B3",
-            "type": "prev",
-            "opacity": 1,
-            "fontStyle": [
-
-            ]
-          }
-        ]
-      },
-      "position": 100,
-      "scaleType": 2,
-      "borderColor": "#1A73AF",
-      "description": {
-        "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 0.1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
-      },
-      "bgImage": "https://www.woolha.com/media/2021/03/flutter-display-image-from-file-1200x627.jpg"
-    },
-    {
-      "target_id": "userprofile_submit1",
-      "footer": {
-        "bgColor": "#EFF2F5",
-        "opacity": 1,
-        "buttons": [
-          {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "next",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "prev",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          }
-        ]
-      },
+      "target_id": "",
+      "borderColor": "#166EA0",
       "position": 0,
+      "bgImage": "https://media.goupshot.com/preprod-bk/6059b3f29dada4ff008b4567/si/1619192100281.jpeg",
       "scaleType": 3,
-      "borderColor": "#1A73AF",
       "description": {
+        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>",
+        "bgColor": "#8E9295",
+        "opacity": 0,
         "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Once added param Click on submit to update it</span></p>"
+        "fontName": ""
       },
-      "bgImage": ""
-    },
-    {
-      "target_id": "sizedBox1",
       "footer": {
-        "bgColor": "#EFF2F5",
+        "bgColor": "#E21946",
         "opacity": 1,
         "buttons": [
           {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Got It",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
             "type": "next",
+            "text": " Next Step",
+            "bgColor": "#5E6566",
             "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "prev",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          }
-        ]
-      },
-      "position": 0,
-      "scaleType": 3,
-      "borderColor": "#1A73AF",
-      "description": {
-        "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000; text-align: left;\"><span style=\"color: #ecf0f1;\">Click To logout from the dashboard&nbsp;</span></p>"
-      },
-      "bgImage": ""
-    },
-    {
-      "target_id": "sizedBox2",
-      "footer": {
-        "bgColor": "#EFF2F5",
-        "opacity": 1,
-        "buttons": [
-          {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "next",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
+            "fontSize": 16,
             "fontColor": "#ffffff",
-            "bgColor": "#4687B3",
-            "type": "prev",
-            "opacity": 1,
             "fontStyle": [
-
-            ]
-          }
-        ]
-      },
-      "position": 100,
-      "scaleType": 3,
-      "borderColor": "#1A73AF",
-      "description": {
-        "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
-      },
-      "bgImage": ""
-    },
-    {
-      "footer": {
-        "bgColor": "#EFF2F5",
-        "opacity": 1,
-        "buttons": [
-          {
-            "actionType": 6,
-            "fontSize": 12,
+              "bold",
+              "italic",
+              "underline"
+            ],
             "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "next",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
+            "actionType": 6
           },
           {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
-            "fontColor": "#ffffff",
-            "bgColor": "#4687B3",
             "type": "prev",
-            "opacity": 1,
+            "text": "Prev Button",
+            "bgColor": "#7F077F",
+            "opacity": 0.7,
+            "fontSize": 16,
+            "fontColor": "#EBF2F2",
             "fontStyle": [
-
-            ]
+              "bold",
+              "italic",
+              "underline"
+            ],
+            "fontName": ""
           }
         ]
-      },
-      "position": 100,
-      "target_id": "sizedBox3",
-      "scaleType": 3,
-      "borderColor": "#1A73AF",
-      "description": {
-        "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
-      },
-      "bgImage": ""
-    },{
-      "target_id": "sizedBox4",
-      "footer": {
-        "bgColor": "#EFF2F5",
-        "opacity": 1,
-        "buttons": [
-          {
-            "actionType": 6,
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Next",
-            "fontColor": "#EAF0F5",
-            "bgColor": "#073B5E",
-            "type": "next",
-            "opacity": 1,
-            "fontStyle": [
-              "bold"
-            ]
-          },
-          {
-            "fontSize": 12,
-            "fontName": "",
-            "text": "Prev",
-            "fontColor": "#ffffff",
-            "bgColor": "#4687B3",
-            "type": "prev",
-            "opacity": 1,
-            "fontStyle": [
-
-            ]
-          }
-        ]
-      },
-      "position": 100,
-      "scaleType": 3,
-      "borderColor": "#1A73AF",
-      "description": {
-        "fontSize": 12,
-        "bgColor": "#073B5E",
-        "fontName": "",
-        "opacity": 1,
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\"><span style=\"color: #ecf0f1;\">Click on Add Params to add any user-profile data</span></p>"
-      },
-      "bgImage": ""
+      }
     }
   ],
-  "tutorialType": 2
+  "ruleId": "",
+  "activityType": 7,
+  "rTag": "Feature",
+  "activityId": "63ba592dd01e268b008b4567",
+  "campaignId": "63ba5950d01e2611008b456c",
+  "allUsers": 1,
+  "msgId": "63bb24160631533c008b456e",
+  "jeId": ""
 }
