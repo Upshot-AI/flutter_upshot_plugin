@@ -60,8 +60,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initializeBrandKinesisWithOptions() async {
     Map optionsMap = {
-      UpshotInitOptions.appId: "44cf9d1c-4d48-4e9b-b017-f5d021972ec7",
-      UpshotInitOptions.ownerId: "169b91dc-5813-44ef-9348-954d05739ecd",
+      UpshotInitOptions.appId: "d9e26e88-8fcb-40da-8254-5182fc149d5f",
+      UpshotInitOptions.ownerId: "5ea33dde-b35e-4ebd-9da6-86037947bfd2",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,

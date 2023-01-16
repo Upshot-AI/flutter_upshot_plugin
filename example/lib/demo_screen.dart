@@ -22,8 +22,8 @@ class _DemoClassState extends State<DemoClass> {
 
   void initializeBrandKinesisWithOptions() {
     Map<String, dynamic> optionsMap = {
-      UpshotInitOptions.appId: "cbc8c46d-0a21-4559-a30e-98540e41a1d5",
-      UpshotInitOptions.ownerId: "169b91dc-5813-44ef-9348-954d05739ecd",
+      UpshotInitOptions.appId: "d9e26e88-8fcb-40da-8254-5182fc149d5f",
+      UpshotInitOptions.ownerId: "5ea33dde-b35e-4ebd-9da6-86037947bfd2",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,
