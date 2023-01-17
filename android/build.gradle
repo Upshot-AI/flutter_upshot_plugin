@@ -39,7 +39,7 @@ android {
 }
 
 dependencies{
-    implementation 'com.github.upshot-git:upshotpushlib:v1.6.43x'
+    implementation 'com.github.upshot-git:upshotpushlib:v1.6.45x'
     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.cardview:cardview:1.0.0"
