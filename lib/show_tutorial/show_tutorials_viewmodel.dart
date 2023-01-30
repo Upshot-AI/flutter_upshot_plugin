@@ -39,7 +39,9 @@ class ShowTutorialsModel extends ChangeNotifier {
   double _statusBarHeight = 0.0;
   // double get statusbarHeight=>_statusBarHeight;
   double _screenHeight = 0.0;
+  double get screenHeight => _screenHeight;
   double _screenWidth = 0.0;
+  double get screenWidth => _screenWidth;
   double _toolTipHeight = 0.0;
   double get toolTipHeight => _toolTipHeight;
   double _bottomNavHeight = 0.0;
@@ -117,12 +119,21 @@ class ShowTutorialsModel extends ChangeNotifier {
           toolTipDataClass = _getValue(widgetDataClass);
         }
       }
-      if (widgetDataClass.yAxis > _screenHeight) {
-        widgetDataClass.yAxis =
-            _screenHeight - widgetDataClass.rect.height - _bottomNavHeight;
-        widgetDataClass.child.renderObject!
-            .showOnScreen(duration: const Duration(milliseconds: 500));
-        toolTipDataClass = _getValue(widgetDataClass);
+      if (widgetDataClass.yAxis + widgetDataClass.rect.height >=
+          _screenHeight - _bottomNavHeight) {
+        if (isElementInBottomNavBar(widgetDataClass.child)) {
+          //    widgetDataClass.yAxis =
+          //     _screenHeight - widgetDataClass.rect.height - _bottomNavHeight;
+          // widgetDataClass.child.renderObject!
+          //     .showOnScreen(duration: const Duration(milliseconds: 500));
+          toolTipDataClass = _getValue(widgetDataClass);
+        } else {
+          widgetDataClass.yAxis =
+              _screenHeight - widgetDataClass.rect.height - _bottomNavHeight;
+          widgetDataClass.child.renderObject!
+              .showOnScreen(duration: const Duration(milliseconds: 500));
+          toolTipDataClass = _getValue(widgetDataClass);
+        }
       }
       if (widgetDataClass.xAxis > _screenWidth) {
         widgetDataClass.child.renderObject!
@@ -159,7 +170,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     double lowerSize = _screenHeight -
         (widgetDataClass.yAxis + widgetDataClass.rect.height + 80);
     if ((_screenHeight -
-            (widgetDataClass.yAxis + widgetDataClass.rect.height + 80)) >
+            (widgetDataClass.yAxis + widgetDataClass.rect.height)) >
         _toolTipHeight + 40) {
       yAxis = widgetDataClass.yAxis + widgetDataClass.rect.height + 10;
       return ToolTipDataClass(isUp: true, yAxis: yAxis);
@@ -220,22 +231,22 @@ class ShowTutorialsModel extends ChangeNotifier {
     return isInAppBar;
   }
 
-  // bool isElementInBottomNavBar(Element child) {
-  //   late bool isInBottomNavBar;
-  //   child.visitAncestorElements((element) {
-  //     if (element.widget.key
-  //         .toString()
-  //         .toLowerCase()
-  //         .contains('_scaffoldslot.bottomnavigationbar')) {
-  //       isInBottomNavBar = true;
-  //       return false;
-  //     } else {
-  //       isInBottomNavBar = false;
-  //       return true;
-  //     }
-  //   });
-  //   return isInBottomNavBar;
-  // }
+  bool isElementInBottomNavBar(Element child) {
+    late bool isInBottomNavBar;
+    child.visitAncestorElements((element) {
+      if (element.widget.key
+          .toString()
+          .toLowerCase()
+          .contains('_scaffoldslot.bottomnavigationbar')) {
+        isInBottomNavBar = true;
+        return false;
+      } else {
+        isInBottomNavBar = false;
+        return true;
+      }
+    });
+    return isInBottomNavBar;
+  }
 
   void inspectChilds(int selectedIndex) {
     if (selectedIndex < tutorialList.length) {
@@ -551,7 +562,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     }
   }
 
-  bool showNextButton(String? title) {
+  bool shouldShowNextButton(String? title) {
     if ((title ?? '') == '') {
       return false;
     } else {

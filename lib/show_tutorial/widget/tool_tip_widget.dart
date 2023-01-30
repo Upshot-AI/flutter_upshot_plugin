@@ -18,7 +18,6 @@ class ToolTipWidget extends StatefulWidget {
 }
 
 class _ToolTipWidgetState extends State<ToolTipWidget> {
-  ButtonInfo? nextButton, prevButton, skipButton;
   @override
   void initState() {
     super.initState();
@@ -154,221 +153,407 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                       .toDouble()) ??
                               Colors.white.withOpacity(
                                   (tutorial.footer?.opacity ?? 1).toDouble()),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  model.shouldShowSkip(footer)
-                                      ? Flexible(
-                                          flex: 3,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0.0,
-                                                splashFactory:
-                                                    NoSplash.splashFactory,
-                                                primary: model
-                                                    .getColor(footer?.skipButton
-                                                        ?.backgroundColor)
-                                                    ?.withOpacity((tutorial
-                                                                .footer
-                                                                ?.skipButton
-                                                                ?.opacity ??
-                                                            1)
-                                                        .toDouble()),
-                                                fixedSize:
-                                                    const Size.fromHeight(44)),
-                                            onPressed: () =>
-                                                model.onSkipTap(context),
-                                            child: AutoSizeText(
-                                              (footer?.skipButton?.title ??
-                                                          '') ==
-                                                      ''
-                                                  ? 'Skip'
-                                                  : footer!.skipButton!.title!,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                fontFamily: footer
-                                                    ?.skipButton?.fontName,
-                                                fontSize: footer
-                                                    ?.skipButton?.fontSize
-                                                    ?.toDouble(),
-                                                fontStyle: model.isItalic(footer
-                                                        ?.skipButton?.fontStyle)
-                                                    ? FontStyle.italic
-                                                    : null,
-                                                decoration: model.isUnderline(
-                                                        footer?.skipButton
-                                                            ?.fontStyle)
-                                                    ? TextDecoration.underline
-                                                    : null,
-                                                fontWeight: model.isBold(footer
-                                                        ?.skipButton?.fontStyle)
-                                                    ? FontWeight.w800
-                                                    : null,
-                                                color: model.getColor(footer
-                                                        ?.skipButton
-                                                        ?.fontColor) ??
-                                                    Colors.white,
-                                              ),
-                                            ),
-                                          ))
-                                      : const SizedBox(),
-                                  const SizedBox(width: 10),
-                                  Flexible(
-                                    flex: 7,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        model.shouldShowPrevButton(
-                                                footer?.prevButton?.title)
-                                            ? Flexible(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Flexible(
-                                                        child: ElevatedButton(
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              elevation: 0.0,
-                                                              splashFactory:
-                                                                  NoSplash
-                                                                      .splashFactory,
-                                                              fixedSize: const Size
-                                                                  .fromHeight(44),
-                                                              primary: model
-                                                                  .getColor(footer
-                                                                      ?.prevButton
-                                                                      ?.backgroundColor)
-                                                                  ?.withOpacity(
-                                                                      (footer?.prevButton?.opacity ??
-                                                                              1)
-                                                                          .toDouble()),
-                                                            ),
-                                                            onPressed: () {
-                                                              model.isVisibile =
-                                                                  false;
-                                                              model.canShow =
-                                                                  false;
-                                                              model.inspectChilds(
-                                                                  model.selectedIndex =
-                                                                      model.selectedIndex -
-                                                                          1);
-                                                              WidgetsBinding
-                                                                  .instance
-                                                                  ?.addPostFrameCallback(
-                                                                      (_) {
-                                                                model
-                                                                    .getToolTipSize();
-                                                                model.isVisibile =
-                                                                    true;
-                                                              });
-                                                            },
-                                                            child: AutoSizeText(
-                                                              (footer?.prevButton
-                                                                              ?.title ??
-                                                                          '') ==
-                                                                      ''
-                                                                  ? 'Previous'
-                                                                  : footer!
-                                                                      .prevButton!
-                                                                      .title!,
-                                                              maxLines: 2,
-                                                              style: TextStyle(
-                                                                fontFamily: footer
-                                                                    ?.prevButton
-                                                                    ?.fontName,
-                                                                fontStyle: model.isItalic(footer
-                                                                        ?.prevButton
-                                                                        ?.fontStyle)
-                                                                    ? FontStyle
-                                                                        .italic
-                                                                    : null,
-                                                                decoration: model.isUnderline(footer
-                                                                        ?.prevButton
-                                                                        ?.fontStyle)
-                                                                    ? TextDecoration
-                                                                        .underline
-                                                                    : null,
-                                                                fontWeight: model.isBold(footer
-                                                                        ?.prevButton
-                                                                        ?.fontStyle)
-                                                                    ? FontWeight
-                                                                        .w800
-                                                                    : null,
-                                                                fontSize: footer
-                                                                    ?.prevButton
-                                                                    ?.fontSize
-                                                                    ?.toDouble(),
-                                                                color: model.getColor(footer
-                                                                    ?.prevButton
-                                                                    ?.fontColor),
-                                                              ),
-                                                            ))),
-                                                    const SizedBox(width: 10),
-                                                  ],
+                          child: model.shouldShowSkip(footer)
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    model.shouldShowSkip(footer)
+                                        ? Flexible(
+                                            flex: 3,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  elevation: 0.0,
+                                                  splashFactory:
+                                                      NoSplash.splashFactory,
+                                                  primary: model
+                                                      .getColor(footer
+                                                          ?.skipButton
+                                                          ?.backgroundColor)
+                                                      ?.withOpacity((tutorial
+                                                                  .footer
+                                                                  ?.skipButton
+                                                                  ?.opacity ??
+                                                              1)
+                                                          .toDouble()),
+                                                  fixedSize:
+                                                      const Size.fromHeight(
+                                                          44)),
+                                              onPressed: () =>
+                                                  model.onSkipTap(context),
+                                              child: AutoSizeText(
+                                                (footer?.skipButton?.title ??
+                                                            '') ==
+                                                        ''
+                                                    ? 'Skip'
+                                                    : footer!
+                                                        .skipButton!.title!,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                  fontFamily: footer
+                                                      ?.skipButton?.fontName,
+                                                  fontSize: footer
+                                                      ?.skipButton?.fontSize
+                                                      ?.toDouble(),
+                                                  fontStyle: model.isItalic(
+                                                          footer?.skipButton
+                                                              ?.fontStyle)
+                                                      ? FontStyle.italic
+                                                      : null,
+                                                  decoration: model.isUnderline(
+                                                          footer?.skipButton
+                                                              ?.fontStyle)
+                                                      ? TextDecoration.underline
+                                                      : null,
+                                                  fontWeight: model.isBold(
+                                                          footer?.skipButton
+                                                              ?.fontStyle)
+                                                      ? FontWeight.w800
+                                                      : null,
+                                                  color: model.getColor(footer
+                                                          ?.skipButton
+                                                          ?.fontColor) ??
+                                                      Colors.white,
                                                 ),
-                                              )
-                                            : const SizedBox(),
-                                        model.showNextButton(
-                                                footer?.nextButton?.title)
-                                            ? Flexible(
-                                                // flex: 3,
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    elevation: 0.0,
-                                                    splashFactory:
-                                                        NoSplash.splashFactory,
-                                                    fixedSize:
-                                                        const Size.fromHeight(
-                                                            44),
-                                                    primary: model
-                                                        .getColor(footer
-                                                            ?.nextButton
-                                                            ?.backgroundColor)
-                                                        ?.withOpacity((footer
-                                                                    ?.nextButton
-                                                                    ?.opacity ??
-                                                                1)
-                                                            .toDouble()),
+                                              ),
+                                            ))
+                                        : const SizedBox(),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      flex: 7,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          model.shouldShowPrevButton(
+                                                  footer?.prevButton?.title)
+                                              ? Flexible(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Flexible(
+                                                          child: ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                elevation: 0.0,
+                                                                splashFactory:
+                                                                    NoSplash
+                                                                        .splashFactory,
+                                                                fixedSize:
+                                                                    const Size
+                                                                        .fromHeight(44),
+                                                                primary: model
+                                                                    .getColor(footer
+                                                                        ?.prevButton
+                                                                        ?.backgroundColor)
+                                                                    ?.withOpacity(
+                                                                        (footer?.prevButton?.opacity ??
+                                                                                1)
+                                                                            .toDouble()),
+                                                              ),
+                                                              onPressed: () {
+                                                                model.isVisibile =
+                                                                    false;
+                                                                model.canShow =
+                                                                    false;
+                                                                model.inspectChilds(
+                                                                    model.selectedIndex =
+                                                                        model.selectedIndex -
+                                                                            1);
+                                                                WidgetsBinding
+                                                                    .instance
+                                                                    ?.addPostFrameCallback(
+                                                                        (_) {
+                                                                  model
+                                                                      .getToolTipSize();
+                                                                  model.isVisibile =
+                                                                      true;
+                                                                });
+                                                              },
+                                                              child:
+                                                                  AutoSizeText(
+                                                                (footer?.prevButton?.title ??
+                                                                            '') ==
+                                                                        ''
+                                                                    ? 'Previous'
+                                                                    : footer!
+                                                                        .prevButton!
+                                                                        .title!,
+                                                                maxLines: 2,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily: footer
+                                                                      ?.prevButton
+                                                                      ?.fontName,
+                                                                  fontStyle: model.isItalic(footer
+                                                                          ?.prevButton
+                                                                          ?.fontStyle)
+                                                                      ? FontStyle
+                                                                          .italic
+                                                                      : null,
+                                                                  decoration: model.isUnderline(footer
+                                                                          ?.prevButton
+                                                                          ?.fontStyle)
+                                                                      ? TextDecoration
+                                                                          .underline
+                                                                      : null,
+                                                                  fontWeight: model.isBold(footer
+                                                                          ?.prevButton
+                                                                          ?.fontStyle)
+                                                                      ? FontWeight
+                                                                          .w800
+                                                                      : null,
+                                                                  fontSize: footer
+                                                                      ?.prevButton
+                                                                      ?.fontSize
+                                                                      ?.toDouble(),
+                                                                  color: model.getColor(footer
+                                                                      ?.prevButton
+                                                                      ?.fontColor),
+                                                                ),
+                                                              ))),
+                                                      const SizedBox(width: 10),
+                                                    ],
                                                   ),
-                                                  onPressed: () {
-                                                    model.isVisibile = false;
-                                                    model.nextTap(context);
-                                                    WidgetsBinding.instance
-                                                        ?.addPostFrameCallback(
-                                                            (_) {
-                                                      model.getToolTipSize();
-                                                      model.isVisibile = true;
-                                                    });
-                                                  },
-                                                  child: AutoSizeText(
-                                                    (footer?.nextButton
-                                                                    ?.title ??
-                                                                '') ==
-                                                            ''
-                                                        ? 'Next'
-                                                        : footer!
-                                                            .nextButton!.title!,
-                                                    maxLines: 2,
-                                                    style: TextStyle(
+                                                )
+                                              : const SizedBox(),
+                                          model.shouldShowNextButton(
+                                                  footer?.nextButton?.title)
+                                              ? Flexible(
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      elevation: 0.0,
+                                                      splashFactory: NoSplash
+                                                          .splashFactory,
+                                                      fixedSize:
+                                                          const Size.fromHeight(
+                                                              44),
+                                                      primary: model
+                                                          .getColor(footer
+                                                              ?.nextButton
+                                                              ?.backgroundColor)
+                                                          ?.withOpacity((footer
+                                                                      ?.nextButton
+                                                                      ?.opacity ??
+                                                                  1)
+                                                              .toDouble()),
+                                                    ),
+                                                    onPressed: () {
+                                                      model.isVisibile = false;
+                                                      model.nextTap(context);
+                                                      WidgetsBinding.instance
+                                                          ?.addPostFrameCallback(
+                                                              (_) {
+                                                        model.getToolTipSize();
+                                                        model.isVisibile = true;
+                                                      });
+                                                    },
+                                                    child: AutoSizeText(
+                                                      (footer?.nextButton
+                                                                      ?.title ??
+                                                                  '') ==
+                                                              ''
+                                                          ? 'Next'
+                                                          : footer!.nextButton!
+                                                              .title!,
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontFamily: footer
+                                                              ?.nextButton
+                                                              ?.fontName,
+                                                          fontStyle: model.isItalic(footer?.nextButton?.fontStyle)
+                                                              ? FontStyle.italic
+                                                              : null,
+                                                          decoration: model.isUnderline(footer?.nextButton?.fontStyle)
+                                                              ? TextDecoration
+                                                                  .underline
+                                                              : null,
+                                                          fontWeight: model.isBold(footer
+                                                                  ?.nextButton
+                                                                  ?.fontStyle)
+                                                              ? FontWeight.bold
+                                                              : null,
+                                                          fontSize: footer
+                                                              ?.nextButton
+                                                              ?.fontSize
+                                                              ?.toDouble(),
+                                                          color: model.getColor(
+                                                              footer?.nextButton?.fontColor)),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          model.shouldShowPrevButton(
+                                                  footer?.prevButton?.title)
+                                              ? Flexible(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Flexible(
+                                                          child: ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                elevation: 0.0,
+                                                                splashFactory:
+                                                                    NoSplash
+                                                                        .splashFactory,
+                                                                fixedSize:
+                                                                    const Size
+                                                                        .fromHeight(44),
+                                                                primary: model
+                                                                    .getColor(footer
+                                                                        ?.prevButton
+                                                                        ?.backgroundColor)
+                                                                    ?.withOpacity(
+                                                                        (footer?.prevButton?.opacity ??
+                                                                                1)
+                                                                            .toDouble()),
+                                                              ),
+                                                              onPressed: () {
+                                                                model.isVisibile =
+                                                                    false;
+                                                                model.canShow =
+                                                                    false;
+                                                                model.inspectChilds(
+                                                                    model.selectedIndex =
+                                                                        model.selectedIndex -
+                                                                            1);
+                                                                WidgetsBinding
+                                                                    .instance
+                                                                    ?.addPostFrameCallback(
+                                                                        (_) {
+                                                                  model
+                                                                      .getToolTipSize();
+                                                                  model.isVisibile =
+                                                                      true;
+                                                                });
+                                                              },
+                                                              child:
+                                                                  AutoSizeText(
+                                                                (footer?.prevButton?.title ??
+                                                                            '') ==
+                                                                        ''
+                                                                    ? 'Previous'
+                                                                    : footer!
+                                                                        .prevButton!
+                                                                        .title!,
+                                                                maxLines: 2,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily: footer
+                                                                      ?.prevButton
+                                                                      ?.fontName,
+                                                                  fontStyle: model.isItalic(footer
+                                                                          ?.prevButton
+                                                                          ?.fontStyle)
+                                                                      ? FontStyle
+                                                                          .italic
+                                                                      : null,
+                                                                  decoration: model.isUnderline(footer
+                                                                          ?.prevButton
+                                                                          ?.fontStyle)
+                                                                      ? TextDecoration
+                                                                          .underline
+                                                                      : null,
+                                                                  fontWeight: model.isBold(footer
+                                                                          ?.prevButton
+                                                                          ?.fontStyle)
+                                                                      ? FontWeight
+                                                                          .w800
+                                                                      : null,
+                                                                  fontSize: footer
+                                                                      ?.prevButton
+                                                                      ?.fontSize
+                                                                      ?.toDouble(),
+                                                                  color: model.getColor(footer
+                                                                      ?.prevButton
+                                                                      ?.fontColor),
+                                                                ),
+                                                              ))),
+                                                      const SizedBox(width: 10),
+                                                    ],
+                                                  ),
+                                                )
+                                              : const SizedBox(),
+                                          model.shouldShowNextButton(
+                                                  footer?.nextButton?.title)
+                                              ? Flexible(
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      elevation: 0.0,
+                                                      splashFactory: NoSplash
+                                                          .splashFactory,
+                                                      fixedSize:
+                                                          const Size.fromHeight(
+                                                              44),
+                                                      primary: model
+                                                          .getColor(footer
+                                                              ?.nextButton
+                                                              ?.backgroundColor)
+                                                          ?.withOpacity((footer
+                                                                      ?.nextButton
+                                                                      ?.opacity ??
+                                                                  1)
+                                                              .toDouble()),
+                                                    ),
+                                                    onPressed: () {
+                                                      model.isVisibile = false;
+                                                      model.nextTap(context);
+                                                      WidgetsBinding.instance
+                                                          ?.addPostFrameCallback(
+                                                              (_) {
+                                                        model.getToolTipSize();
+                                                        model.isVisibile = true;
+                                                      });
+                                                    },
+                                                    child: AutoSizeText(
+                                                      (footer?.nextButton
+                                                                      ?.title ??
+                                                                  '') ==
+                                                              ''
+                                                          ? 'Next'
+                                                          : footer!.nextButton!
+                                                              .title!,
+                                                      maxLines: 2,
+                                                      style: TextStyle(
                                                         fontFamily: footer
                                                             ?.nextButton
                                                             ?.fontName,
-                                                        fontStyle: model.isItalic(footer?.nextButton?.fontStyle)
+                                                        fontStyle: model
+                                                                .isItalic(footer
+                                                                    ?.nextButton
+                                                                    ?.fontStyle)
                                                             ? FontStyle.italic
                                                             : null,
-                                                        decoration: model.isUnderline(footer?.nextButton?.fontStyle)
+                                                        decoration: model
+                                                                .isUnderline(footer
+                                                                    ?.nextButton
+                                                                    ?.fontStyle)
                                                             ? TextDecoration
                                                                 .underline
                                                             : null,
-                                                        fontWeight: model.isBold(footer
-                                                                ?.nextButton
-                                                                ?.fontStyle)
+                                                        fontWeight: model
+                                                                .isBold(footer
+                                                                    ?.nextButton
+                                                                    ?.fontStyle)
                                                             ? FontWeight.bold
                                                             : null,
                                                         fontSize: footer
@@ -376,18 +561,18 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                             ?.fontSize
                                                             ?.toDouble(),
                                                         color: model.getColor(
-                                                            footer?.nextButton?.fontColor)),
+                                                            footer?.nextButton
+                                                                ?.fontColor),
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              )
-                                            : const SizedBox()
-                                      ],
+                                                )
+                                              : const SizedBox()
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                  ],
+                                ),
                         ),
                 ],
               ),

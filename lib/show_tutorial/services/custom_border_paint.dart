@@ -15,6 +15,7 @@ class CustomBorderPaint extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (canShow && widgetDataClass != null) {
       final Paint paint = Paint()
+        // ..color = Colors.red
         ..color = ShowTutorialsModel.instance.getColor(color) ?? Colors.red
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2;
@@ -22,10 +23,21 @@ class CustomBorderPaint extends CustomPainter {
       canvas.drawRRect(
           RRect.fromRectAndRadius(
               Rect.fromLTWH(
-                  widgetDataClass!.xAxis - strokeWidth,
-                  widgetDataClass!.yAxis - strokeWidth,
-                  widgetDataClass!.rect.width + 2 * strokeWidth,
-                  widgetDataClass!.rect.height + 2 * strokeWidth),
+                (widgetDataClass!.xAxis <= 0.0)
+                    ? widgetDataClass!.xAxis + strokeWidth
+                    : widgetDataClass!.xAxis - strokeWidth,
+                (widgetDataClass!.yAxis <= 0.0)
+                    ? widgetDataClass!.yAxis + strokeWidth
+                    : widgetDataClass!.yAxis - strokeWidth,
+                (widgetDataClass!.xAxis + widgetDataClass!.rect.width >=
+                        ShowTutorialsModel.instance.screenWidth)
+                    ? widgetDataClass!.rect.width - (2 * strokeWidth)
+                    : widgetDataClass!.rect.width + 2 * strokeWidth,
+                (widgetDataClass!.yAxis + widgetDataClass!.rect.height >=
+                        ShowTutorialsModel.instance.screenHeight)
+                    ? widgetDataClass!.rect.height
+                    : widgetDataClass!.rect.height,
+              ),
               Radius.zero),
           paint);
     }
