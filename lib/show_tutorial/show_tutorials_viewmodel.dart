@@ -7,7 +7,6 @@ import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
-
 import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
 import 'widget/tool_tip_widget.dart';
@@ -36,8 +35,9 @@ class ShowTutorialsModel extends ChangeNotifier {
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
+  double _parentHeight = 0.0;
+  Offset _parentHeightOffset = const Offset(0, 0);
   double _statusBarHeight = 0.0;
-  // double get statusbarHeight=>_statusBarHeight;
   double _screenHeight = 0.0;
   double get screenHeight => _screenHeight;
   double _screenWidth = 0.0;
@@ -46,8 +46,8 @@ class ShowTutorialsModel extends ChangeNotifier {
   double get toolTipHeight => _toolTipHeight;
   double _bottomNavHeight = 0.0;
   double _appBarHeight = 0.0;
-  bool hasAppHeight = false;
-  bool hasBottomNavBarHeight = false;
+  bool _hasAppHeight = false;
+  bool _hasBottomNavBarHeight = false;
   final tutorialList =
       <interactive_tutorial.InteractiveTutorialElementsModel>[];
   InteractiveTutorialModel? _interactiveTutorialModel;
@@ -60,6 +60,13 @@ class ShowTutorialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  ToolTipDataClass? _currentToolTipDataClass;
+  ToolTipDataClass? get currentToolTipDataClass => _currentToolTipDataClass;
+  set currentToolTipDataClass(ToolTipDataClass? value) {
+    _currentToolTipDataClass = value;
+    notifyListeners();
+  }
+
   bool _isTutorialPresent = false;
   bool get isTutorialPresent => _isTutorialPresent;
   set isTutorialPresent(bool val) {
@@ -68,12 +75,13 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   bool _isVisible = true;
-  bool get isVisibile => _isVisible;
-  set isVisibile(bool val) {
+  bool get isVisible => _isVisible;
+  set isVisible(bool val) {
     _isVisible = val;
     notifyListeners();
   }
 
+  ///Variable is to identify whether the widget is visible or not.
   bool _canShow = false;
   bool get canShow => _canShow;
   set canShow(bool value) {
@@ -81,6 +89,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///Varible for storing the current index of the tutorial list
   int _selectedIndex = 0;
   int get selectedIndex => _selectedIndex;
   set selectedIndex(int index) {
@@ -88,6 +97,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///Variable for storing the max index of the tutorial list, user visited.
   int _maxCount = 0;
   int get maxCount => _maxCount;
   final widgetList = <WidgetDataClass>[];
@@ -97,70 +107,96 @@ class ShowTutorialsModel extends ChangeNotifier {
   static final ShowTutorialsModel _instance = ShowTutorialsModel._();
   static ShowTutorialsModel get instance => _instance;
 
+//
+//
   /// Getting the [Offset] value for the [ToolTipWidget] to position it accordingly.
-  ToolTipDataClass getYAxis({double statusBarHeight = 0.0}) {
-    late ToolTipDataClass toolTipDataClass;
-    late WidgetDataClass widgetDataClass;
-    if (_currentWidget != null) {
-      widgetDataClass = _currentWidget!;
+  void getYAxis({double statusBarHeight = 0.0, required int index}) {
+    isVisible = false;
+    ToolTipDataClass? toolTipDataClass;
+    WidgetDataClass? widgetDataClass = inspectChilds(index);
+    if (widgetDataClass != null) {
+      _canShow = true;
     } else {
       _canShow = false;
     }
+    // getToolTipSize();
 
     if (_canShow) {
-      if (widgetDataClass.yAxis <= _appBarHeight) {
+      if (widgetDataClass!.yAxis < _appBarHeight) {
         if (isElementInAppBar(widgetDataClass.child)) {
           toolTipDataClass = _getValue(widgetDataClass);
+          isVisible = true;
+        } else {
+          if (isFullSizedVerticalScrollbar()) {
+            widgetDataClass.child.renderObject!
+                .showOnScreen(duration: const Duration(milliseconds: 500));
+            widgetDataClass.yAxis = _appBarHeight;
+            toolTipDataClass = _getValue(widgetDataClass);
+            isVisible = true;
+          } else {
+            widgetDataClass.child.renderObject!
+                .showOnScreen(duration: const Duration(milliseconds: 500));
+            widgetDataClass.yAxis = _parentHeightOffset.dy;
+            toolTipDataClass = _getValue(widgetDataClass);
+            isVisible = true;
+          }
+        }
+      } else if (!isFullSizedVerticalScrollbar() &&
+          widgetDataClass.yAxis < _parentHeightOffset.dy) {
+        widgetDataClass.child.renderObject!
+            .showOnScreen(duration: const Duration(milliseconds: 500));
+        widgetDataClass.yAxis = _parentHeightOffset.dy;
+        toolTipDataClass = _getValue(widgetDataClass);
+        isVisible = true;
+      } else if (widgetDataClass.yAxis + widgetDataClass.rect.height >=
+          (isFullSizedVerticalScrollbar()
+              ? _screenHeight - _bottomNavHeight
+              : _parentHeight + _parentHeightOffset.dy)) {
+        if (_bottomNavHeight > 0.0
+            ? isElementInBottomNavBar(widgetDataClass.child)
+            : false) {
+          toolTipDataClass = _getValue(widgetDataClass);
+          isVisible = true;
         } else {
           widgetDataClass.child.renderObject!
               .showOnScreen(duration: const Duration(milliseconds: 500));
-
-          widgetDataClass.yAxis = _appBarHeight;
-          toolTipDataClass = _getValue(widgetDataClass);
+          Future.delayed(const Duration(milliseconds: 550), () {
+            currentToolTipDataClass = _getValue(inspectChilds(selectedIndex)!);
+            isVisible = true;
+          });
+          toolTipDataClass =
+              toolTipDataClass ?? ToolTipDataClass(isUp: false, yAxis: 0);
         }
-      }
-      if (widgetDataClass.yAxis + widgetDataClass.rect.height >=
-          _screenHeight - _bottomNavHeight) {
-        if (isElementInBottomNavBar(widgetDataClass.child)) {
-          //    widgetDataClass.yAxis =
-          //     _screenHeight - widgetDataClass.rect.height - _bottomNavHeight;
-          // widgetDataClass.child.renderObject!
-          //     .showOnScreen(duration: const Duration(milliseconds: 500));
-          toolTipDataClass = _getValue(widgetDataClass);
-        } else {
-          widgetDataClass.yAxis =
-              _screenHeight - widgetDataClass.rect.height - _bottomNavHeight;
-          widgetDataClass.child.renderObject!
-              .showOnScreen(duration: const Duration(milliseconds: 500));
-          toolTipDataClass = _getValue(widgetDataClass);
-        }
-      }
-      if (widgetDataClass.xAxis > _screenWidth) {
+      } else if (widgetDataClass.xAxis > _screenWidth) {
         widgetDataClass.child.renderObject!
             .showOnScreen(duration: const Duration(milliseconds: 500));
         widgetDataClass.xAxis = _screenWidth - widgetDataClass.rect.width;
         toolTipDataClass = _getValue(widgetDataClass);
+        isVisible = true;
       } else {
         toolTipDataClass = _getValue(widgetDataClass);
+        isVisible = true;
       }
     } else {
       final positionValue = _screenHeight *
           (1 - ((tutorialList[_selectedIndex].position ?? 50) / 100));
-      // log('The status bar height is $statusBarHeight');
       statusBarHeight =
           statusBarHeight == 0.0 ? _statusBarHeight : statusBarHeight;
       if (positionValue + _toolTipHeight > _screenHeight) {
         toolTipDataClass = ToolTipDataClass(
             isUp: false, yAxis: _screenHeight - _toolTipHeight);
+        isVisible = true;
       } else if (positionValue <= statusBarHeight) {
         toolTipDataClass =
             ToolTipDataClass(isUp: false, yAxis: statusBarHeight);
+        isVisible = true;
       } else {
         toolTipDataClass = ToolTipDataClass(isUp: false, yAxis: positionValue);
+        isVisible = true;
       }
     }
-    log('The yAxis is ${toolTipDataClass.yAxis}');
-    return toolTipDataClass;
+    currentToolTipDataClass = toolTipDataClass;
+    log('The yAxis is ${currentToolTipDataClass?.yAxis ?? 0} tooltip height is $_toolTipHeight and can show is $_canShow and the widget height is ${_currentWidget?.rect.height ?? 0} and the visibility is $_isVisible');
   }
 
   ToolTipDataClass _getValue(WidgetDataClass widgetDataClass) {
@@ -173,6 +209,7 @@ class ShowTutorialsModel extends ChangeNotifier {
             (widgetDataClass.yAxis + widgetDataClass.rect.height)) >
         _toolTipHeight + 40) {
       yAxis = widgetDataClass.yAxis + widgetDataClass.rect.height + 10;
+
       return ToolTipDataClass(isUp: true, yAxis: yAxis);
     } else if (widgetDataClass.yAxis > toolTipHeight + 40) {
       yAxis = widgetDataClass.yAxis - _toolTipHeight - 10;
@@ -202,16 +239,16 @@ class ShowTutorialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Getting the device's [Size] using current [BuildContext]
+  /// Getting the device's [Size] using current screen [BuildContext]
   void getScreenDetails(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
     _screenHeight = mediaQueryData.size.height;
     _screenWidth = mediaQueryData.size.width;
+    _parentHeight = mediaQueryData.size.height;
     if (_statusBarHeight == 0.0) {
       _statusBarHeight = mediaQueryData.viewPadding.top;
     }
     log('The screen dimensions is $_screenHeight , $_screenWidth,$_statusBarHeight');
-    // notifyListeners();
   }
 
   bool isElementInAppBar(Element child) {
@@ -231,6 +268,22 @@ class ShowTutorialsModel extends ChangeNotifier {
     return isInAppBar;
   }
 
+  void getScrollViewHeight(Element child) {
+    child.visitAncestorElements((element) {
+      final widget = element.widget;
+      if (widget is SingleChildScrollView ||
+          widget is NestedScrollView ||
+          widget is ScrollView) {
+        _parentHeight = element.size!.height;
+        _parentHeightOffset = getOffset(element.renderObject!);
+        log('The scroll height and offset is $_parentHeight, $_parentHeightOffset');
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }
+
   bool isElementInBottomNavBar(Element child) {
     late bool isInBottomNavBar;
     child.visitAncestorElements((element) {
@@ -248,17 +301,23 @@ class ShowTutorialsModel extends ChangeNotifier {
     return isInBottomNavBar;
   }
 
-  void inspectChilds(int selectedIndex) {
+  bool isFullSizedVerticalScrollbar() {
+    log('IsFullSizeScrollbar ${_parentHeight + _appBarHeight + _bottomNavHeight >= _screenHeight}');
+    return _parentHeight > 0.0 &&
+        ((_parentHeight + _appBarHeight + _bottomNavHeight) >= _screenHeight);
+  }
+
+  WidgetDataClass? inspectChilds(int selectedIndex) {
     if (selectedIndex < tutorialList.length) {
       void inspectRecursively(Element child) {
         if (child.widget is LayoutId &&
-            (!hasAppHeight || !hasBottomNavBarHeight)) {
+            (!_hasAppHeight || !_hasBottomNavBarHeight)) {
           if (child.widget.key
               .toString()
               .toLowerCase()
               .contains('_scaffoldslot.bottomnavigationbar')) {
             _bottomNavHeight = child.size!.height;
-            hasBottomNavBarHeight = true;
+            _hasBottomNavBarHeight = true;
             log('The bottom nav bar height is $_bottomNavHeight');
           }
           if (child.widget.key
@@ -266,7 +325,7 @@ class ShowTutorialsModel extends ChangeNotifier {
               .toLowerCase()
               .contains('_scaffoldslot.appbar')) {
             _appBarHeight = child.size!.height;
-            hasAppHeight = true;
+            _hasAppHeight = true;
             log('The app bar height is $_appBarHeight');
           }
         }
@@ -283,12 +342,13 @@ class ShowTutorialsModel extends ChangeNotifier {
                   rect: child.renderObject!.paintBounds,
                   child: child);
               _canShow = true;
+              getScrollViewHeight(child);
               // print('-----------------------------');
               // print('The types is ${rootWidget.runtimeType}');
               // print('The sizes is ${child.renderObject!.paintBounds.size}');
               // print('The keys type is ${rootWidget.key.runtimeType}');
               // print('The keys is ${rootWidget.key}');
-              // print('The offsets is ${getOffset(child.renderObject!)}');
+              // print('The offsets is ${getOffset(child.renderObject!) ?? 0}');
               // print('-----------------------------');
               notifyListeners();
             }
@@ -299,6 +359,7 @@ class ShowTutorialsModel extends ChangeNotifier {
 
       context!.visitChildElements(inspectRecursively);
     }
+    return _currentWidget;
   }
 
   String getStringValueFromKey(Key key) {
@@ -316,19 +377,42 @@ class ShowTutorialsModel extends ChangeNotifier {
     return '';
   }
 
+  void previousTap() {
+    _isVisible = false;
+    _canShow = false;
+    _currentWidget = null;
+    selectedIndex = _selectedIndex - 1;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      getToolTipSize();
+      getYAxis(index: selectedIndex);
+    });
+    notifyListeners();
+  }
+
   void nextTap(BuildContext context) {
-    if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) ==
-            6) &&
-        _selectedIndex < tutorialList.length - 1) {
-      canShow = false;
-      inspectChilds(_selectedIndex++);
-      if (_maxCount < _selectedIndex) {
-        _maxCount++;
-        notifyListeners();
-      }
-    } else {
-      if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) !=
+    if (_selectedIndex + 1 < tutorialList.length) {
+      selectedIndex = _selectedIndex + 1;
+      if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) ==
           6)) {
+        isVisible = false;
+        canShow = false;
+        _currentWidget = null;
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          getToolTipSize();
+          getYAxis(index: _selectedIndex);
+        });
+        if (_maxCount < _selectedIndex) {
+          _maxCount++;
+          notifyListeners();
+        }
+      } else
+      // if (((tutorialList[_selectedIndex]
+      //             .footer
+      //             ?.nextButton
+      //             ?.actionType ??
+      //         0) !=
+      //     6))
+      {
         channel.invokeMethod("activityDismiss_Internal", {
           'campaignId': _interactiveTutorialModel?.campaignId ?? '',
           'activityId': _interactiveTutorialModel?.activityId ?? '',
@@ -356,23 +440,23 @@ class ShowTutorialsModel extends ChangeNotifier {
               tutorialList[_selectedIndex].footer?.nextButton?.iosKeyValue ?? {}
         });
         Navigator.pop(context);
-      } else {
-        channel.invokeMethod("activityDismiss_Internal", {
-          'campaignId': _interactiveTutorialModel?.campaignId ?? '',
-          'activityId': _interactiveTutorialModel?.activityId ?? '',
-          'allUsers': _interactiveTutorialModel?.allUsers ?? '',
-          'activityType': _interactiveTutorialModel?.activityType ?? '',
-          'msgId': _interactiveTutorialModel?.msgId ?? '',
-          'jeId': _interactiveTutorialModel?.jeId ?? '',
-          'ruleId': _interactiveTutorialModel?.ruleId ?? '',
-          'rTag': _interactiveTutorialModel?.rTag ?? '',
-          'maxSlideIndex': _maxCount,
-          'skipedIndex': _selectedIndex,
-          'totalScreenCount': tutorialList.length,
-          'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
-        });
-        Navigator.pop(context);
       }
+    } else {
+      channel.invokeMethod("activityDismiss_Internal", {
+        'campaignId': _interactiveTutorialModel?.campaignId ?? '',
+        'activityId': _interactiveTutorialModel?.activityId ?? '',
+        'allUsers': _interactiveTutorialModel?.allUsers ?? '',
+        'activityType': _interactiveTutorialModel?.activityType ?? '',
+        'msgId': _interactiveTutorialModel?.msgId ?? '',
+        'jeId': _interactiveTutorialModel?.jeId ?? '',
+        'ruleId': _interactiveTutorialModel?.ruleId ?? '',
+        'rTag': _interactiveTutorialModel?.rTag ?? '',
+        'maxSlideIndex': _maxCount,
+        'skipedIndex': _selectedIndex,
+        'totalScreenCount': tutorialList.length,
+        'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
+      });
+      Navigator.pop(context);
     }
     // if ((tutorialList[_selectedIndex].footer?.nextButton?.deeplinkType ?? 0) !=
     //         6 ||
@@ -434,23 +518,6 @@ class ShowTutorialsModel extends ChangeNotifier {
       'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
     });
   }
-
-  // void searchElement(int? selectedIndex) {
-  //   final String currentTutorial =
-  //       tutorialList[selectedIndex ?? _selectedIndex].targetId!;
-  //   for (int i = 0; i < keyList.length; i++) {
-  //     if (keyList[i].toLowerCase() == currentTutorial.toLowerCase()) {
-  //       _currentWidget = widgetList[i];
-  //       // locationList.add(_currentWidget!);
-  //       _canShow = true;
-  //       notifyListeners();
-  //       return;
-  //     }
-  //   }
-  //   // locationList.add(null);
-  //   _canShow = false;
-  //   notifyListeners();
-  // }
 
   Future<void> loadData() async {
     try {
@@ -515,13 +582,17 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   void disposeViewModel() {
+    _currentToolTipDataClass = null;
+    _currentWidget = null;
     _screenHeight = 0.0;
     _screenWidth = 0.0;
     _toolTipHeight = 0.0;
     _bottomNavHeight = 0.0;
     _appBarHeight = 0.0;
-    hasAppHeight = false;
-    hasBottomNavBarHeight = false;
+    _parentHeight = 0.0;
+    _parentHeightOffset = Offset.zero;
+    _hasAppHeight = false;
+    _hasBottomNavBarHeight = false;
     _isTutorialPresent = false;
     tutorialList.clear();
     _interactiveTutorialModel = null;

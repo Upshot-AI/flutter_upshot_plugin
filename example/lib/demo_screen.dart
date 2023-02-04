@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/upshotConstants.dart';
+import 'package:flutter_upshot_plugin_example/test_page.dart';
 import 'home_screen.dart';
 
 class DemoClass extends StatefulWidget {
@@ -89,9 +90,9 @@ class _DemoClassState extends State<DemoClass> {
       body: Column(
         children: [
           ElevatedButton(
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen())),
-            child: const Text('Pres'),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen())),
+            child: const Text('Press'),
           ),
           Container(
             width: 100,
@@ -99,7 +100,8 @@ class _DemoClassState extends State<DemoClass> {
             color: getColor('#0E9F54'),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyStatelessWidget())),
             child: const Text(
               'data',
               style: TextStyle(

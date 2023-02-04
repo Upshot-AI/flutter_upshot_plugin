@@ -13,8 +13,15 @@ class ShowTutorials extends StatefulWidget {
     assert(!context.owner!.debugBuilding,
         'Method called while building RenderTree.');
     try {
-      ShowTutorialsModel.instance.getScreenDetails(context);
-      ShowTutorialsModel.instance.inspectChilds(0);
+      final m = ShowTutorialsModel.instance;
+      m.getScreenDetails(context);
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        m.getToolTipSize();
+        m.getYAxis(
+            statusBarHeight:
+                MediaQuery.of(ShowTutorialsModel.context!).viewPadding.top,
+            index: 0);
+      });
     } catch (e) {
       rethrow;
     }
@@ -34,7 +41,6 @@ class _ShowTutorialsState extends State<ShowTutorials> {
       log('The eror is $details');
     };
     WidgetsBinding.instance?.endOfFrame.then((_) => {
-          model.getToolTipSize(),
           ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {
             'campaignId': model.interactiveTutorialModel?.campaignId ?? '',
             'activityId': model.interactiveTutorialModel?.activityId ?? '',
@@ -70,14 +76,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                 if (m.selectedIndex == 0) {
                   return true;
                 } else {
-                  model.isVisibile = false;
-                  model.canShow = false;
-                  model.inspectChilds(
-                      model.selectedIndex = model.selectedIndex - 1);
-                  WidgetsBinding.instance?.addPostFrameCallback((_) {
-                    model.getToolTipSize();
-                    model.isVisibile = true;
-                  });
+                  model.previousTap();
                   return false;
                 }
               },
@@ -89,21 +88,21 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                   children: [
                     CustomPaint(
                       painter: TransaprentCustomPainter(
-                          canShow: m.canShow, widgetDataClass: m.currentWidget),
+                        canShow: m.canShow,
+                        widgetDataClass: m.currentWidget,
+                        isVisible: m.isVisible,
+                      ),
                       child: const SizedBox.expand(),
                     ),
                     CustomPaint(
                         painter: CustomBorderPaint(
                             widgetDataClass: m.currentWidget,
                             canShow: m.canShow,
+                            isVisible: m.isVisible,
                             color: m.tutorialList[m.selectedIndex].borderColor),
                         child: const SizedBox()),
                     Positioned(
-                      top: m
-                          .getYAxis(
-                              statusBarHeight:
-                                  MediaQuery.of(context).padding.top)
-                          .yAxis,
+                      top: m.currentToolTipDataClass?.yAxis ?? 0,
                       left: 20,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
@@ -111,11 +110,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
                             maxHeight: MediaQuery.of(context).size.height * 0.5,
                             minHeight: 50),
                         child: ToolTipWidget(
-                          isUp: m
-                              .getYAxis(
-                                  statusBarHeight:
-                                      MediaQuery.of(context).padding.top)
-                              .isUp,
+                          isUp: m.currentToolTipDataClass?.isUp ?? false,
                           enableTap:
                               m.interactiveTutorialModel?.enableTap ?? false,
                         ),

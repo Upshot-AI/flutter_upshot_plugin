@@ -6,11 +6,14 @@ import '../show_tutorials_viewmodel.dart';
 class CustomBorderPaint extends CustomPainter {
   final String? color;
   final WidgetDataClass? widgetDataClass;
-  final bool canShow;
+  final bool canShow, isVisible;
   final double strokeWidth = 1;
 
   const CustomBorderPaint(
-      {required this.widgetDataClass, this.color, required this.canShow});
+      {required this.widgetDataClass,
+      this.color,
+      required this.canShow,
+      required this.isVisible});
   @override
   void paint(Canvas canvas, Size size) {
     if (canShow && widgetDataClass != null) {

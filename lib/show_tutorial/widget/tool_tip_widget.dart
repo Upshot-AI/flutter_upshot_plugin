@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/button_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/show_tutorials_viewmodel.dart';
-
 import '../services/auto_size_text.dart';
 import '../services/tool_tip_clipper.dart';
 
@@ -33,7 +31,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
     final tutorial = model.tutorialList[selectedIndex];
     final footer = model.tutorialList[selectedIndex].footer;
     return Visibility(
-      visible: model.isVisibile,
+      visible: model.isVisible,
       maintainAnimation: true,
       maintainState: true,
       maintainSize: true,
@@ -70,13 +68,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                   )
                 : const SizedBox(),
             Container(
-              // decoration: BoxDecoration(
-              //     color: model
-              //             .getColor(tutorial.description?.bgColor)
-              //             ?.withOpacity((tutorial.description?.opacity ?? 1)
-              //                 .toDouble()) ??
-              //         Colors.white.withOpacity(
-              //             (tutorial.description?.opacity ?? 1).toDouble())),
               key: model.toolTipGlobalKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -253,25 +244,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                                 1)
                                                                             .toDouble()),
                                                               ),
-                                                              onPressed: () {
-                                                                model.isVisibile =
-                                                                    false;
-                                                                model.canShow =
-                                                                    false;
-                                                                model.inspectChilds(
-                                                                    model.selectedIndex =
-                                                                        model.selectedIndex -
-                                                                            1);
-                                                                WidgetsBinding
-                                                                    .instance
-                                                                    ?.addPostFrameCallback(
-                                                                        (_) {
-                                                                  model
-                                                                      .getToolTipSize();
-                                                                  model.isVisibile =
-                                                                      true;
-                                                                });
-                                                              },
+                                                              onPressed: model
+                                                                  .previousTap,
                                                               child:
                                                                   AutoSizeText(
                                                                 (footer?.prevButton?.title ??
@@ -341,16 +315,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                   1)
                                                               .toDouble()),
                                                     ),
-                                                    onPressed: () {
-                                                      model.isVisibile = false;
-                                                      model.nextTap(context);
-                                                      WidgetsBinding.instance
-                                                          ?.addPostFrameCallback(
-                                                              (_) {
-                                                        model.getToolTipSize();
-                                                        model.isVisibile = true;
-                                                      });
-                                                    },
+                                                    onPressed: () =>
+                                                        model.nextTap(context),
                                                     child: AutoSizeText(
                                                       (footer?.nextButton
                                                                       ?.title ??
@@ -426,25 +392,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                                 1)
                                                                             .toDouble()),
                                                               ),
-                                                              onPressed: () {
-                                                                model.isVisibile =
-                                                                    false;
-                                                                model.canShow =
-                                                                    false;
-                                                                model.inspectChilds(
-                                                                    model.selectedIndex =
-                                                                        model.selectedIndex -
-                                                                            1);
-                                                                WidgetsBinding
-                                                                    .instance
-                                                                    ?.addPostFrameCallback(
-                                                                        (_) {
-                                                                  model
-                                                                      .getToolTipSize();
-                                                                  model.isVisibile =
-                                                                      true;
-                                                                });
-                                                              },
+                                                              onPressed: model
+                                                                  .previousTap,
                                                               child:
                                                                   AutoSizeText(
                                                                 (footer?.prevButton?.title ??
@@ -514,16 +463,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                   1)
                                                               .toDouble()),
                                                     ),
-                                                    onPressed: () {
-                                                      model.isVisibile = false;
-                                                      model.nextTap(context);
-                                                      WidgetsBinding.instance
-                                                          ?.addPostFrameCallback(
-                                                              (_) {
-                                                        model.getToolTipSize();
-                                                        model.isVisibile = true;
-                                                      });
-                                                    },
+                                                    onPressed: () =>
+                                                        model.nextTap(context),
                                                     child: AutoSizeText(
                                                       (footer?.nextButton
                                                                       ?.title ??
