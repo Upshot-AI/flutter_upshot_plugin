@@ -411,9 +411,9 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   void nextTap(BuildContext context) {
     if (_selectedIndex + 1 < tutorialList.length) {
-      selectedIndex = _selectedIndex + 1;
       if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) ==
           6)) {
+        selectedIndex = _selectedIndex + 1;
         isVisible = false;
         canShow = false;
         _currentWidget = null;
@@ -425,14 +425,7 @@ class ShowTutorialsModel extends ChangeNotifier {
           _maxCount++;
           notifyListeners();
         }
-      } else
-      // if (((tutorialList[_selectedIndex]
-      //             .footer
-      //             ?.nextButton
-      //             ?.actionType ??
-      //         0) !=
-      //     6))
-      {
+      } else {
         channel.invokeMethod("activityDismiss_Internal", {
           'campaignId': _interactiveTutorialModel?.campaignId ?? '',
           'activityId': _interactiveTutorialModel?.activityId ?? '',
@@ -478,47 +471,6 @@ class ShowTutorialsModel extends ChangeNotifier {
       });
       Navigator.pop(context);
     }
-    // if ((tutorialList[_selectedIndex].footer?.nextButton?.deeplinkType ?? 0) !=
-    //         6 ||
-    //     _selectedIndex == tutorialList.length - 1) {
-    //   channel.invokeMethod("activityDismiss_Internal", {
-    //     'campaignId': _interactiveTutorialModel?.campaignId ?? '',
-    //     'activityId': _interactiveTutorialModel?.activityId ?? '',
-    //     'allUsers': _interactiveTutorialModel?.allUsers ?? '',
-    //     'activityType': _interactiveTutorialModel?.activityType ?? '',
-    //     'msgId': _interactiveTutorialModel?.msgId ?? '',
-    //     'jeId': _interactiveTutorialModel?.jeId ?? '',
-    //     'ruleId': _interactiveTutorialModel?.ruleId ?? '',
-    //     'rTag': _interactiveTutorialModel?.rTag ?? '',
-    //     'max_elements': _maxCount,
-    //     'skipped_element': _selectedIndex,
-    //     'total_elements': tutorialList.length
-    //   });
-    //   channel.invokeMethod("activityRedirection_Internal", {
-    //     'campaignId': _interactiveTutorialModel?.campaignId ?? '',
-    //     'activityId': _interactiveTutorialModel?.activityId ?? '',
-    //     'allUsers': _interactiveTutorialModel?.allUsers ?? '',
-    //     'activityType': _interactiveTutorialModel?.activityType ?? '',
-    //     'msgId': _interactiveTutorialModel?.msgId ?? '',
-    //     'jeId': _interactiveTutorialModel?.jeId ?? '',
-    //     'ruleId': _interactiveTutorialModel?.ruleId ?? '',
-    //     'rTag': _interactiveTutorialModel?.rTag ?? '',
-    //     'iOS_url': _interactiveTutorialModel
-    //             ?.elements?[_selectedIndex].footer?.nextButton?.iOsUrl ??
-    //         '',
-    //     'deeplink_type': _interactiveTutorialModel
-    //             ?.elements?[_selectedIndex].footer?.nextButton?.deeplinkType ??
-    //         ''
-    //   });
-    //   Navigator.pop(context);
-    // } else {
-    //   canShow = false;
-    //   inspectChilds(selectedIndex = _selectedIndex + 1);
-    //   if (_maxCount < _selectedIndex) {
-    //     _maxCount++;
-    //     notifyListeners();
-    //   }
-    // }
   }
 
   void onSkipTap(BuildContext context) {
