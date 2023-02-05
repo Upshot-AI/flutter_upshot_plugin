@@ -469,6 +469,23 @@ class ShowTutorialsModel extends ChangeNotifier {
         'totalScreenCount': tutorialList.length,
         'tutorialType': _interactiveTutorialModel?.tutorialType ?? 2
       });
+
+      if (((tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0) !=
+          6)) {
+        channel.invokeMethod("activityRedirection_Internal", {
+          'actionType':
+              tutorialList[_selectedIndex].footer?.nextButton?.actionType ?? 0,
+          'inboxVariables': interactiveTutorialModel?.inboxVariable ?? {},
+          'deeplink_url':
+              tutorialList[_selectedIndex].footer?.nextButton?.iOsUrl ?? '',
+          'deeplink_type': _interactiveTutorialModel?.elements?[_selectedIndex]
+                  .footer?.nextButton?.deeplinkType ??
+              1,
+          'deeplink_keyValue':
+              tutorialList[_selectedIndex].footer?.nextButton?.iosKeyValue ?? {}
+        });
+      }
+
       Navigator.pop(context);
     }
   }

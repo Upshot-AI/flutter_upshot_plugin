@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_method_channel.dart';
 import 'dart:math' as math;
 
+import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
+
 class MyStatelessWidget extends StatefulWidget {
   const MyStatelessWidget({Key? key}) : super(key: key);
 
@@ -17,7 +19,8 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       // ShowCaseWidget.of(finalBuildContext).startShowCase([findIndex]);
-      UpshotMethodChannelInternal().showTutorials(context, '');
+      // UpshotMethodChannelInternal().showTutorials(context, '');
+      FlutterUpshotPlugin.showActivity(-1, "", context);
     });
   }
 
