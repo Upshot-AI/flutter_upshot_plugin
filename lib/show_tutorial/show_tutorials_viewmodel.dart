@@ -271,13 +271,33 @@ class ShowTutorialsModel extends ChangeNotifier {
   void getScrollViewHeight(Element child) {
     child.visitAncestorElements((element) {
       final widget = element.widget;
-      if (widget is SingleChildScrollView ||
-          widget is NestedScrollView ||
-          widget is ScrollView) {
-        _parentHeight = element.size!.height;
-        _parentHeightOffset = getOffset(element.renderObject!);
-        log('The scroll height and offset is $_parentHeight, $_parentHeightOffset');
-        return false;
+      if (widget is SingleChildScrollView) {
+        if (widget.physics is! NeverScrollableScrollPhysics) {
+          _parentHeight = element.size!.height;
+          _parentHeightOffset = getOffset(element.renderObject!);
+          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
+          return false;
+        } else {
+          return true;
+        }
+      } else if (widget is NestedScrollView) {
+        if (widget.physics is! NeverScrollableScrollPhysics) {
+          _parentHeight = element.size!.height;
+          _parentHeightOffset = getOffset(element.renderObject!);
+          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
+          return false;
+        } else {
+          return true;
+        }
+      } else if (widget is ScrollView) {
+        if (widget.physics is! NeverScrollableScrollPhysics) {
+          _parentHeight = element.size!.height;
+          _parentHeightOffset = getOffset(element.renderObject!);
+          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
+          return false;
+        } else {
+          return true;
+        }
       } else {
         return true;
       }
