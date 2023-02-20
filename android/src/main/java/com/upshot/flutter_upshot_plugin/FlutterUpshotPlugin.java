@@ -734,28 +734,21 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "getUnreadNotificationsCount": {
                 int limit = Integer.parseInt(call.arguments.toString());
-                // BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, 10, new
-                // BKNotificationsCountResponseListener() {
-
-                // @Override
-                // public void notificationsCount(int i) {
-
-                // }
-                // });
-                // BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, new
-                // BKNotificationsCountResponseListener() {
-                // @Override
-                // public void notificationsCount(int i) {
-                // HashMap<String, Object> data = new HashMap<>();
-                // data.put("count", i);
-                // handler.post(new Runnable() {
-                // @Override
-                // public void run() {
-                // channel.invokeMethod("upshotUnreadNotificationsCount", data);
-                // }
-                // });
-                // }
-                // });
+                
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, new
+                BKNotificationsCountResponseListener() {
+                @Override
+                public void notificationsCount(int i) {
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("count", i);
+                handler.post(new Runnable() {
+                @Override
+                public void run() {
+                channel.invokeMethod("upshotUnreadNotificationsCount", data);
+                }
+                });
+                }
+                });
             }
 
             case "setTechnologyType": {
