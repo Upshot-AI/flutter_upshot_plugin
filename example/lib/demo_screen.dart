@@ -115,9 +115,9 @@ class _DemoClassState extends State<DemoClass> {
                   fontSize: 16),
             ),
           ),
-          RichText(
-              text: TextSpan(
-                  text: '<p>Hello</p>', style: TextStyle(color: Colors.black)))
+          // RichText(
+          //     text: TextSpan(
+          //         text: '<p>Hello</p>', style: TextStyle(color: Colors.black)))
           // Expanded(
           //     child: PlatformViewLink(
           //   surfaceFactory: (_, controller) {

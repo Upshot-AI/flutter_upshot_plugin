@@ -98,7 +98,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                 : const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Platform.isAndroid
                                 ? SizedBox(
-                                    height: 320,
+                                    height: 308,
                                     child: PlatformViewLink(
                                       key: ValueKey(tutorial.targetId),
                                       surfaceFactory: (_, controller) {
