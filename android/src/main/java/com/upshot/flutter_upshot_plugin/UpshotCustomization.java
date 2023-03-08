@@ -249,6 +249,7 @@ public class UpshotCustomization {
             try {
                 FlutterLoader loader = FlutterInjector.instance().flutterLoader();
                 String key = loader.getLookupKeyForAsset("fonts/" + font_name + ".ttf");
+                System.out.println("The key is"+key);
                 Typeface typeface = Typeface.createFromAsset(context.getAssets(), key);
                 if (view instanceof Button) {
                     ((Button) view).setTypeface(typeface);

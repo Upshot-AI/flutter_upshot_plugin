@@ -1,4 +1,8 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/upshotConstants.dart';
 import 'package:flutter_upshot_plugin_example/test_page.dart';
@@ -110,9 +114,100 @@ class _DemoClassState extends State<DemoClass> {
                   decoration: TextDecoration.underline,
                   fontSize: 16),
             ),
-          )
+          ),
+          RichText(
+              text: TextSpan(
+                  text: '<p>Hello</p>', style: TextStyle(color: Colors.black)))
+          // Expanded(
+          //     child: PlatformViewLink(
+          //   surfaceFactory: (_, controller) {
+          //     return AndroidViewSurface(
+          //       controller: controller as AndroidViewController,
+          //       gestureRecognizers: const <
+          //           Factory<OneSequenceGestureRecognizer>>{},
+          //       hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+          //     );
+          //   },
+          //   onCreatePlatformView: (p) {
+          //     return PlatformViewsService.initSurfaceAndroidView(
+          //         id: p.id,
+          //         viewType: 'view/show_html',
+          //         layoutDirection: TextDirection.ltr,
+          //         onFocus: () => p.onFocusChanged(true),
+          //         creationParamsCodec: const StandardMessageCodec(),
+          //         creationParams: {
+          //           'description': '<p>This is native content</p>',
+          //           'text_size': 20,
+          //         })
+          //       ..addOnPlatformViewCreatedListener(p.onPlatformViewCreated)
+          //       ..create();
+          //   },
+          //   viewType: 'view/show_html',
+          // ))
         ],
       ),
     );
   }
 }
+
+
+
+
+// class HtmlText extends StatelessWidget {
+//   final String html;
+
+//   HtmlText(this.html);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text.rich(
+//       TextSpan(
+//         text: '',
+//         style: TextStyle(fontSize: 16.0),
+//         children: <TextSpan>[
+//           for (var text in _parseHtmlText(html))
+//             text.isBold
+//                 ? TextSpan(text: text.text, style: TextStyle(fontWeight: FontWeight.bold))
+//                 : TextSpan(text: text.text),
+//         ],
+//       ),
+//     );
+//   }
+
+//   List<HtmlTextSegment> _parseHtmlText(String html) {
+//     // This is just a simple example parsing bold tags.
+//     // You can add more tags as needed.
+//     List<HtmlTextSegment> segments = [];
+//     int currentIndex = 0;
+
+//     while (true) {
+//       int boldStart = html.indexOf('<b>', currentIndex);
+//       int boldEnd = html.indexOf('</b>', currentIndex);
+
+//       if (boldStart == -1 || boldEnd == -1) {
+//         // Add any remaining text.
+//         if (currentIndex < html.length) {
+//           segments.add(HtmlTextSegment(html.substring(currentIndex)));
+//         }
+//         break;
+//       }
+
+//       if (boldStart > currentIndex) {
+//         segments.add(HtmlTextSegment(html.substring(currentIndex, boldStart)));
+//       }
+
+//       segments.add(HtmlTextSegment(html.substring(boldStart + 3, boldEnd), true));
+
+//       currentIndex = boldEnd + 4;
+//     }
+
+//     return segments;
+//   }
+// }
+
+// class HtmlTextSegment {
+//   final String text;
+//   final bool isBold;
+
+//   HtmlTextSegment(this.text, [this.isBold = false]);
+// }

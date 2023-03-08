@@ -131,12 +131,17 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         this.context = flutterPluginBinding.getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
         binding = flutterPluginBinding;
+        System.out.println("The assets is"+binding.getApplicationContext().getAssets());
+        binding
+                .getPlatformViewRegistry()
+                .registerViewFactory("view/show_html", new NativeTutorialViewFactory());
         FlutterLoader loader = FlutterInjector.instance().flutterLoader();
         String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
 
         // AssetManager assetManager = binding.getApplicationContext().getAssets();
 
         // AssetFileDescriptor fd = assetManager.openFd(key);
+        System.out.println("The key is"+key);
         String customizationJson = loadJSONFromAsset(context, key);
 
         helper.setCustomizationData(customizationJson, context);

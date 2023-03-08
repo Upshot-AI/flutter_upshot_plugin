@@ -32,6 +32,7 @@ class ShowTutorialInheritedNotifier
 }
 
 class ShowTutorialsModel extends ChangeNotifier {
+  int height = 0;
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');

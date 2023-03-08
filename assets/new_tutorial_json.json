@@ -8,15 +8,15 @@
   "inboxVariables": {},
   "elements": [
     {
-      "target_id": "item19",
+      "target_id": "item10",
       "borderColor": "#166EA0",
       "position": 100,
       "bgImage": "https://media.goupshot.com/preprod-bk/6059b3f29dada4ff008b4567/si/1619192100281.jpeg",
       "scaleType": 3,
       "description": {
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000; text-align: left;\"><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-1:For Testing - !@#$%^&amp;*</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-2:For Demo; -&nbsp;</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-3:For Trial - ()_+~`</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>11234567890-={}[]:\";'&lt;&gt;,.?/|\\<br />100%</strong></em></span></p>",
+        "text": "<p style=\" color: #000000; text-align: left; font-size:30px;\"><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-1:For Testing - !@#$%^&amp;*</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-2:For Demo; -&nbsp;</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-3:For Trial - ()_+~`</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>11234567890-={}[]:\";'&lt;&gt;,.?/|\\<br />100%</strong></em></span></p>",
         "bgColor": "#8E9295",
-        "opacity": 0,
+        "opacity": 0.5,
         "fontSize": 12,
         "fontName": ""
       },
@@ -57,15 +57,15 @@
       }
     },
     {
-      "target_id": "item23",
+      "target_id": "item12",
       "borderColor": "#166EA0",
       "position": 0,
-      "bgImage": "https://media.goupshot.com/preprod-bk/6059b3f29dada4ff008b4567/si/1619192100281.jpeg",
+      "bgImage": "",
       "scaleType": 3,
       "description": {
-        "text": "<p style=\"font-family: Arial, proxima-nova, sans-serif; color: #000000;\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>",
+        "text": "<p style=\" color: #000000;font-size:40px;\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>",
         "bgColor": "#8E9295",
-        "opacity": 1,
+        "opacity": 0.5,
         "fontSize": 12,
         "fontName": ""
       },

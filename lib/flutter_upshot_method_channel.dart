@@ -35,8 +35,9 @@ class UpshotMethodChannelInternal {
   //   var validKeys = ["campaignId", "activityId", "msgId"];
   // }
 
-  void showTutorials(BuildContext context, String data) async {
-    ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
+  static void showTutorials(BuildContext context, String data) async {
+    await ShowTutorialsModel.instance.loadData();
+    // ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
     if (ShowTutorialsModel.instance.tutorialList.isNotEmpty) {
       ShowTutorialsModel.instance.isTutorialPresent = true;
       ShowTutorialsModel.context = context;

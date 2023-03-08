@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/show_tutorials_viewmodel.dart';
 import '../services/auto_size_text.dart';
+import 'dart:io' show Platform;
 import '../services/tool_tip_clipper.dart';
 
 /// [ToolTipWidget] is the widget which will be describing widget for the highlighted widget.
@@ -78,56 +83,111 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                       child: Column(
                         children: [
                           Container(
-                              decoration: BoxDecoration(
-                                  color: model
-                                          .getColor(
-                                              tutorial.description?.bgColor)
-                                          ?.withOpacity(
-                                              (tutorial.description?.opacity ??
-                                                      1)
-                                                  .toDouble()) ??
-                                      Colors.white.withOpacity(
-                                          (tutorial.description?.opacity ?? 1)
-                                              .toDouble())),
-                              padding: widget.isUp
-                                  ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
-                                  : const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: Html(
-                                data: model.descriptionText(
-                                    tutorial.description?.text),
-                                style: {
-                                  "div": Style(
-                                    fontSize: FontSize(
-                                        (tutorial.description?.fontSize)
-                                            ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName,
+                            // height: 200,
+                            decoration: BoxDecoration(
+                                color: model
+                                        .getColor(tutorial.description?.bgColor)
+                                        ?.withOpacity(
+                                            (tutorial.description?.opacity ?? 1)
+                                                .toDouble()) ??
+                                    Colors.white.withOpacity(
+                                        (tutorial.description?.opacity ?? 1)
+                                            .toDouble())),
+                            padding: widget.isUp
+                                ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
+                                : const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: Platform.isAndroid
+                                ? SizedBox(
+                                    height: 320,
+                                    child: PlatformViewLink(
+                                      key: ValueKey(tutorial.targetId),
+                                      surfaceFactory: (_, controller) {
+                                        return AndroidViewSurface(
+                                          controller: controller
+                                              as AndroidViewController,
+                                          gestureRecognizers: const <
+                                              Factory<
+                                                  OneSequenceGestureRecognizer>>{},
+                                          hitTestBehavior:
+                                              PlatformViewHitTestBehavior
+                                                  .opaque,
+                                        );
+                                      },
+                                      onCreatePlatformView: (p) {
+                                        return PlatformViewsService
+                                            .initSurfaceAndroidView(
+                                                id: p.id,
+                                                viewType: 'view/show_html',
+                                                layoutDirection:
+                                                    TextDirection.ltr,
+                                                onFocus: () =>
+                                                    p.onFocusChanged(true),
+                                                creationParamsCodec:
+                                                    const StandardMessageCodec(),
+                                                creationParams: {
+                                              'description':
+                                                  // '<p>Hello</p>'
+                                                  // """
+                                                  //     <p style="font-family: Arial, proxima-nova, sans-serif; color: #000000;" data-mce-style="font-family: Arial, proxima-nova, sans-serif; color: #000000;"><span style="color: rgb(241, 196, 15);" data-mce-style="color: #f1c40f;">now get 20 rupees prie instead of <span style="color: rgb(126, 140, 141);" data-mce-style="color: #7e8c8d;"><span style="text-decoration: line-through; color: rgb(185, 106, 217);" data-mce-style="text-decoration: line-through; color: #b96ad9;">30</span>&nbsp;</span></span></p>
+                                                  //     """,
+                                                  model.descriptionText(tutorial
+                                                          .description?.text ??
+                                                      ''),
+                                              'text_size': tutorial
+                                                      .description?.fontSize ??
+                                                  20,
+                                            })
+                                          ..addOnPlatformViewCreatedListener(
+                                              p.onPlatformViewCreated)
+                                          ..create();
+                                      },
+                                      viewType: 'view/show_html',
+                                    ),
+                                  )
+                                : Html(
+                                    data:
+                                        // """
+                                        // <p style="font-family: Arial, proxima-nova, sans-serif; color: #000000;" data-mce-style="font-family: Arial, proxima-nova, sans-serif; color: #000000;"><span style="color: rgb(241, 196, 15);" data-mce-style="color: #f1c40f;">now get 20 rupees prie instead of <span style="color: rgb(126, 140, 141);" data-mce-style="color: #7e8c8d;"><span style="text-decoration: line-through; color: rgb(185, 106, 217);" data-mce-style="text-decoration: line-through; color: #b96ad9;">30</span>&nbsp;</span></span></p>
+                                        // """,
+                                        model.descriptionText(
+                                            tutorial.description?.text),
+                                    style: {
+                                      "div": Style(
+                                        fontSize: FontSize(
+                                            (tutorial.description?.fontSize)
+                                                ?.toDouble()),
+                                        fontFamily:
+                                            tutorial.description?.fontName,
+                                      ),
+                                      "p": Style(
+                                        fontSize: FontSize(
+                                            (tutorial.description?.fontSize)
+                                                ?.toDouble()),
+                                        fontFamily:
+                                            tutorial.description?.fontName,
+                                      ),
+                                      "span": Style(
+                                        fontSize: FontSize(
+                                            (tutorial.description?.fontSize)
+                                                ?.toDouble()),
+                                        fontFamily:
+                                            tutorial.description?.fontName,
+                                      ),
+                                      "li": Style(
+                                          fontSize: FontSize(
+                                              (tutorial.description?.fontSize)
+                                                  ?.toDouble()),
+                                          fontFamily:
+                                              tutorial.description?.fontName),
+                                      "ul": Style(
+                                          fontSize: FontSize(
+                                              (tutorial.description?.fontSize)
+                                                  ?.toDouble()),
+                                          fontFamily:
+                                              tutorial.description?.fontName),
+                                    },
                                   ),
-                                  "p": Style(
-                                    fontSize: FontSize(
-                                        (tutorial.description?.fontSize)
-                                            ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName,
-                                  ),
-                                  "span": Style(
-                                    fontSize: FontSize(
-                                        (tutorial.description?.fontSize)
-                                            ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName,
-                                  ),
-                                  "li": Style(
-                                      fontSize: FontSize(
-                                          (tutorial.description?.fontSize)
-                                              ?.toDouble()),
-                                      fontFamily:
-                                          tutorial.description?.fontName),
-                                  "ul": Style(
-                                      fontSize: FontSize(
-                                          (tutorial.description?.fontSize)
-                                              ?.toDouble()),
-                                      fontFamily:
-                                          tutorial.description?.fontName),
-                                },
-                              )),
+                          ),
                         ],
                       ),
                     ),
