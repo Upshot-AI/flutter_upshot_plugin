@@ -134,7 +134,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         System.out.println("The assets is"+binding.getApplicationContext().getAssets());
         binding
                 .getPlatformViewRegistry()
-                .registerViewFactory("view/show_html", new NativeTutorialViewFactory());
+                .registerViewFactory("view/show_html", new NativeTutorialViewFactory(internal_channel));
         FlutterLoader loader = FlutterInjector.instance().flutterLoader();
         String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
 

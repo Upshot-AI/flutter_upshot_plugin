@@ -9,7 +9,7 @@ class DemoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: DemoClass());
+    return const MaterialApp(debugShowCheckedModeBanner: false, home: DemoClass());
   }
 }
 
@@ -25,14 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      FlutterUpshotPlugin.showActivity(-1, '', context);
-      // UpshotMethodChannelInternal().showTutorials(context, '');
+      // FlutterUpshotPlugin.showActivity(-1, '', context);
+      UpshotMethodChannelInternal.showTutorials(context, '');
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       bottomSheet: Container(
         height: 30,
         color: Colors.black,
@@ -43,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Expanded(
               child: IconButton(
-                  icon: const Icon(Icons.arrow_back,
-                      key: UpshotGlobalKey('arrow_back')),
+                  icon: const Icon(Icons.arrow_circle_up_sharp,
+                      key: UpshotGlobalKey('item10')),
                   onPressed: () => Navigator.pop(context)),
             ),
             Expanded(
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(width: 10),
           Text(
             'Ho',
-            key: Key('logout'),
+            key: Key('item12'),
             style: TextStyle(fontSize: 20),
           ),
           // Icon(Icons.logout, key: UpshotLabeledGlobalKey('logout'))

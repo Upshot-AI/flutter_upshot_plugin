@@ -21,6 +21,8 @@ class ToolTipWidget extends StatefulWidget {
 }
 
 class _ToolTipWidgetState extends State<ToolTipWidget> {
+
+   final channel = const MethodChannel('flutter_upshot_plugin_internal');
   @override
   void initState() {
     super.initState();
@@ -98,7 +100,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                 : const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Platform.isAndroid && false
                                 ? SizedBox(
-                                    height: 308,
+                                    height: model.height == 0 ? 200: model.height,
                                     child: PlatformViewLink(
                                       key: ValueKey(tutorial.targetId),
                                       surfaceFactory: (_, controller) {
@@ -137,8 +139,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                       .description?.fontSize ??
                                                   20,
                                             })
-                                          ..addOnPlatformViewCreatedListener(
-                                              p.onPlatformViewCreated)
+                                          ..addOnPlatformViewCreatedListener((id) {
+                                            p.onPlatformViewCreated(id);
+                                            channel.setMethodCallHandler(model.getHeight);
+                                          })
                                           ..create();
                                       },
                                       viewType: 'view/show_html',
@@ -256,7 +260,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                   fontWeight: model.isBold(
                                                           footer?.skipButton
                                                               ?.fontStyle)
-                                                      ? FontWeight.w800
+                                                      ? FontWeight.bold
                                                       : null,
                                                   color: model.getColor(footer
                                                           ?.skipButton
@@ -334,7 +338,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                           ?.prevButton
                                                                           ?.fontStyle)
                                                                       ? FontWeight
-                                                                          .w800
+                                                                          .bold
                                                                       : null,
                                                                   fontSize: footer
                                                                       ?.prevButton
@@ -375,7 +379,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                     onPressed: () =>
                                                         model.nextTap(context),
                                                     child: AutoSizeText(
-                                                      (footer?.nextButton
+                                                       (footer?.nextButton
                                                                       ?.title ??
                                                                   '') ==
                                                               ''
@@ -482,7 +486,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                           ?.prevButton
                                                                           ?.fontStyle)
                                                                       ? FontWeight
-                                                                          .w800
+                                                                          .bold
                                                                       : null,
                                                                   fontSize: footer
                                                                       ?.prevButton

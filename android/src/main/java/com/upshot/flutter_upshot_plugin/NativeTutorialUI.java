@@ -2,14 +2,18 @@ package com.upshot.flutter_upshot_plugin;
 
 import static java.lang.System.out;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.opengl.Visibility;
+import android.os.Build;
 import android.text.Editable;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
+import org.w3c.dom.Text;
 import org.xml.sax.XMLReader;
 
 import java.util.Map;
@@ -28,15 +33,26 @@ import java.util.Objects;
 import io.flutter.FlutterInjector;
 import io.flutter.Log;
 import io.flutter.embedding.engine.loader.FlutterLoader;
+import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 
 public class NativeTutorialUI implements PlatformView {
     @NonNull private final WebView webView;
+    @NonNull private final TextView textView;
 
-    NativeTutorialUI(@NonNull Context context, int id, @Nullable Map<String, Object> creationParams) {
-        float textSize = 0;
+    @NonNull private final  LinearLayout linearLayout;
+
+
+    NativeTutorialUI(@NonNull Context context, int id, @Nullable Map<String, Object> creationParams, @NonNull MethodChannel internalChannel) {
+        textView=new TextView(context);
+        webView=new WebView(context);
+        linearLayout=new LinearLayout(context);
+        linearLayout.removeAllViews();
+        float textSize;
+        String description;
+        float dpiValue=context.getResources().getDisplayMetrics().density;
+
         String fontName="ShantellSans-Medium";
-        final int[] height = {0};
         if(creationParams.get("text_size") !=null){
             textSize =Float.parseFloat(Objects.requireNonNull(creationParams.get("text_size")).toString());
         }
@@ -46,16 +62,7 @@ public class NativeTutorialUI implements PlatformView {
         else{
             textSize =25;
 //            fontName="PFHandbookPro-Medium";
-            
         }
-        FlutterLoader loader = FlutterInjector.instance().flutterLoader();
-////        FlutterLoader loader = FlutterInjector.instance().flutterLoader();
-        String key = loader.getLookupKeyForAsset("fonts/" + fontName + ".ttf");
-//        String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
-//        System.out.println("The real key is "+key);
-        String description;
-        final String startHtml="<html><head><style type=\"text/css\" > @font-face {font-family:MyFont;src:url(\"file:///"+key+"\")}p,body {font-family:MyFont;font-size:"+textSize+";}</style></head><body>";
-        final String endHtml="</body></html>";
 
         if(creationParams.get("description") !=null){
             out.println(Objects.requireNonNull(creationParams.get("description")));
@@ -63,45 +70,65 @@ public class NativeTutorialUI implements PlatformView {
         }else{
             description="";
         }
+        FlutterLoader loader = FlutterInjector.instance().flutterLoader();
+        String key = loader.getLookupKeyForAsset("fonts/" + fontName + ".ttf");
+//        String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
+//        System.out.println("The real key is "+key);
+        final String startHtml="<html><head><style type=\"text/css\" > @font-face {font-family:MyFont;src:url(\"file:///"+key+"\")}p,body {font-family:MyFont;font-size:"+textSize+";}</style></head><body>";
+        final String endHtml="</body></html>";
 
-        webView= new WebView(context);
+
         webView.loadDataWithBaseURL(null,startHtml+description+endHtml,"text/html; charset=utf-8","utf8",null);
-//        webView.loadData(startHtml+description+endHtml,"text/html","UTF-8");
         webView.setBackgroundColor(Color.TRANSPARENT);
-        TextView textView=new TextView(context);
-        textView.setText(HtmlCompat.fromHtml(description, 0));
+        textView.setText(HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        textView.setTextSize(textSize);
 
-        Paint paint = textView.getPaint();
-        Rect bounds = new Rect();
-        paint.getTextBounds(textView.getText().toString(), 0, textView.getText().length(), bounds);
-        out.println("The bounds height is "+bounds.height());
-//        int heightMeasure=View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
-//        int widthMeasure=View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
-//        textView.measure(View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
+        final ViewTreeObserver vto = textView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onGlobalLayout() {
+                out.println("The dp value is"+dpiValue);
+                out.println("The pixel height is"+textView.getHeight());
+                out.println("The dp height is"+textView.getHeight()/(dpiValue));
+                 internalChannel.invokeMethod("get_height",textView.getHeight()  / context.getResources().getDisplayMetrics().density);
+                textView.setVisibility(View.GONE);
+                // remove this layout listener - as it will run every time the view updates
+                if (textView.getViewTreeObserver().isAlive()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        textView.getViewTreeObserver()
+                                .removeOnGlobalLayoutListener(this);
+                    } else {
+                        textView.getViewTreeObserver()
+                                .removeGlobalOnLayoutListener(this);
+                    }
+                }
+            }
+        });
 
-        out.println("The description is" + textView.getText());
-        out.println("The text real height return is  lineHeight: " +textView.getLineHeight() + "  minHeight : " + textView.getMinHeight() + "  measuredheight :"+textView.getMeasuredHeight() + " getHeight :" + textView.getHeight());
-//        webView.getSettings().font
-//        description="<p style=\"fo    nt-family: Arial, proxima-nova, sans-serif; color: #000000;\">This is the first comment <span style=\"color: red;\">section</span><br /><span style=\"color: yellow\">This is the second comment section<br /><span style=\"color: #000000;\">This is the <span style=\"color: #e03e2d;\">third </span>comment section</span></span></p>";
-//        textView = new TextView(context);
-//        textView.setTextSize(textSize);
-//        textView.setBackgroundColor(Color.TRANSPARENT);
-//        textView.setText(HtmlCompat.fromHtml(description,HtmlCompat.FROM_HTML_MODE_LEGACY));
-        out.println("The text is"+description);
-        out.println("The text size is"+textSize);
+        linearLayout.addView(textView);
+        linearLayout.addView(webView);
+
     }
 
     @NonNull
     @Override
     public View getView() {
-        System.out.println("The webview return height is "+webView.getContentHeight());
-
-        return webView;
+        return linearLayout;
     }
 
     @Override
     public void dispose() {
         webView.destroy();
+    }
 
+
+}
+
+class CustomTagHandler implements Html.TagHandler {
+
+    @Override
+    public void handleTag(boolean b, String s, Editable editable, XMLReader xmlReader) {
+        out.println("The tag is"+s);
     }
 }

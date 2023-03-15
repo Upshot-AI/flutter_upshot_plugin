@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show MethodChannel, rootBundle;
+import 'package:flutter/services.dart' show MethodCall, MethodChannel, rootBundle;
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/footer_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
@@ -32,7 +32,7 @@ class ShowTutorialInheritedNotifier
 }
 
 class ShowTutorialsModel extends ChangeNotifier {
-  int height = 0;
+  
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
@@ -58,6 +58,13 @@ class ShowTutorialsModel extends ChangeNotifier {
   WidgetDataClass? get currentWidget => _currentWidget;
   set currentWidget(WidgetDataClass? details) {
     _currentWidget = details;
+    notifyListeners();
+  }
+
+  double _height = 0;
+  double get height=>_height;
+  set height(double value){
+    _height=value;
     notifyListeners();
   }
 
@@ -636,10 +643,19 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   bool isItalic(List? fontStyle) {
-    return fontStyle?.contains('italic') ?? false;
+    return fontStyle?.contains('italic') ?? false; 
   }
 
   bool isUnderline(List? fontStyle) {
     return fontStyle?.contains('underline') ?? false;
+  }
+
+  Future<void> getHeight(MethodCall call)async{
+    if(call.method=='get_height'){
+      var data=call.arguments.toString();
+      print("The height is $data");
+      _height=double.parse(data);
+      notifyListeners();
+    }
   }
 }

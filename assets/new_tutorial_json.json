@@ -8,15 +8,15 @@
   "inboxVariables": {},
   "elements": [
     {
-      "target_id": "item10",
+      "target_id": "item15",
       "borderColor": "#166EA0",
       "position": 100,
       "bgImage": "",
       "scaleType": 3,
       "description": {
-        "text": "<p style=\" color: #000000;font-size:40px;\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>",
+        "text": "<p style=\" color: #000000;font-size:12px;\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>",
         "bgColor": "#8E9295",
-        "opacity": 0.5,
+        "opacity": 1,
         "fontSize": 12,
         "fontName": ""
       },
@@ -40,14 +40,14 @@
             "actionType": 6
           },
           {
-            "fontSize" : 22,
+            "fontSize" : 16,
             "text" : "skip it",
             "fontName" : "test_font",
             "fontColor" : "#2D2D2D",
             "type" : "skip",
             "opacity" : 1,
             "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
+            "fontStyle" : [
               "bold",
               "italic"
             ]
@@ -56,7 +56,7 @@
             "type": "prev",
             "text": "Prev Button",
             "bgColor": "#7F077F",
-            "opacity": 0.7,
+            "opacity": 1,
             "fontSize": 16,
             "fontColor": "#EBF2F2",
             "fontStyle": [
@@ -70,15 +70,15 @@
       }
     },
     {
-      "target_id": "item12",
+      "target_id": "item16",
       "borderColor": "#166EA0",
       "position": 0,
       "bgImage": "",
       "scaleType": 3,
       "description": {
-        "text": "<p style=\" color: #000000; text-align: left; font-size:30px;\"><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-1:For Testing - !@#$%^&amp;*</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-2:For Demo; -&nbsp;</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-3:For Trial - ()_+~`</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>11234567890-={}[]:\";'&lt;&gt;,.?/|\\<br />100%</strong></em></span></p>",
+        "text": "<p style=\" color: #000000; text-align: left; font-size:12px;\"><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-1:For Testing - !@#$%^&amp;*</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-2:For Demo; -&nbsp;</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>Comment-3:For Trial - ()_+~`</strong></em></span><br /><span style=\"text-decoration: underline; color: #f8cac6;\"><em><strong>11234567890-={}[]:\";'&lt;&gt;,.?/|\\<br />100%</strong></em></span></p>",
         "bgColor": "#8E9295",
-        "opacity": 0.5,
+        "opacity": 1,
         "fontSize": 12,
         "fontName": ""
       },
@@ -102,14 +102,14 @@
             "actionType": 6
           },
           {
-            "fontSize" : 22,
+            "fontSize" : 16,
             "text" : "skip it",
             "fontName" : "test_font",
             "fontColor" : "#2D2D2D",
             "type" : "skip",
             "opacity" : 1,
             "backgroundColor" : "#2D2D2D",
-            "textStyle" : [
+            "fontStyle" : [
               "bold",
               "italic"
             ]
@@ -118,7 +118,7 @@
             "type": "prev",
             "text": "Prev Button",
             "bgColor": "#7F077F",
-            "opacity": 0.7,
+            "opacity": 1,
             "fontSize": 16,
             "fontColor": "#EBF2F2",
             "fontStyle": [
