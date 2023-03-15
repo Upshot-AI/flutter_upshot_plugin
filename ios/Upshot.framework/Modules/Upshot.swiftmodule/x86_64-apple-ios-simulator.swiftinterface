@@ -6,6 +6,7 @@ import Foundation
 import ImageIO
 import JavaScriptCore
 import MobileCoreServices
+import Photos
 import StoreKit
 import Swift
 import SystemConfiguration
@@ -32,6 +33,18 @@ extension Upshot.TriviaPieView {
 }
 extension UIKit.UIImageView {
   @objc @_Concurrency.MainActor(unsafe) dynamic open func load(url: Foundation.URL, completion: @escaping (UIKit.UIImage) -> Swift.Void)
+}
+@_hasMissingDesignatedInitializers open class InteractiveTutorialElement {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class DescriptionInfo {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class FooterInfo {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class ButtonInfo {
+  @objc deinit
 }
 @objc @_inheritsConvenienceInitializers public class InboxControllerManager : ObjectiveC.NSObject {
   @objc public func getUnreadNotificationsCount(pushLimit: Swift.Int, appuid: Swift.String, onCompletion: @escaping (_ notificationsCount: Swift.Int) -> Swift.Void)
@@ -404,11 +417,19 @@ extension Upshot.MiniGameController : WebKit.WKNavigationDelegate {
   @_Concurrency.MainActor(unsafe) @objc dynamic public func webView(_ webView: WebKit.WKWebView, didFail navigation: WebKit.WKNavigation!, withError error: Swift.Error)
   @_Concurrency.MainActor(unsafe) @objc dynamic public func webView(_ webView: WebKit.WKWebView, didStartProvisionalNavigation navigation: WebKit.WKNavigation!)
 }
+@_inheritsConvenienceInitializers @objc @_Concurrency.MainActor(unsafe) public class InteractiveTutorialWindow : UIKit.UIWindow {
+  @available(iOS 13.0, *)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(windowScene: UIKit.UIWindowScene)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
 @objc @_inheritsConvenienceInitializers public class RedirectionManager : ObjectiveC.NSObject, StoreKit.SKStoreProductViewControllerDelegate {
   @objc public func redirectToPhone(phone: Swift.String)
   @objc public func redirectToBrowser(url: Swift.String)
   @objc public func webRedirection(url: Swift.String)
   @objc public func redirectStore(storeId: Swift.Double)
+  @objc public func shareContent(text: Swift.String?, image: UIKit.UIImage?)
   @objc public func productViewControllerDidFinish(_ viewController: StoreKit.SKStoreProductViewController)
   @objc override dynamic public init()
   @objc deinit
@@ -439,6 +460,11 @@ public enum ServerTrustPolicy {
   public static func certificates(in bundle: Foundation.Bundle = Bundle.main) -> [Security.SecCertificate]
   public static func publicKeys(in bundle: Foundation.Bundle = Bundle.main) -> [Security.SecKey]
   public func evaluate(_ serverTrust: Security.SecTrust, forHost host: Swift.String) -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers public class StreakManager : ObjectiveC.NSObject {
+  @objc public func fetchStreakInfo(appuid: Swift.String, completionBlock: @escaping (_ response: Upshot.JSON?, _ errorMessage: Swift.String?) -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
 }
 extension UIKit.UIImage {
   @objc dynamic open class func gifImageWithData(_ data: Foundation.Data) -> UIKit.UIImage?
@@ -709,6 +735,11 @@ public typealias JSON = [Swift.String : Any]
   @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
   @objc deinit
 }
+@objc @_inheritsConvenienceInitializers open class InteractiveTutorialRouter : ObjectiveC.NSObject {
+  @objc public static func make(activity: Upshot.BKActivity, sessionId: Swift.String, appuid: Swift.String, tag: Swift.String?, dismissBlock: @escaping () -> Swift.Void) -> UIKit.UIViewController?
+  @objc override dynamic public init()
+  @objc deinit
+}
 extension Upshot.USTriviaView {
   @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillTransition(to size: CoreGraphics.CGSize, with coordinator: UIKit.UIViewControllerTransitionCoordinator)
 }
@@ -730,6 +761,9 @@ extension Upshot.USTriviaView {
   @objc public func event(arguments: Any)
   @objc override dynamic public init()
   @objc deinit
+}
+extension UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) public class func findByAccessibilityIdentifier(identifier: Swift.String) -> UIKit.UIView?
 }
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class USTriviaView : Upshot.BKBaseViewController {
   @objc deinit
@@ -786,6 +820,13 @@ extension Upshot.USTriviaView : UIKit.UICollectionViewDataSource, UIKit.UICollec
 extension Upshot.NetworkReachabilityManager.NetworkReachabilityStatus : Swift.Equatable {
 }
 public func == (lhs: Upshot.NetworkReachabilityManager.NetworkReachabilityStatus, rhs: Upshot.NetworkReachabilityManager.NetworkReachabilityStatus) -> Swift.Bool
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class InteractiveTutorialController : Upshot.BKBaseViewController {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
 extension Upshot.Request {
   public enum ValidationResult {
     case success

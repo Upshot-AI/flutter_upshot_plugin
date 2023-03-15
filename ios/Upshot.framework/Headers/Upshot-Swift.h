@@ -266,6 +266,35 @@ SWIFT_CLASS("_TtC6Upshot22InboxControllerManager")
 
 
 
+SWIFT_CLASS("_TtC6Upshot29InteractiveTutorialController")
+@interface InteractiveTutorialController : BKBaseViewController
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+@class UIViewController;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialRouter")
+@interface InteractiveTutorialRouter : NSObject
++ (UIViewController * _Nullable)makeWithActivity:(BKActivity * _Nonnull)activity sessionId:(NSString * _Nonnull)sessionId appuid:(NSString * _Nonnull)appuid tag:(NSString * _Nullable)tag dismissBlock:(void (^ _Nonnull)(void))dismissBlock SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIWindowScene;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialWindow")
+@interface InteractiveTutorialWindow : UIWindow
+- (nonnull instancetype)initWithWindowScene:(UIWindowScene * _Nonnull)windowScene OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=13.0);
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 SWIFT_CLASS("_TtC6Upshot14JourneyManager")
 @interface JourneyManager : NSObject
 @property (nonatomic, copy) NSString * _Nullable version;
@@ -309,7 +338,6 @@ SWIFT_CLASS("_TtC6Upshot18MiniGameController")
 - (void)webView:(WKWebView * _Nonnull)webView didStartProvisionalNavigation:(WKNavigation * _Null_unspecified)navigation;
 @end
 
-@class UIViewController;
 
 SWIFT_CLASS("_TtC6Upshot14MiniGameRouter")
 @interface MiniGameRouter : NSObject
@@ -332,6 +360,7 @@ SWIFT_CLASS("_TtC6Upshot24PushAmplificationHandler")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class UIImage;
 @class SKStoreProductViewController;
 
 SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
@@ -340,6 +369,7 @@ SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
 - (void)redirectToBrowserWithUrl:(NSString * _Nonnull)url;
 - (void)webRedirectionWithUrl:(NSString * _Nonnull)url;
 - (void)redirectStoreWithStoreId:(double)storeId;
+- (void)shareContentWithText:(NSString * _Nullable)text image:(UIImage * _Nullable)image;
 - (void)productViewControllerDidFinish:(SKStoreProductViewController * _Nonnull)viewController;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
@@ -419,57 +449,6 @@ SWIFT_CLASS("_TtC6Upshot15SessionDelegate")
 - (void)URLSession:(NSURLSession * _Nonnull)session downloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes;
 @end
 
-@class NSURLSessionDataTask;
-@class NSURLResponse;
-@class NSData;
-@class NSCachedURLResponse;
-
-@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDataDelegate>
-/// Tells the delegate that the data task received the initial reply (headers) from the server.
-/// \param session The session containing the data task that received an initial reply.
-///
-/// \param dataTask The data task that received an initial reply.
-///
-/// \param response A URL response object populated with headers.
-///
-/// \param completionHandler A completion handler that your code calls to continue the transfer, passing a
-/// constant to indicate whether the transfer should continue as a data task or
-/// should become a download task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveResponse:(NSURLResponse * _Nonnull)response completionHandler:(void (^ _Nonnull)(NSURLSessionResponseDisposition))completionHandler;
-/// Tells the delegate that the data task was changed to a download task.
-/// \param session The session containing the task that was replaced by a download task.
-///
-/// \param dataTask The data task that was replaced by a download task.
-///
-/// \param downloadTask The new download task that replaced the data task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didBecomeDownloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask;
-/// Tells the delegate that the data task has received some of the expected data.
-/// \param session The session containing the data task that provided data.
-///
-/// \param dataTask The data task that provided data.
-///
-/// \param data A data object containing the transferred data.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveData:(NSData * _Nonnull)data;
-/// Asks the delegate whether the data (or upload) task should store the response in the cache.
-/// \param session The session containing the data (or upload) task.
-///
-/// \param dataTask The data (or upload) task.
-///
-/// \param proposedResponse The default caching behavior. This behavior is determined based on the current
-/// caching policy and the values of certain received headers, such as the Pragma
-/// and Cache-Control headers.
-///
-/// \param completionHandler A block that your handler must call, providing either the original proposed
-/// response, a modified version of that response, or NULL to prevent caching the
-/// response. If your delegate implements this method, it must call this completion
-/// handler; otherwise, your app leaks memory.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask willCacheResponse:(NSCachedURLResponse * _Nonnull)proposedResponse completionHandler:(void (^ _Nonnull)(NSCachedURLResponse * _Nullable))completionHandler;
-@end
-
 @class NSURLAuthenticationChallenge;
 @class NSURLCredential;
 
@@ -530,6 +509,57 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 /// \param outputStream The new output stream.
 ///
 - (void)URLSession:(NSURLSession * _Nonnull)session streamTask:(NSURLSessionStreamTask * _Nonnull)streamTask didBecomeInputStream:(NSInputStream * _Nonnull)inputStream outputStream:(NSOutputStream * _Nonnull)outputStream;
+@end
+
+@class NSURLSessionDataTask;
+@class NSURLResponse;
+@class NSData;
+@class NSCachedURLResponse;
+
+@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDataDelegate>
+/// Tells the delegate that the data task received the initial reply (headers) from the server.
+/// \param session The session containing the data task that received an initial reply.
+///
+/// \param dataTask The data task that received an initial reply.
+///
+/// \param response A URL response object populated with headers.
+///
+/// \param completionHandler A completion handler that your code calls to continue the transfer, passing a
+/// constant to indicate whether the transfer should continue as a data task or
+/// should become a download task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveResponse:(NSURLResponse * _Nonnull)response completionHandler:(void (^ _Nonnull)(NSURLSessionResponseDisposition))completionHandler;
+/// Tells the delegate that the data task was changed to a download task.
+/// \param session The session containing the task that was replaced by a download task.
+///
+/// \param dataTask The data task that was replaced by a download task.
+///
+/// \param downloadTask The new download task that replaced the data task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didBecomeDownloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask;
+/// Tells the delegate that the data task has received some of the expected data.
+/// \param session The session containing the data task that provided data.
+///
+/// \param dataTask The data task that provided data.
+///
+/// \param data A data object containing the transferred data.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveData:(NSData * _Nonnull)data;
+/// Asks the delegate whether the data (or upload) task should store the response in the cache.
+/// \param session The session containing the data (or upload) task.
+///
+/// \param dataTask The data (or upload) task.
+///
+/// \param proposedResponse The default caching behavior. This behavior is determined based on the current
+/// caching policy and the values of certain received headers, such as the Pragma
+/// and Cache-Control headers.
+///
+/// \param completionHandler A block that your handler must call, providing either the original proposed
+/// response, a modified version of that response, or NULL to prevent caching the
+/// response. If your delegate implements this method, it must call this completion
+/// handler; otherwise, your app leaks memory.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask willCacheResponse:(NSCachedURLResponse * _Nonnull)proposedResponse completionHandler:(void (^ _Nonnull)(NSCachedURLResponse * _Nullable))completionHandler;
 @end
 
 @class NSURLSessionTask;
@@ -602,6 +632,13 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 @end
 
 
+SWIFT_CLASS("_TtC6Upshot13StreakManager")
+@interface StreakManager : NSObject
+- (void)fetchStreakInfoWithAppuid:(NSString * _Nonnull)appuid completionBlock:(void (^ _Nonnull)(NSDictionary<NSString *, id> * _Nullable, NSString * _Nullable))completionBlock;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 /// The task delegate is responsible for handling all delegate callbacks for the underlying task as well as
 /// executing all operations attached to the serial operation queue upon task completion.
 SWIFT_CLASS("_TtC6Upshot12TaskDelegate")
@@ -660,6 +697,7 @@ SWIFT_CLASS("_TtC6Upshot13TriviaPieView")
 @interface UIImageView (SWIFT_EXTENSION(Upshot))
 - (void)loadWithUrl:(NSURL * _Nonnull)url completion:(void (^ _Nonnull)(UIImage * _Nonnull))completion;
 @end
+
 
 @class UIEvent;
 
@@ -982,6 +1020,35 @@ SWIFT_CLASS("_TtC6Upshot22InboxControllerManager")
 
 
 
+SWIFT_CLASS("_TtC6Upshot29InteractiveTutorialController")
+@interface InteractiveTutorialController : BKBaseViewController
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+@class UIViewController;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialRouter")
+@interface InteractiveTutorialRouter : NSObject
++ (UIViewController * _Nullable)makeWithActivity:(BKActivity * _Nonnull)activity sessionId:(NSString * _Nonnull)sessionId appuid:(NSString * _Nonnull)appuid tag:(NSString * _Nullable)tag dismissBlock:(void (^ _Nonnull)(void))dismissBlock SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIWindowScene;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialWindow")
+@interface InteractiveTutorialWindow : UIWindow
+- (nonnull instancetype)initWithWindowScene:(UIWindowScene * _Nonnull)windowScene OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=13.0);
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 SWIFT_CLASS("_TtC6Upshot14JourneyManager")
 @interface JourneyManager : NSObject
 @property (nonatomic, copy) NSString * _Nullable version;
@@ -1025,7 +1092,6 @@ SWIFT_CLASS("_TtC6Upshot18MiniGameController")
 - (void)webView:(WKWebView * _Nonnull)webView didStartProvisionalNavigation:(WKNavigation * _Null_unspecified)navigation;
 @end
 
-@class UIViewController;
 
 SWIFT_CLASS("_TtC6Upshot14MiniGameRouter")
 @interface MiniGameRouter : NSObject
@@ -1048,6 +1114,7 @@ SWIFT_CLASS("_TtC6Upshot24PushAmplificationHandler")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class UIImage;
 @class SKStoreProductViewController;
 
 SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
@@ -1056,6 +1123,7 @@ SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
 - (void)redirectToBrowserWithUrl:(NSString * _Nonnull)url;
 - (void)webRedirectionWithUrl:(NSString * _Nonnull)url;
 - (void)redirectStoreWithStoreId:(double)storeId;
+- (void)shareContentWithText:(NSString * _Nullable)text image:(UIImage * _Nullable)image;
 - (void)productViewControllerDidFinish:(SKStoreProductViewController * _Nonnull)viewController;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
@@ -1135,57 +1203,6 @@ SWIFT_CLASS("_TtC6Upshot15SessionDelegate")
 - (void)URLSession:(NSURLSession * _Nonnull)session downloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes;
 @end
 
-@class NSURLSessionDataTask;
-@class NSURLResponse;
-@class NSData;
-@class NSCachedURLResponse;
-
-@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDataDelegate>
-/// Tells the delegate that the data task received the initial reply (headers) from the server.
-/// \param session The session containing the data task that received an initial reply.
-///
-/// \param dataTask The data task that received an initial reply.
-///
-/// \param response A URL response object populated with headers.
-///
-/// \param completionHandler A completion handler that your code calls to continue the transfer, passing a
-/// constant to indicate whether the transfer should continue as a data task or
-/// should become a download task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveResponse:(NSURLResponse * _Nonnull)response completionHandler:(void (^ _Nonnull)(NSURLSessionResponseDisposition))completionHandler;
-/// Tells the delegate that the data task was changed to a download task.
-/// \param session The session containing the task that was replaced by a download task.
-///
-/// \param dataTask The data task that was replaced by a download task.
-///
-/// \param downloadTask The new download task that replaced the data task.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didBecomeDownloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask;
-/// Tells the delegate that the data task has received some of the expected data.
-/// \param session The session containing the data task that provided data.
-///
-/// \param dataTask The data task that provided data.
-///
-/// \param data A data object containing the transferred data.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveData:(NSData * _Nonnull)data;
-/// Asks the delegate whether the data (or upload) task should store the response in the cache.
-/// \param session The session containing the data (or upload) task.
-///
-/// \param dataTask The data (or upload) task.
-///
-/// \param proposedResponse The default caching behavior. This behavior is determined based on the current
-/// caching policy and the values of certain received headers, such as the Pragma
-/// and Cache-Control headers.
-///
-/// \param completionHandler A block that your handler must call, providing either the original proposed
-/// response, a modified version of that response, or NULL to prevent caching the
-/// response. If your delegate implements this method, it must call this completion
-/// handler; otherwise, your app leaks memory.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask willCacheResponse:(NSCachedURLResponse * _Nonnull)proposedResponse completionHandler:(void (^ _Nonnull)(NSCachedURLResponse * _Nullable))completionHandler;
-@end
-
 @class NSURLAuthenticationChallenge;
 @class NSURLCredential;
 
@@ -1246,6 +1263,57 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 /// \param outputStream The new output stream.
 ///
 - (void)URLSession:(NSURLSession * _Nonnull)session streamTask:(NSURLSessionStreamTask * _Nonnull)streamTask didBecomeInputStream:(NSInputStream * _Nonnull)inputStream outputStream:(NSOutputStream * _Nonnull)outputStream;
+@end
+
+@class NSURLSessionDataTask;
+@class NSURLResponse;
+@class NSData;
+@class NSCachedURLResponse;
+
+@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDataDelegate>
+/// Tells the delegate that the data task received the initial reply (headers) from the server.
+/// \param session The session containing the data task that received an initial reply.
+///
+/// \param dataTask The data task that received an initial reply.
+///
+/// \param response A URL response object populated with headers.
+///
+/// \param completionHandler A completion handler that your code calls to continue the transfer, passing a
+/// constant to indicate whether the transfer should continue as a data task or
+/// should become a download task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveResponse:(NSURLResponse * _Nonnull)response completionHandler:(void (^ _Nonnull)(NSURLSessionResponseDisposition))completionHandler;
+/// Tells the delegate that the data task was changed to a download task.
+/// \param session The session containing the task that was replaced by a download task.
+///
+/// \param dataTask The data task that was replaced by a download task.
+///
+/// \param downloadTask The new download task that replaced the data task.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didBecomeDownloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask;
+/// Tells the delegate that the data task has received some of the expected data.
+/// \param session The session containing the data task that provided data.
+///
+/// \param dataTask The data task that provided data.
+///
+/// \param data A data object containing the transferred data.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask didReceiveData:(NSData * _Nonnull)data;
+/// Asks the delegate whether the data (or upload) task should store the response in the cache.
+/// \param session The session containing the data (or upload) task.
+///
+/// \param dataTask The data (or upload) task.
+///
+/// \param proposedResponse The default caching behavior. This behavior is determined based on the current
+/// caching policy and the values of certain received headers, such as the Pragma
+/// and Cache-Control headers.
+///
+/// \param completionHandler A block that your handler must call, providing either the original proposed
+/// response, a modified version of that response, or NULL to prevent caching the
+/// response. If your delegate implements this method, it must call this completion
+/// handler; otherwise, your app leaks memory.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask willCacheResponse:(NSCachedURLResponse * _Nonnull)proposedResponse completionHandler:(void (^ _Nonnull)(NSCachedURLResponse * _Nullable))completionHandler;
 @end
 
 @class NSURLSessionTask;
@@ -1318,6 +1386,13 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 @end
 
 
+SWIFT_CLASS("_TtC6Upshot13StreakManager")
+@interface StreakManager : NSObject
+- (void)fetchStreakInfoWithAppuid:(NSString * _Nonnull)appuid completionBlock:(void (^ _Nonnull)(NSDictionary<NSString *, id> * _Nullable, NSString * _Nullable))completionBlock;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 /// The task delegate is responsible for handling all delegate callbacks for the underlying task as well as
 /// executing all operations attached to the serial operation queue upon task completion.
 SWIFT_CLASS("_TtC6Upshot12TaskDelegate")
@@ -1376,6 +1451,7 @@ SWIFT_CLASS("_TtC6Upshot13TriviaPieView")
 @interface UIImageView (SWIFT_EXTENSION(Upshot))
 - (void)loadWithUrl:(NSURL * _Nonnull)url completion:(void (^ _Nonnull)(UIImage * _Nonnull))completion;
 @end
+
 
 @class UIEvent;
 
