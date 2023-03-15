@@ -96,7 +96,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                             padding: widget.isUp
                                 ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
                                 : const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Platform.isAndroid
+                            child: Platform.isAndroid && false
                                 ? SizedBox(
                                     height: 308,
                                     child: PlatformViewLink(
@@ -146,13 +146,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                   )
                                 : Html(
                                     data:
-                                        // """
-                                        // <p style="font-family: Arial, proxima-nova, sans-serif; color: #000000;" data-mce-style="font-family: Arial, proxima-nova, sans-serif; color: #000000;"><span style="color: rgb(241, 196, 15);" data-mce-style="color: #f1c40f;">now get 20 rupees prie instead of <span style="color: rgb(126, 140, 141);" data-mce-style="color: #7e8c8d;"><span style="text-decoration: line-through; color: rgb(185, 106, 217);" data-mce-style="text-decoration: line-through; color: #b96ad9;">30</span>&nbsp;</span></span></p>
-                                        // """,
                                         model.descriptionText(
                                             tutorial.description?.text),
                                     style: {
-                                      "div": Style(
+                                      "div": Style( 
                                         fontSize: FontSize(
                                             (tutorial.description?.fontSize)
                                                 ?.toDouble()),

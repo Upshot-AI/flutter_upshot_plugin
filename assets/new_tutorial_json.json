@@ -26,7 +26,7 @@
         "buttons": [
           {
             "type": "next",
-            "text": " Next Step",
+            "text": " Next",
             "bgColor": "#5E6566",
             "opacity": 1,
             "fontSize": 16,
@@ -38,6 +38,19 @@
             ],
             "fontName": "",
             "actionType": 6
+          },
+          {
+            "fontSize" : 22,
+            "text" : "skip it",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "skip",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
           },
           {
             "type": "prev",
@@ -87,6 +100,19 @@
             ],
             "fontName": "",
             "actionType": 6
+          },
+          {
+            "fontSize" : 22,
+            "text" : "skip it",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "skip",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
           },
           {
             "type": "prev",
