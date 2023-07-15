@@ -24,6 +24,8 @@ typedef void(^_Nullable BrandKinesisFetchCompletion)(id _Nullable responseObject
 typedef void(^_Nullable BrandKinesisUserStateCompletion)(BOOL status, NSError * _Nullable error);
 typedef void(^_Nullable BrandKinesisRewardsCompletionBlock)(NSDictionary * _Nullable response, NSString * _Nullable errorMessage);
 typedef void(^_Nullable BrandKinesisGetNotificationCompletion)(NSDictionary * _Nullable response, NSString * _Nullable errorMessage);
+typedef void(^_Nullable BrandKinesisStreaksCompletionBlock)(NSDictionary * _Nullable response, NSString * _Nullable errorMessage);
+
 /**
  * Key used to define the current screen name
  * in BKPageView
@@ -303,6 +305,21 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
 - (void)getUnreadNotificationsCount:(NSInteger)pushLimit onCompletion:(void (^_Nullable)(NSInteger  pushCount))completionBlock;
 
 
+//* Internal Methods For Plugin*//
+
+- (void)setTechnologyType:(NSString *_Nonnull)type;
+
+- (void)activityPresentedCallback:(NSDictionary *_Nonnull)payload;
+
+- (void)activitySkipCallback:(NSDictionary *_Nonnull)payload;
+
+- (void)activityRespondCallback:(NSDictionary *_Nonnull)payload;
+
+- (void)activityRedirectionCallback:(NSDictionary *_Nonnull)payload;
+
+//* Streaks*//
+- (void)getStreaksDataWithCompletionBlock:(BrandKinesisStreaksCompletionBlock _Nullable)completionBlock;
+
 @end
 
 
@@ -337,6 +354,8 @@ BK_EXTERN NSString *_Null_unspecified const BKUTM_Campaign;
 - (nonnull NSArray *)brandKinesisExludeActivitiesForShare;
 
 - (void)brandKinesisCarouselPushClickPayload:(NSDictionary *_Nonnull)payload;
+
+- (void)brandKinesisInteractiveTutorialInfoForPlugin:(nonnull NSString *)jsonData;
 
 
 /*!

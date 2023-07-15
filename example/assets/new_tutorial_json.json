@@ -1,0 +1,233 @@
+{
+  "ruleId" : "",
+  "name" : "one",
+  "inboxVariables" : {
+    "@UserProfile-FirstName" : "Saiprasad"
+  },
+  "repeatCount" : 1,
+  "currentSession" : 0,
+  "considerSkip" : 0,
+  "skipCount" : 1,
+  "activityType" : 7,
+  "rTag" : "Upshot_AppLaunch",
+  "activityId" : "631eff6fc4fab517008b45ae",
+  "exitMode" : 4,
+  "tag" : [
+    "ActionTag",
+    "Help",
+    "ShakeYourPhone",
+    "Upshot_AppLaunch",
+    "Upshot_Authenticated",
+    "Upshot_DeviceShake",
+    "Upshot_Loaded",
+    "addToCart",
+    "cart",
+    "checkout",
+    "exitIntent",
+    "help",
+    "home",
+    "login",
+    "menu",
+    "payment",
+    "test",
+    "wishlist"
+  ],
+  "campaignId" : "63a9bb3443c2ea5d018b4568",
+  "allUsers" : 1,
+  "activityTaken" : 0,
+  "jeId" : "",
+  "msgId" : "63a9c19c2667335a008b4567",
+  "elements" : [
+    {
+      "android_target_id" : "demoValue",
+      "position" : 10,
+      "footer" : {
+        "opacity" : 1,
+        "backgroundColor" : "#2D2D2D",
+        "buttons" : [
+          {
+            "fontSize" : 22,
+            "key_value" : {
+              "fsa" : "sS"
+            },
+            "deeplink_type" : 2,
+            "actionType" : 6,
+            "title" : "next",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "next",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          },
+          {
+            "fontSize" : 22,
+            "title" : "skip",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "skip",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          },
+          {
+            "fontSize" : 22,
+            "title" : "prev",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "prev",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          }
+        ]
+      },
+      "scaleType" : 1,
+      "borderColor" : "#2D2D2D",
+      "iOS_target_id" : "customText1",
+      "description" : {
+        "fontSize" : 22,
+        "fontName" : "test_font",
+        "backgroundColor" : "#2D2D2D",
+        "opacity" : 0.59999999999999998,
+        "text" : "<p style='font-family: Arial,proxima-nova,sans-serif;'>HI <span><span class='noneditable' contenteditable='false'>@UserProfile-FirstName<\/span><\/span><\/span>&nbsp;<\/p>"
+      },
+      "bgImage" : "https://media.goupshot.com/bk-purpletalk/upshot/aic/5d4d3f3f51c1e.png"
+    },
+    {
+      "android_target_id" : "DemoText",
+      "position" : 10,
+      "footer" : {
+        "opacity" : 1,
+        "backgroundColor" : "#2D2D2D",
+        "buttons" : [
+          {
+            "fontSize" : 22,
+            "actionType" : 6,
+            "title" : "next",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "next",
+            "opacity" : 1,
+            "textStyle" : [
+              "bold",
+              "italic"
+            ],
+            "backgroundColor" : "#2D2D2D"
+          },
+          {
+            "fontSize" : 22,
+            "title" : "skip",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "skip",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          },
+          {
+            "fontSize" : 22,
+            "title" : "prev",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "prev",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          }
+        ]
+      },
+      "scaleType" : 1,
+      "borderColor" : "#2D2D2D",
+      "iOS_target_id" : "customText1",
+      "description" : {
+        "fontSize" : 22,
+        "fontName" : "test_font",
+        "backgroundColor" : "#2D2D2D",
+        "opacity" : 0.59999999999999998,
+        "text" : "<p style='font-family: Arial,proxima-nova,sans-serif;'>HI <span><span class='noneditable' contenteditable='false'>@UserProfile-FirstName<\/span><\/span><\/span>&nbsp;<\/p>"
+      },
+      "bgImage" : "https:\/\/media.goupshot.com\/preprod-bk\/5e89df111607d91f008b4567\/si\/1617628432001.jpg"
+    },
+    {
+      "android_target_id" : "customText1",
+      "position" : 10,
+      "footer" : {
+        "opacity" : 1,
+        "backgroundColor" : "#2D2D2D",
+        "buttons" : [
+          {
+            "textStyle" : [
+              "bold",
+              "italic"
+            ],
+            "full_url" : "https:\/\/purpletalk.goupshot.com\/",
+            "backgroundColor" : "#2D2D2D",
+            "url" : "https:\/\/purpletalk.goupshot.com\/",
+            "type" : "next",
+            "title" : "next",
+            "opacity" : 1,
+            "fontColor" : "#2D2D2D",
+            "fontSize" : 22,
+            "fontName" : "test_font",
+            "actionType" : 2,
+            "deeplink_type" : 1
+          },
+          {
+            "fontSize" : 22,
+            "title" : "skip",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "skip",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          },
+          {
+            "fontSize" : 22,
+            "title" : "prev",
+            "fontName" : "test_font",
+            "fontColor" : "#2D2D2D",
+            "type" : "prev",
+            "opacity" : 1,
+            "backgroundColor" : "#2D2D2D",
+            "textStyle" : [
+              "bold",
+              "italic"
+            ]
+          }
+        ]
+      },
+      "scaleType" : 1,
+      "borderColor" : "#2D2D2D",
+      "iOS_target_id" : "customText1",
+      "description" : {
+        "fontSize" : 22,
+        "fontName" : "test_font",
+        "backgroundColor" : "#2D2D2D",
+        "opacity" : 0.59999999999999998,
+        "text" : "<p style='font-family: Arial,proxima-nova,sans-serif;'>HI <span><span class='noneditable' contenteditable='false'>@UserProfile-FirstName<\/span><\/span><\/span>&nbsp;<\/p>"
+      },
+      "bgImage" : "https:\/\/media.goupshot.com\/preprod-bk\/5e89df111607d91f008b4567\/si\/1617628432001.jpg"
+    }
+  ],
+  "tutorialType" : 1
+}

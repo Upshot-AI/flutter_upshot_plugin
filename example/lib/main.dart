@@ -1,16 +1,17 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/upshotConstants.dart';
+import 'package:flutter_upshot_plugin_example/home_screen.dart';
 import 'package:flutter_upshot_plugin_example/upshotMethodChannel.dart';
 
 void main() {
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(const DemoApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -21,7 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final String _platformVersion = 'Unknown';
   String? eventId;
 
   @override
@@ -59,8 +60,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initializeBrandKinesisWithOptions() async {
     Map optionsMap = {
-      UpshotInitOptions.appId: "de8b0f3d-5fe8-44ab-95eb-8220b74f9f03",
-      UpshotInitOptions.ownerId: "b8662993-d078-4b5b-abc6-deefc9f6734d",
+      UpshotInitOptions.appId: "d9e26e88-8fcb-40da-8254-5182fc149d5f",
+      UpshotInitOptions.ownerId: "5ea33dde-b35e-4ebd-9da6-86037947bfd2",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,

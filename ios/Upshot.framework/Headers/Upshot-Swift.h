@@ -200,6 +200,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import Foundation;
 @import ObjectiveC;
+@import StoreKit;
 @import UIKit;
 @import WebKit;
 #endif
@@ -221,8 +222,18 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@protocol UIViewControllerTransitionCoordinator;
 @class NSString;
+
+SWIFT_CLASS("_TtC6Upshot23ActivityCallbackHandler")
+@interface ActivityCallbackHandler : NSObject
+- (void)activityPresentedCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activitySkipCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRespondCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRedirectionCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@protocol UIViewControllerTransitionCoordinator;
 @class NSBundle;
 @class NSCoder;
 
@@ -253,6 +264,35 @@ SWIFT_CLASS("_TtC6Upshot22InboxControllerManager")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+
+
+SWIFT_CLASS("_TtC6Upshot29InteractiveTutorialController")
+@interface InteractiveTutorialController : BKBaseViewController
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+@class UIViewController;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialRouter")
+@interface InteractiveTutorialRouter : NSObject
++ (UIViewController * _Nullable)makeWithActivity:(BKActivity * _Nonnull)activity sessionId:(NSString * _Nonnull)sessionId appuid:(NSString * _Nonnull)appuid tag:(NSString * _Nullable)tag dismissBlock:(void (^ _Nonnull)(void))dismissBlock SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIWindowScene;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialWindow")
+@interface InteractiveTutorialWindow : UIWindow
+- (nonnull instancetype)initWithWindowScene:(UIWindowScene * _Nonnull)windowScene OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=13.0);
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
 
 
 SWIFT_CLASS("_TtC6Upshot14JourneyManager")
@@ -298,7 +338,6 @@ SWIFT_CLASS("_TtC6Upshot18MiniGameController")
 - (void)webView:(WKWebView * _Nonnull)webView didStartProvisionalNavigation:(WKNavigation * _Null_unspecified)navigation;
 @end
 
-@class UIViewController;
 
 SWIFT_CLASS("_TtC6Upshot14MiniGameRouter")
 @interface MiniGameRouter : NSObject
@@ -318,6 +357,20 @@ SWIFT_CLASS("_TtC6Upshot19NotificationHandler")
 SWIFT_CLASS("_TtC6Upshot24PushAmplificationHandler")
 @interface PushAmplificationHandler : NSObject
 - (void)updatePushReadStatusWithMsgId:(NSString * _Nonnull)msgId appuid:(NSString * _Nonnull)appuid;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIImage;
+@class SKStoreProductViewController;
+
+SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
+@interface RedirectionManager : NSObject <SKStoreProductViewControllerDelegate>
+- (void)redirectToPhoneWithPhone:(NSString * _Nonnull)phone;
+- (void)redirectToBrowserWithUrl:(NSString * _Nonnull)url;
+- (void)webRedirectionWithUrl:(NSString * _Nonnull)url;
+- (void)redirectStoreWithStoreId:(double)storeId;
+- (void)shareContentWithText:(NSString * _Nullable)text image:(UIImage * _Nullable)image;
+- (void)productViewControllerDidFinish:(SKStoreProductViewController * _Nonnull)viewController;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -394,6 +447,32 @@ SWIFT_CLASS("_TtC6Upshot15SessionDelegate")
 /// If this header was not provided, the value is NSURLSessionTransferSizeUnknown.
 ///
 - (void)URLSession:(NSURLSession * _Nonnull)session downloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes;
+@end
+
+@class NSURLAuthenticationChallenge;
+@class NSURLCredential;
+
+@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDelegate>
+/// Tells the delegate that the session has been invalidated.
+/// \param session The session object that was invalidated.
+///
+/// \param error The error that caused invalidation, or nil if the invalidation was explicit.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session didBecomeInvalidWithError:(NSError * _Nullable)error;
+/// Requests credentials from the delegate in response to a session-level authentication request from the
+/// remote server.
+/// \param session The session containing the task that requested authentication.
+///
+/// \param challenge An object that contains the request for authentication.
+///
+/// \param completionHandler A handler that your delegate method must call providing the disposition
+/// and credential.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session didReceiveChallenge:(NSURLAuthenticationChallenge * _Nonnull)challenge completionHandler:(void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler;
+/// Tells the delegate that all messages enqueued for a session have been delivered.
+/// \param session The session that no longer has any outstanding requests.
+///
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession * _Nonnull)session;
 @end
 
 @class NSURLSessionStreamTask;
@@ -483,32 +562,6 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 - (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask willCacheResponse:(NSCachedURLResponse * _Nonnull)proposedResponse completionHandler:(void (^ _Nonnull)(NSCachedURLResponse * _Nullable))completionHandler;
 @end
 
-@class NSURLAuthenticationChallenge;
-@class NSURLCredential;
-
-@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDelegate>
-/// Tells the delegate that the session has been invalidated.
-/// \param session The session object that was invalidated.
-///
-/// \param error The error that caused invalidation, or nil if the invalidation was explicit.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session didBecomeInvalidWithError:(NSError * _Nullable)error;
-/// Requests credentials from the delegate in response to a session-level authentication request from the
-/// remote server.
-/// \param session The session containing the task that requested authentication.
-///
-/// \param challenge An object that contains the request for authentication.
-///
-/// \param completionHandler A handler that your delegate method must call providing the disposition
-/// and credential.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session didReceiveChallenge:(NSURLAuthenticationChallenge * _Nonnull)challenge completionHandler:(void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler;
-/// Tells the delegate that all messages enqueued for a session have been delivered.
-/// \param session The session that no longer has any outstanding requests.
-///
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession * _Nonnull)session;
-@end
-
 @class NSURLSessionTask;
 @class NSHTTPURLResponse;
 @class NSURLRequest;
@@ -579,6 +632,13 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 @end
 
 
+SWIFT_CLASS("_TtC6Upshot13StreakManager")
+@interface StreakManager : NSObject
+- (void)fetchStreakInfoWithAppuid:(NSString * _Nonnull)appuid completionBlock:(void (^ _Nonnull)(NSDictionary<NSString *, id> * _Nullable, NSString * _Nullable))completionBlock;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 /// The task delegate is responsible for handling all delegate callbacks for the underlying task as well as
 /// executing all operations attached to the serial operation queue upon task completion.
 SWIFT_CLASS("_TtC6Upshot12TaskDelegate")
@@ -638,6 +698,7 @@ SWIFT_CLASS("_TtC6Upshot13TriviaPieView")
 - (void)loadWithUrl:(NSURL * _Nonnull)url completion:(void (^ _Nonnull)(UIImage * _Nonnull))completion;
 @end
 
+
 @class UIEvent;
 
 @interface UIWindow (SWIFT_EXTENSION(Upshot))
@@ -672,10 +733,10 @@ SWIFT_CLASS("_TtC6Upshot12USTriviaView")
 @end
 
 
+
 @interface USTriviaView (SWIFT_EXTENSION(Upshot))
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator;
 @end
-
 
 
 SWIFT_CLASS("_TtC6Upshot17USTriviaWireframe")
@@ -893,6 +954,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import CoreGraphics;
 @import Foundation;
 @import ObjectiveC;
+@import StoreKit;
 @import UIKit;
 @import WebKit;
 #endif
@@ -914,8 +976,18 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@protocol UIViewControllerTransitionCoordinator;
 @class NSString;
+
+SWIFT_CLASS("_TtC6Upshot23ActivityCallbackHandler")
+@interface ActivityCallbackHandler : NSObject
+- (void)activityPresentedCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activitySkipCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRespondCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (void)activityRedirectionCallbackWith:(NSDictionary<NSString *, id> * _Nonnull)data;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@protocol UIViewControllerTransitionCoordinator;
 @class NSBundle;
 @class NSCoder;
 
@@ -946,6 +1018,35 @@ SWIFT_CLASS("_TtC6Upshot22InboxControllerManager")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+
+
+SWIFT_CLASS("_TtC6Upshot29InteractiveTutorialController")
+@interface InteractiveTutorialController : BKBaseViewController
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+@class UIViewController;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialRouter")
+@interface InteractiveTutorialRouter : NSObject
++ (UIViewController * _Nullable)makeWithActivity:(BKActivity * _Nonnull)activity sessionId:(NSString * _Nonnull)sessionId appuid:(NSString * _Nonnull)appuid tag:(NSString * _Nullable)tag dismissBlock:(void (^ _Nonnull)(void))dismissBlock SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIWindowScene;
+
+SWIFT_CLASS("_TtC6Upshot25InteractiveTutorialWindow")
+@interface InteractiveTutorialWindow : UIWindow
+- (nonnull instancetype)initWithWindowScene:(UIWindowScene * _Nonnull)windowScene OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=13.0);
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
 
 
 SWIFT_CLASS("_TtC6Upshot14JourneyManager")
@@ -991,7 +1092,6 @@ SWIFT_CLASS("_TtC6Upshot18MiniGameController")
 - (void)webView:(WKWebView * _Nonnull)webView didStartProvisionalNavigation:(WKNavigation * _Null_unspecified)navigation;
 @end
 
-@class UIViewController;
 
 SWIFT_CLASS("_TtC6Upshot14MiniGameRouter")
 @interface MiniGameRouter : NSObject
@@ -1011,6 +1111,20 @@ SWIFT_CLASS("_TtC6Upshot19NotificationHandler")
 SWIFT_CLASS("_TtC6Upshot24PushAmplificationHandler")
 @interface PushAmplificationHandler : NSObject
 - (void)updatePushReadStatusWithMsgId:(NSString * _Nonnull)msgId appuid:(NSString * _Nonnull)appuid;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIImage;
+@class SKStoreProductViewController;
+
+SWIFT_CLASS("_TtC6Upshot18RedirectionManager")
+@interface RedirectionManager : NSObject <SKStoreProductViewControllerDelegate>
+- (void)redirectToPhoneWithPhone:(NSString * _Nonnull)phone;
+- (void)redirectToBrowserWithUrl:(NSString * _Nonnull)url;
+- (void)webRedirectionWithUrl:(NSString * _Nonnull)url;
+- (void)redirectStoreWithStoreId:(double)storeId;
+- (void)shareContentWithText:(NSString * _Nullable)text image:(UIImage * _Nullable)image;
+- (void)productViewControllerDidFinish:(SKStoreProductViewController * _Nonnull)viewController;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1087,6 +1201,32 @@ SWIFT_CLASS("_TtC6Upshot15SessionDelegate")
 /// If this header was not provided, the value is NSURLSessionTransferSizeUnknown.
 ///
 - (void)URLSession:(NSURLSession * _Nonnull)session downloadTask:(NSURLSessionDownloadTask * _Nonnull)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes;
+@end
+
+@class NSURLAuthenticationChallenge;
+@class NSURLCredential;
+
+@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDelegate>
+/// Tells the delegate that the session has been invalidated.
+/// \param session The session object that was invalidated.
+///
+/// \param error The error that caused invalidation, or nil if the invalidation was explicit.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session didBecomeInvalidWithError:(NSError * _Nullable)error;
+/// Requests credentials from the delegate in response to a session-level authentication request from the
+/// remote server.
+/// \param session The session containing the task that requested authentication.
+///
+/// \param challenge An object that contains the request for authentication.
+///
+/// \param completionHandler A handler that your delegate method must call providing the disposition
+/// and credential.
+///
+- (void)URLSession:(NSURLSession * _Nonnull)session didReceiveChallenge:(NSURLAuthenticationChallenge * _Nonnull)challenge completionHandler:(void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler;
+/// Tells the delegate that all messages enqueued for a session have been delivered.
+/// \param session The session that no longer has any outstanding requests.
+///
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession * _Nonnull)session;
 @end
 
 @class NSURLSessionStreamTask;
@@ -1176,32 +1316,6 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 - (void)URLSession:(NSURLSession * _Nonnull)session dataTask:(NSURLSessionDataTask * _Nonnull)dataTask willCacheResponse:(NSCachedURLResponse * _Nonnull)proposedResponse completionHandler:(void (^ _Nonnull)(NSCachedURLResponse * _Nullable))completionHandler;
 @end
 
-@class NSURLAuthenticationChallenge;
-@class NSURLCredential;
-
-@interface SessionDelegate (SWIFT_EXTENSION(Upshot)) <NSURLSessionDelegate>
-/// Tells the delegate that the session has been invalidated.
-/// \param session The session object that was invalidated.
-///
-/// \param error The error that caused invalidation, or nil if the invalidation was explicit.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session didBecomeInvalidWithError:(NSError * _Nullable)error;
-/// Requests credentials from the delegate in response to a session-level authentication request from the
-/// remote server.
-/// \param session The session containing the task that requested authentication.
-///
-/// \param challenge An object that contains the request for authentication.
-///
-/// \param completionHandler A handler that your delegate method must call providing the disposition
-/// and credential.
-///
-- (void)URLSession:(NSURLSession * _Nonnull)session didReceiveChallenge:(NSURLAuthenticationChallenge * _Nonnull)challenge completionHandler:(void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler;
-/// Tells the delegate that all messages enqueued for a session have been delivered.
-/// \param session The session that no longer has any outstanding requests.
-///
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession * _Nonnull)session;
-@end
-
 @class NSURLSessionTask;
 @class NSHTTPURLResponse;
 @class NSURLRequest;
@@ -1272,6 +1386,13 @@ SWIFT_AVAILABILITY(tvos,introduced=9.0) SWIFT_AVAILABILITY(macos,introduced=10.1
 @end
 
 
+SWIFT_CLASS("_TtC6Upshot13StreakManager")
+@interface StreakManager : NSObject
+- (void)fetchStreakInfoWithAppuid:(NSString * _Nonnull)appuid completionBlock:(void (^ _Nonnull)(NSDictionary<NSString *, id> * _Nullable, NSString * _Nullable))completionBlock;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
 /// The task delegate is responsible for handling all delegate callbacks for the underlying task as well as
 /// executing all operations attached to the serial operation queue upon task completion.
 SWIFT_CLASS("_TtC6Upshot12TaskDelegate")
@@ -1331,6 +1452,7 @@ SWIFT_CLASS("_TtC6Upshot13TriviaPieView")
 - (void)loadWithUrl:(NSURL * _Nonnull)url completion:(void (^ _Nonnull)(UIImage * _Nonnull))completion;
 @end
 
+
 @class UIEvent;
 
 @interface UIWindow (SWIFT_EXTENSION(Upshot))
@@ -1365,10 +1487,10 @@ SWIFT_CLASS("_TtC6Upshot12USTriviaView")
 @end
 
 
+
 @interface USTriviaView (SWIFT_EXTENSION(Upshot))
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator;
 @end
-
 
 
 SWIFT_CLASS("_TtC6Upshot17USTriviaWireframe")

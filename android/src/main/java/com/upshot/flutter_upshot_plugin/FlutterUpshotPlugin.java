@@ -53,11 +53,14 @@ import io.flutter.plugin.common.EventChannel;
  * FlutterUpshotPlugin
  */
 public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
-    /// The MethodChannel that will the communication between Flutter and native Android
+    /// The MethodChannel that will the communication between Flutter and native
+    /// Android
     ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// This local reference serves to register the plugin with the Flutter Engine
+    /// and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
+    private MethodChannel internal_channel;
     private FlutterPluginBinding binding;
     private Handler handler;
     public static EventChannel.EventSink eventSinkChannel = null;
@@ -119,41 +122,49 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin");
         channel.setMethodCallHandler(this);
+
+        internal_channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(),
+                "flutter_upshot_plugin_internal");
+        internal_channel.setMethodCallHandler(this);
+        Log.d("Upshot", "flutter_upshot_plugin_internal onAttachedToEngine");
+
         this.context = flutterPluginBinding.getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
         binding = flutterPluginBinding;
         FlutterLoader loader = FlutterInjector.instance().flutterLoader();
         String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
 
-//        AssetManager assetManager = binding.getApplicationContext().getAssets();
+        // AssetManager assetManager = binding.getApplicationContext().getAssets();
 
-//            AssetFileDescriptor fd = assetManager.openFd(key);
+        // AssetFileDescriptor fd = assetManager.openFd(key);
         String customizationJson = loadJSONFromAsset(context, key);
 
         helper.setCustomizationData(customizationJson, context);
 
-        new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/pushClick").setStreamHandler(new EventChannel.StreamHandler() {
-            @Override
-            public void onListen(Object arguments, EventChannel.EventSink events) {
-                eventSinkChannel = events;
-            }
+        new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/pushClick")
+                .setStreamHandler(new EventChannel.StreamHandler() {
+                    @Override
+                    public void onListen(Object arguments, EventChannel.EventSink events) {
+                        eventSinkChannel = events;
+                    }
 
-            @Override
-            public void onCancel(Object arguments) {
+                    @Override
+                    public void onCancel(Object arguments) {
 
-            }
-        });
-        new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/onPushReceive").setStreamHandler(new EventChannel.StreamHandler() {
-            @Override
-            public void onListen(Object arguments, EventChannel.EventSink events) {
-                pushReceiveSinkChannel = events;
-            }
+                    }
+                });
+        new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/onPushReceive")
+                .setStreamHandler(new EventChannel.StreamHandler() {
+                    @Override
+                    public void onListen(Object arguments, EventChannel.EventSink events) {
+                        pushReceiveSinkChannel = events;
+                    }
 
-            @Override
-            public void onCancel(Object arguments) {
+                    @Override
+                    public void onCancel(Object arguments) {
 
-            }
-        });
+                    }
+                });
         UpshotApplication.getApplicationInstance().setCustomListener(customListener);
     }
 
@@ -177,20 +188,20 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                             }
                             String token = task.getResult();
                             HashMap<String, String> response = new HashMap<>();
-                            response.put("token", token);                            
+                            response.put("token", token);
                             handler.post(new Runnable() {
                                 @Override
-                                    public void run() {
-                                        channel.invokeMethod("upshotPushToken", response);
-                                    }
+                                public void run() {
+                                    channel.invokeMethod("upshotPushToken", response);
+                                }
                             });
                             helper.updateDeviceToken(token);
                         }
                     });
         } catch (Exception e) {
-//            if (BuildConfig.DEBUG) {
-//                e.printStackTrace();
-//            }
+            // if (BuildConfig.DEBUG) {
+            // e.printStackTrace();
+            // }
         }
     }
 
@@ -279,6 +290,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
             @Override
             public void onActivityError(int error) {
+                Log.d("Upshot", "onActivityError---" + Integer.toString(error));
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -324,7 +336,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             }
 
             @Override
-            public void brandKinesisActivityPerformedActionWithParams(BKActivityTypes activityType, Map<String, Object> actionData) {
+            public void brandKinesisActivityPerformedActionWithParams(BKActivityTypes activityType,
+                    Map<String, Object> actionData) {
 
                 handler.post(new Runnable() {
                     @Override
@@ -346,6 +359,26 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 });
             }
+
+            @Override
+            public void brandKinesisInteractiveTutorialInfoForPlugin(String data) {
+                Log.d("Upshot", "brandKinesisInteractiveTutorialInfoForPlugin");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (data != null) {
+                            try {
+                                internal_channel.invokeMethod("upshot_interactive_tutoInfo", data);
+                                Log.d("upshot_interactive_tutoInfo", "callback send");
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                });
+            }
         });
     }
 
@@ -355,59 +388,59 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         switch (call.method) {
 
             case "initializeUpshotUsingConfigFile": {
-                if (UpshotApplication.initType == null) {
+                if (UpshotApplication.initType == null || UpshotApplication.initType.isEmpty()) {
                     helper.initializeUsingConfig(context);
                 }
                 UpshotApplication.initType = "Config";
             }
-            break;
+                break;
             case "initializeUsingOptions": {
                 HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
                 UpshotApplication.initType = "Options";
-                if (UpshotApplication.options == null) {
+                if (UpshotApplication.options == null || UpshotApplication.options.isEmpty()) {
                     UpshotApplication.options = data;
                     helper.initialize(data, context);
                 }
             }
-            break;
+                break;
             case "terminate":
                 break;
             case "sendUserDetails": {
                 HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
                 helper.setUserProfile(data);
             }
-            break;
+                break;
             case "getUserDetails": {
                 Set<String> keys = new HashSet<>();
                 new UserInfoAsync().execute(keys);
             }
-            break;
+                break;
             case "sendLogoutDetails": {
                 helper.logoutDetails();
             }
-            break;
-            case "sendDeviceToken": {            
+                break;
+            case "sendDeviceToken": {
                 String token = call.argument("token");
-                helper.updateDeviceToken(token);                
+                helper.updateDeviceToken(token);
             }
-            break;
+                break;
             case "sendPushClickDetails": {
             }
-            break;
+                break;
             case "displayNotification": {
                 HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
                 Bundle pushBundle = convertMapToBundle(data);
                 BrandKinesis.getBKInstance().buildEnhancedPushNotification(context, pushBundle, true);
             }
-            break;
+                break;
             case "getUserId": {
                 result.success(helper.getUserId(context));
             }
-            break;
+                break;
             case "getSDKVersion": {
                 result.success(helper.getSDKVersion());
             }
-            break;
+                break;
             case "createCustomEvent": {
                 String eventName = call.argument("eventName");
                 HashMap<String, Object> data = call.argument("data");
@@ -415,63 +448,64 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 String eventId = helper.createCustomEvent(data, eventName, isTimed);
                 result.success(eventId);
             }
-            break;
+                break;
             case "createPageViewEvent": {
                 String pageName = (String) call.arguments;
                 String eventId = helper.createPageEvent(pageName);
                 result.success(eventId);
             }
-            break;
+                break;
 
             case "createAttributionEvent": {
                 HashMap<String, String> data = (HashMap<String, String>) call.arguments;
                 String eventId = helper.createAttributionEvent(data);
                 result.success(eventId);
             }
-            break;
+                break;
             case "createLocationEvent": {
                 BrandKinesis bkInstance = BrandKinesis.getBKInstance();
                 String latitude = call.argument("latitude");
                 String longitude = call.argument("longitude");
                 helper.createLocationEvent(Double.parseDouble(latitude), Double.parseDouble(longitude));
             }
-            break;
+                break;
             case "setValueAndClose": {
                 String eventId = call.argument("eventId");
                 HashMap<String, Object> data = call.argument("data");
                 helper.setValueAndClose(eventId, data);
             }
-            break;
+                break;
             case "closeEventForId": {
                 String eventId = (String) call.arguments;
                 helper.closeEvent(eventId);
             }
-            break;
+                break;
             case "dispatchEvents": {
                 boolean isTimed = (boolean) call.arguments;
                 helper.dispatch(isTimed, context);
             }
-            break;
+                break;
             case "dispatchInterval": {
                 int interval = Integer.parseInt(call.arguments.toString());
                 BrandKinesis.getBKInstance().setDispatchEventTime(interval * 1000);
             }
-            break;
+                break;
             case "showActivity": {
                 String tag = call.argument("tag");
                 Integer type = call.argument("type");
+                Log.d("Upshot", "showActivity---" + tag);
                 helper.getActivity(tag, type, context);
             }
-            break;
+                break;
             case "showActivityWithId": {
                 String activityId = (String) call.arguments;
                 helper.getActivityById(activityId);
             }
-            break;
+                break;
             case "removeTutorial": {
                 helper.removeTuroial(context);
             }
-            break;
+                break;
             case "getBadges": {
                 BrandKinesis.getBKInstance().getBadges(new BKBadgeAccessListener() {
                     @Override
@@ -485,7 +519,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 });
             }
-            break;
+                break;
 
             case "getInboxDetails": {
                 BrandKinesis.getBKInstance().fetchInboxInfo(new BKInboxAccessListener() {
@@ -502,101 +536,104 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 });
             }
-            break;
+                break;
             case "fetchRewards": {
-                BrandKinesis.getBKInstance().getRewardsStatusWithCompletionBlock(context, new BKRewardsResponseListener() {
-                    @Override
-                    public void rewardsResponse(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Success");
-                        data.put("response", o);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance().getRewardsStatusWithCompletionBlock(context,
+                        new BKRewardsResponseListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRewardsResponse", data);
+                            public void rewardsResponse(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Success");
+                                data.put("response", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRewardsResponse", data);
+                                    }
+                                });
                             }
-                        });
-                    }
 
-                    @Override
-                    public void onErrorReceived(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Fail");
-                        data.put("errorMessage", o);
-                        handler.post(new Runnable() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRewardsResponse", data);
+                            public void onErrorReceived(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Fail");
+                                data.put("errorMessage", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRewardsResponse", data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
-            break;
+                break;
             case "fetchRewardHistory": {
                 String programId = call.argument("programId");
                 int historyType = call.argument("type");
 
-                BrandKinesis.getBKInstance().getRewardHistoryForProgramId(context, programId, historyType, new BKRewardsResponseListener() {
-                    @Override
-                    public void rewardsResponse(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Success");
-                        data.put("response", o);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance().getRewardHistoryForProgramId(context, programId, historyType,
+                        new BKRewardsResponseListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRewardHistoryResponse", data);
+                            public void rewardsResponse(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Success");
+                                data.put("response", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRewardHistoryResponse", data);
+                                    }
+                                });
                             }
-                        });
-                    }
 
-                    @Override
-                    public void onErrorReceived(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Fail");
-                        data.put("errorMessage", o);
-                        handler.post(new Runnable() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRewardHistoryResponse", data);
+                            public void onErrorReceived(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Fail");
+                                data.put("errorMessage", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRewardHistoryResponse", data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
-            break;
+                break;
             case "fetchRewardRules": {
                 String programId = (String) call.arguments;
-                BrandKinesis.getBKInstance().getRewardDetailsForProgramId(context, programId, new BKRewardsResponseListener() {
-                    @Override
-                    public void rewardsResponse(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Success");
-                        data.put("response", o);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance().getRewardDetailsForProgramId(context, programId,
+                        new BKRewardsResponseListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRewardRulesResponse", data);
+                            public void rewardsResponse(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Success");
+                                data.put("response", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRewardRulesResponse", data);
+                                    }
+                                });
                             }
-                        });
-                    }
 
-                    @Override
-                    public void onErrorReceived(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Fail");
-                        data.put("errorMessage", o);
-                        handler.post(new Runnable() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRewardRulesResponse", data);
+                            public void onErrorReceived(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Fail");
+                                data.put("errorMessage", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRewardRulesResponse", data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
-            break;
+                break;
             case "redeemRewards": {
 
                 String programId = call.argument("programId");
@@ -604,37 +641,38 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 int transactionValue = call.argument("transactionValue");
                 String tag = call.argument("tag");
 
-                BrandKinesis.getBKInstance().redeemRewardsWithProgramId(context, programId, transactionValue, redeemAmount, tag, new BKRewardsResponseListener() {
-                    @Override
-                    public void rewardsResponse(Object o) {
-
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Success");
-                        data.put("response", o);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance().redeemRewardsWithProgramId(context, programId, transactionValue,
+                        redeemAmount, tag, new BKRewardsResponseListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRedeemRewardsResponse", data);
+                            public void rewardsResponse(Object o) {
+
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Success");
+                                data.put("response", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRedeemRewardsResponse", data);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onErrorReceived(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Fail");
+                                data.put("errorMessage", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotRedeemRewardsResponse", data);
+                                    }
+                                });
                             }
                         });
-                    }
-
-                    @Override
-                    public void onErrorReceived(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Fail");
-                        data.put("errorMessage", o);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                channel.invokeMethod("upshotRedeemRewardsResponse", data);
-                            }
-                        });
-                    }
-                });
 
             }
-            break;
+                break;
             case "disableUser": {
 
                 boolean disable = (boolean) call.arguments;
@@ -645,45 +683,47 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 });
             }
-            break;
+                break;
             case "getNotifications": {
-                boolean loadMore = call.argument("loadMore");;
+                boolean loadMore = call.argument("loadMore");
+                ;
                 int limit = call.argument("limit");
-                BrandKinesis.getBKInstance().getNotifications(context, loadMore,limit, new BKNotificationsResponseListener() {
-                    @Override
-                    public void notificationsResponse(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Success");
-                        data.put("response", o);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance().getNotifications(context, loadMore, limit,
+                        new BKNotificationsResponseListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotGetNotifications", data);
+                            public void notificationsResponse(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Success");
+                                data.put("response", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotGetNotifications", data);
+                                    }
+                                });
                             }
-                        });
-                    }
 
-                    @Override
-                    public void onErrorReceived(Object o) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", "Fail");
-                        data.put("errorMessage", o);
-                        handler.post(new Runnable() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotGetNotifications", data);
+                            public void onErrorReceived(Object o) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", "Fail");
+                                data.put("errorMessage", o);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotGetNotifications", data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
-            break;
+                break;
             case "showInboxScreen": {
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
-                 int inboxType = Integer.parseInt(options.get("BKInboxType").toString());
+                int inboxType = Integer.parseInt(options.get("BKInboxType").toString());
                 Boolean readNotifications = (Boolean) options.get("BKShowReadNotifications");
                 options.put("bkShowReadNotifications", readNotifications);
-                 options.put("bkInboxType", inboxType);
+                options.put("bkInboxType", inboxType);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -691,24 +731,58 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 });
             }
-            break;
+                break;
             case "getUnreadNotificationsCount": {
-                int limit =  Integer.parseInt(call.arguments.toString());
-                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, new BKNotificationsCountResponseListener() {
-                    @Override
-                    public void notificationsCount(int i) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("count", i);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                channel.invokeMethod("upshotUnreadNotificationsCount", data);
-                            }
-                        });
-                    }
+                int limit = Integer.parseInt(call.arguments.toString());
+                
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, new
+                BKNotificationsCountResponseListener() {
+                @Override
+                public void notificationsCount(int i) {
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("count", i);
+                handler.post(new Runnable() {
+                @Override
+                public void run() {
+                channel.invokeMethod("upshotUnreadNotificationsCount", data);
+                }
+                });
+                }
                 });
             }
-            break;
+
+            case "setTechnologyType": {
+
+                // Call JAVA Funtion with value flutter
+                Log.d("Upshot", "setTechnologyType");
+                BrandKinesis.getBKInstance().setTechnologyType(context, "Flutter");
+            }
+                break;
+
+            case "activityShown_Internal": {
+                HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+
+                BrandKinesis.getBKInstance().activityPresentedCallback(payload);
+                break;
+            }
+
+            case "activitySkiped_Internal": {
+                HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+
+                BrandKinesis.getBKInstance().activitySkipCallback(payload);
+                break;
+            }
+            case "activityDismiss_Internal": {
+                HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+                // String payload=call.arguments.toString();
+                BrandKinesis.getBKInstance().activityRespondCallback(payload);
+                break;
+            }
+            case "activityRedirection_Internal": {
+                HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
+                BrandKinesis.getBKInstance().activityRedirectionCallback(payload);
+                break;
+            }
             default:
                 Log.d("Upshot", "No Method");
         }

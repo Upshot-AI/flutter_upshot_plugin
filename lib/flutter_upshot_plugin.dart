@@ -1,18 +1,20 @@
-import 'dart:async';
-import 'dart:collection';
-import 'dart:developer';
-import 'dart:ffi';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'flutter_upshot_method_channel.dart';
 
 class FlutterUpshotPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
 
   static void initializeUpshotUsingConfigFile() {
+    _channel.invokeMethod("setTechnologyType");
     _channel.invokeMethod("initializeUpshotUsingConfigFile");
   }
 
   static void initialiseUpshotUsingOptions(Map options) {
+    _channel.invokeMethod("setTechnologyType");
     _channel.invokeMethod("initializeUsingOptions", options);
   }
 
@@ -90,8 +92,9 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod("dispatchInterval", interval);
   }
 
-  static void showActivity(int type, String tag) {
+  static void showActivity(int type, String tag, [BuildContext? context]) {
     Map values = {'type': type, 'tag': tag};
+    UpshotMethodChannelInternal(context: context);
     _channel.invokeMethod("showActivity", values);
   }
 
@@ -140,10 +143,7 @@ class FlutterUpshotPlugin {
   }
 
   static void getNotifications(bool loadMore, int limit) {
-    Map details = {
-      'loadMore': loadMore,
-      'limit': limit
-    };
+    Map details = {'loadMore': loadMore, 'limit': limit};
     _channel.invokeListMethod("getNotifications", details);
   }
 

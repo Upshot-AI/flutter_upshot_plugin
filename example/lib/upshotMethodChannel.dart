@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 
 class UpshotMethodChannel {
   static const _channel = MethodChannel('flutter_upshot_plugin');
