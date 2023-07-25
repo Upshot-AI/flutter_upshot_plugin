@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   s.preserve_paths = 'Upshot.framework'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework Upshot' }
-  s.vendored_frameworks = 'Upshot.framework'
+  s.vendored_frameworks = 'Upshot.xcframework'
   s.pod_target_xcconfig = {
       'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
   }

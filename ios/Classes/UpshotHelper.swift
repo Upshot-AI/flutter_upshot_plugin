@@ -342,6 +342,29 @@ class UpshotHelper: NSObject {
             }
         }
     }
+    
+    func fetchStreaks() {
+        
+        BrandKinesis.sharedInstance().getStreaksData { response, error in
+            
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                
+                var streakData: [String : Any] =  [:]
+                if let res = response as? [String: Any] {
+                    streakData = ["response": self.jsonToString(json: res) ?? ""]
+                }
+                if let err = error {
+                    streakData = ["status": "Fail", "errorMessage": err]
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotStreakResponse", arguments: streakData)
+                }
+            }
+        }
+    }
 
     func activityShown_Internal(payload: [String: Any]) {
         BrandKinesis.sharedInstance().activityPresentedCallback(payload)
@@ -479,9 +502,11 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().showInboxController(options)
     }
 
-    func getUnreadNotificationsCount(limit: Int) {
+    func getUnreadNotificationsCount(limit: Int, inboxType: Int) {
      
-        BrandKinesis.sharedInstance().getUnreadNotificationsCount(limit) { count in
+       let type = BKInboxMessageType(rawValue: inboxType) ?? .OnlyPushNotifications
+        
+        BrandKinesis.sharedInstance().getUnreadNotificationsCount(limit, notificationType: type) { count in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)

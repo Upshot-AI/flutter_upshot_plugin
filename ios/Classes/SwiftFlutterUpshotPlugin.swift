@@ -175,8 +175,13 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             }
         case "getUnreadNotificationsCount":
             
-            let limit = call.arguments as? Int ?? 10
-            UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit)
+            var limit = 10
+            var inboxType = 1
+            if let details = call.arguments as? [String: Any] {
+                limit = details["limit"] as? Int ?? 10
+                inboxType = details["inboxType"] as? Int ?? 1
+            }
+            UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit, inboxType: inboxType)
 
         case "activityShown_Internal":
             if let details = call.arguments as? [String: Any] {                
@@ -196,6 +201,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             }
         case "setTechnologyType":
             UpshotHelper.defaultHelper.setTechnologyType()
+        case "fetchStreaks":
+            UpshotHelper.defaultHelper.fetchStreaks()
         default:
             result(FlutterMethodNotImplemented)
         }

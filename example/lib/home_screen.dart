@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_upshot_plugin/flutter_upshot_method_channel.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin_example/demo_screen.dart';
@@ -25,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      FlutterUpshotPlugin.getUnreadNotificationsCount(1000, 3);
       FlutterUpshotPlugin.showActivity(-1, '', context);
       // UpshotMethodChannelInternal().showTutorials(context, '');
     });

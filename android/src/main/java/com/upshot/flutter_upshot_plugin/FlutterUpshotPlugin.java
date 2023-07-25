@@ -686,7 +686,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "getNotifications": {
                 boolean loadMore = call.argument("loadMore");
-                ;
                 int limit = call.argument("limit");
                 BrandKinesis.getBKInstance().getNotifications(context, loadMore, limit,
                         new BKNotificationsResponseListener() {
@@ -733,21 +732,23 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             }
                 break;
             case "getUnreadNotificationsCount": {
-                int limit = Integer.parseInt(call.arguments.toString());
-                
-                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, new
-                BKNotificationsCountResponseListener() {
-                @Override
-                public void notificationsCount(int i) {
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("count", i);
-                handler.post(new Runnable() {
-                @Override
-                public void run() {
-                channel.invokeMethod("upshotUnreadNotificationsCount", data);
-                }
-                });
-                }
+
+                HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
+                int inboxType = Integer.parseInt(options.get("inboxType").toString());
+                int limit = Integer.parseInt(options.get("limit").toString());
+
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, inboxType, new BKNotificationsCountResponseListener() {
+                    @Override
+                    public void notificationsCount(int i) {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("count", i);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                channel.invokeMethod("upshotUnreadNotificationsCount", data);
+                            }
+                        });
+                    }
                 });
             }
 
@@ -782,6 +783,17 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 HashMap<String, Object> payload = (HashMap<String, Object>) call.arguments;
                 BrandKinesis.getBKInstance().activityRedirectionCallback(payload);
                 break;
+            }
+            case  "fetchStreaks": {
+                String streakData =  BrandKinesis.getBKInstance().getStreakData();
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("response", streakData);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        channel.invokeMethod("upshotStreakResponse", data);
+                    }
+                });
             }
             default:
                 Log.d("Upshot", "No Method");
