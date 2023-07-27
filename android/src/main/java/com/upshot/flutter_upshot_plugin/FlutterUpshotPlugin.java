@@ -47,6 +47,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import netscape.javascript.JSObject;
 import io.flutter.plugin.common.EventChannel;
 
 /**
@@ -686,8 +687,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "getNotifications": {
                 boolean loadMore = call.argument("loadMore");
+                boolean fetchFromStart = !loadMore;
                 int limit = call.argument("limit");
-                BrandKinesis.getBKInstance().getNotifications(context, loadMore, limit,
+                BrandKinesis.getBKInstance().getNotifications(context, fetchFromStart, limit,
                         new BKNotificationsResponseListener() {
                             @Override
                             public void notificationsResponse(Object o) {
@@ -786,14 +788,22 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             }
             case  "fetchStreaks": {
                 String streakData =  BrandKinesis.getBKInstance().getStreakData();
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("response", streakData);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        channel.invokeMethod("upshotStreakResponse", data);
-                    }
-                });
+                try {
+                    JSONObject jsonObject = new JSONObject(streakData);
+                    JSONArray streakObj = jsonObject.getJSONArray("streakData");
+                    String jsonString = streakObj.toString();
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("response", streakData);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            channel.invokeMethod("upshotStreakResponse", data);
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             default:
                 Log.d("Upshot", "No Method");
