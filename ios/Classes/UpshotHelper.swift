@@ -352,8 +352,8 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var streakData: [String : Any] =  [:]
-                if let res = response as? [String: Any] {
-                    streakData = ["response": self.jsonToString(json: res) ?? ""]
+                if let res = response as? [String: Any], let streaksArray = res[@"data"]  {
+                    streakData = ["response": self.jsonToString(json: streaksArray) ?? ""]
                 }
                 if let err = error {
                     streakData = ["status": "Fail", "errorMessage": err]
