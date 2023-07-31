@@ -329,8 +329,12 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var notificationStatus: [String : Any] =  [:]
-                if let res = response as? [String: Any] {
-                    notificationStatus = ["status": "Success", "response": self.jsonToString(json: res) ?? ""]
+                if let res = response as? [String: Any],
+                   let streakArray = res["data"] as? [[String: Any]],
+                   let jsonString = self.jsonArrayToString(json: streakArray) {
+                    notificationStatus = ["status": "Success", "response":  jsonString]
+                } else {
+                    notificationStatus = ["status": "Fail", "errorMessage": "something went wrong.."]
                 }
                 if let err = errorMessage {
                     notificationStatus = ["status": "Fail", "errorMessage": err]
@@ -352,8 +356,12 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var streakData: [String : Any] =  [:]
-                if let res = response as? [String: Any], let streaksArray = res[@"data"]  {
-                    streakData = ["response": self.jsonToString(json: streaksArray) ?? ""]
+                if let res = response as? [String: Any],
+                    let streaksArray = res["data"] as? [[String: Any]],
+                    let jsonString = self.jsonArrayToString(json: streaksArray) {
+                    streakData = ["response":  jsonString]
+                } else {
+                    streakData = ["status": "Fail", "errorMessage": "something went wrong..."]
                 }
                 if let err = error {
                     streakData = ["status": "Fail", "errorMessage": err]
@@ -533,6 +541,19 @@ class UpshotHelper: NSObject {
         }
         return nil
     }
+    
+    func jsonArrayToString(json: [[String: Any]]) -> String? {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let jsonString = String(data: data, encoding: .utf8)
+            return jsonString
+        } catch let myJSONError {
+            print(myJSONError)
+        }
+        return nil
+    }
+    
+    
     
     func showAlert(title: String, message: String) {
         

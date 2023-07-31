@@ -739,19 +739,20 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 int inboxType = Integer.parseInt(options.get("inboxType").toString());
                 int limit = Integer.parseInt(options.get("limit").toString());
 
-                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, inboxType, new BKNotificationsCountResponseListener() {
-                    @Override
-                    public void notificationsCount(int i) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("count", i);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, inboxType,
+                        new BKNotificationsCountResponseListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("upshotUnreadNotificationsCount", data);
+                            public void notificationsCount(int i) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("count", i);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("upshotUnreadNotificationsCount", data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
 
             case "setTechnologyType": {
@@ -786,8 +787,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 BrandKinesis.getBKInstance().activityRedirectionCallback(payload);
                 break;
             }
-            case  "fetchStreaks": {
-                String streakData =  BrandKinesis.getBKInstance().getStreakData();
+            case "fetchStreaks": {
+                String streakData = BrandKinesis.getBKInstance().getStreakData();
                 try {
                     JSONObject jsonObject = new JSONObject(streakData);
                     JSONArray streakObj = jsonObject.getJSONArray("streakData");
@@ -800,7 +801,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                             channel.invokeMethod("upshotStreakResponse", data);
                         }
                     });
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
