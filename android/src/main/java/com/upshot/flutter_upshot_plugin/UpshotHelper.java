@@ -2,6 +2,14 @@ package com.upshot.flutter_upshot_plugin;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
+
+import androidx.core.text.HtmlCompat;
 
 import com.brandkinesis.BKProperties;
 import com.brandkinesis.BKUserInfo;
@@ -11,14 +19,18 @@ import com.brandkinesis.activitymanager.BKActivityTypes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 class UpshotHelper {
 
     public void initialize(HashMap<String, Object> options, Context context) {
 
         try {
-            if (options == null) {return;}
+            if (options == null) {
+                return;
+            }
             String appId = options.containsKey("appId") ? options.get("appId").toString() : "";
             String ownerId = options.containsKey("ownerId") ? options.get("ownerId").toString() : "";
             Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation") : false;
@@ -248,5 +260,22 @@ class UpshotHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public int calculateWebViewHeight(Context context, Map<String, Object> description) {
+        TextView textView = new TextView(context);
+        final float densityDpi=context.getResources().getDisplayMetrics().densityDpi;
+        final int fontSize=Integer.parseInt(description.get("fontSize").toString());
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        final int descriptionWidth= (int) (((displayMetrics.widthPixels*0.9)-40)/(densityDpi/ DisplayMetrics.DENSITY_DEFAULT));
+        String text = HtmlCompat.fromHtml("<html><body>"+description.get("text").toString()+"</body></html>", HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS).toString();
+        textView.setText(text.substring(0, text.length() - 1));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(descriptionWidth, View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        textView.measure(widthMeasureSpec, heightMeasureSpec);
+        return textView.getMeasuredHeight();
     }
 }

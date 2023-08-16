@@ -7,6 +7,7 @@ import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
 import 'widget/tool_tip_widget.dart';
@@ -59,6 +60,37 @@ class ShowTutorialsModel extends ChangeNotifier {
     _currentWidget = details;
     notifyListeners();
   }
+
+  int _webViewHeight = 0;
+  int get webViewHeight => _webViewHeight;
+  set webViewHeight(int val) {
+    _webViewHeight = val;
+    notifyListeners();
+  }
+
+  final webViewController = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..enableZoom(false)
+    ..setBackgroundColor(Colors.transparent);
+  // ..setNavigationDelegate(NavigationDelegate(
+
+  // ))
+
+  // void initializeWebView() {
+  String js = '''
+      var contentHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+      console.log("The height is"+contentHeight.toString());
+      ContentHeight.postMessage(contentHeight.toString());
+    ''';
+  //   webViewController.runJavaScript(js);
+  // }
 
   ToolTipDataClass? _currentToolTipDataClass;
   ToolTipDataClass? get currentToolTipDataClass => _currentToolTipDataClass;
@@ -405,6 +437,8 @@ class ShowTutorialsModel extends ChangeNotifier {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       getToolTipSize();
       getYAxis(index: selectedIndex);
+      getWebViewHeight();
+      calculateHeightWebView();
     });
     notifyListeners();
   }
@@ -420,6 +454,8 @@ class ShowTutorialsModel extends ChangeNotifier {
         WidgetsBinding.instance?.addPostFrameCallback((_) {
           getToolTipSize();
           getYAxis(index: _selectedIndex);
+          getWebViewHeight();
+          calculateHeightWebView();
         });
         if (_maxCount < _selectedIndex) {
           _maxCount++;
@@ -550,20 +586,35 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   String descriptionText(String? text) {
+    final fontSize = tutorialList[_selectedIndex].description?.fontSize ?? 16;
+    String newText = '''
+ <!DOCTYPE html>
+<html>
+<head>
+<style>
+body {padding: 0px}
+p    {font-size: ${WidgetsBinding.instance.window.devicePixelRatio * fontSize}px; padding: 0px}
+</style>
+</head>
+<body> $text
+</body>
+</html>
+''';
     if (text != null && text != "") {
       if (_interactiveTutorialModel?.inboxVariable != null &&
           (_interactiveTutorialModel?.inboxVariable?.isNotEmpty ?? false)) {
         Map<String, dynamic> inboxVariable =
             _interactiveTutorialModel!.inboxVariable!;
         for (var element in inboxVariable.keys) {
-          if (element != "" && text!.contains(element)) {
-            text = text.replaceAll(element, inboxVariable[element].toString());
+          if (element != "" && text.contains(element)) {
+            newText =
+                newText.replaceAll(element, inboxVariable[element].toString());
           }
         }
         // print(text);
-        return text!;
+        return newText;
       } else {
-        return text;
+        return newText;
       }
     } else {
       return '';
@@ -640,5 +691,29 @@ class ShowTutorialsModel extends ChangeNotifier {
 
   bool isUnderline(List? fontStyle) {
     return fontStyle?.contains('underline') ?? false;
+  }
+
+  ///////////
+
+  void calculateHeightWebView() {
+    if (tutorialList[_selectedIndex].description != null) {
+      channel.invokeMethod("fetchWebViewHeight",
+          tutorialList[_selectedIndex].description!.toMap());
+    } else {
+      log('Description is empty');
+    }
+  }
+
+  void getWebViewHeight() {
+    try {
+      channel.setMethodCallHandler((call) async {
+        if (call.method == "webViewHeight") {
+          webViewHeight = call.arguments as int;
+          print("The new height is ${call.arguments}");
+        }
+      });
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

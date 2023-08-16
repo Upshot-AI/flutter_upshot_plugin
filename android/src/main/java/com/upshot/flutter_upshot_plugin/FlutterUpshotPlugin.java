@@ -47,7 +47,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import netscape.javascript.JSObject;
 import io.flutter.plugin.common.EventChannel;
 
 /**
@@ -804,6 +803,17 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+            case "fetchWebViewHeight":{
+                Map<String,Object> payload= (Map<String, Object>) call.arguments;
+                try{
+                    final int height= helper.calculateWebViewHeight(context,payload);
+                    Log.e("webView","The description is"+payload);
+                    channel.invokeMethod("webViewHeight",height);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
             default:
                 Log.d("Upshot", "No Method");

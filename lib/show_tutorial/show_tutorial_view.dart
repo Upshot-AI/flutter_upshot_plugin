@@ -21,6 +21,8 @@ class ShowTutorials extends StatefulWidget {
             statusBarHeight:
                 MediaQuery.of(ShowTutorialsModel.context!).viewPadding.top,
             index: 0);
+        m.getWebViewHeight();
+        m.calculateHeightWebView();
       });
     } catch (e) {
       rethrow;

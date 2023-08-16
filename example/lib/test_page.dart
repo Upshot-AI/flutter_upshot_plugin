@@ -20,7 +20,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       // ShowCaseWidget.of(finalBuildContext).startShowCase([findIndex]);
       // UpshotMethodChannelInternal().showTutorials(context, '');
-      FlutterUpshotPlugin.showActivity(-1, "", context);
+      FlutterUpshotPlugin.showActivity(7, "", context);
     });
   }
 

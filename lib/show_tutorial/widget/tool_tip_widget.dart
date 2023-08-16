@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/show_tutorials_viewmodel.dart';
 import '../services/auto_size_text.dart';
 import '../services/tool_tip_clipper.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /// [ToolTipWidget] is the widget which will be describing widget for the highlighted widget.
 class ToolTipWidget extends StatefulWidget {
@@ -78,56 +79,69 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                       child: Column(
                         children: [
                           Container(
-                              decoration: BoxDecoration(
-                                  color: model
-                                          .getColor(
-                                              tutorial.description?.bgColor)
-                                          ?.withOpacity(
-                                              (tutorial.description?.opacity ??
-                                                      1)
-                                                  .toDouble()) ??
-                                      Colors.white.withOpacity(
-                                          (tutorial.description?.opacity ?? 1)
-                                              .toDouble())),
-                              padding: widget.isUp
-                                  ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
-                                  : const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: Html(
-                                data: model.descriptionText(
-                                    tutorial.description?.text),
-                                style: {
-                                  "div": Style(
-                                    fontSize: FontSize(
-                                        (tutorial.description?.fontSize)
-                                            ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName,
-                                  ),
-                                  "p": Style(
-                                    fontSize: FontSize(
-                                        (tutorial.description?.fontSize)
-                                            ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName,
-                                  ),
-                                  "span": Style(
-                                    fontSize: FontSize(
-                                        (tutorial.description?.fontSize)
-                                            ?.toDouble()),
-                                    fontFamily: tutorial.description?.fontName,
-                                  ),
-                                  "li": Style(
-                                      fontSize: FontSize(
-                                          (tutorial.description?.fontSize)
-                                              ?.toDouble()),
-                                      fontFamily:
-                                          tutorial.description?.fontName),
-                                  "ul": Style(
-                                      fontSize: FontSize(
-                                          (tutorial.description?.fontSize)
-                                              ?.toDouble()),
-                                      fontFamily:
-                                          tutorial.description?.fontName),
-                                },
-                              )),
+                            decoration: BoxDecoration(
+                                color: model
+                                        .getColor(tutorial.description?.bgColor)
+                                        ?.withOpacity(
+                                            (tutorial.description?.opacity ?? 1)
+                                                .toDouble()) ??
+                                    Colors.white.withOpacity(
+                                        (tutorial.description?.opacity ?? 1)
+                                            .toDouble())),
+                            padding: widget.isUp
+                                ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
+                                : const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: SizedBox(
+                              height: model.webViewHeight.toDouble(),
+                              child: WebViewWidget(
+                                controller: model.webViewController
+                                  ..loadHtmlString(model.descriptionText(
+                                      tutorial.description?.text))
+                                  ..setNavigationDelegate(NavigationDelegate(
+                                    onPageFinished: (url) {
+                                      model.webViewController.runJavaScript(
+                                          'document.body.style.overflow = "hidden";');
+                                    },
+                                  )),
+                              ),
+                            ),
+                          )
+                          // Html(
+                          //   data: model.descriptionText(
+                          //       tutorial.description?.text),
+                          //   style: {
+                          //     "div": Style(
+                          //       fontSize: FontSize(
+                          //           (tutorial.description?.fontSize)
+                          //               ?.toDouble()),
+                          //       fontFamily: tutorial.description?.fontName,
+                          //     ),
+                          //     "p": Style(
+                          //       fontSize: FontSize(
+                          //           (tutorial.description?.fontSize)
+                          //               ?.toDouble()),
+                          //       fontFamily: tutorial.description?.fontName,
+                          //     ),
+                          //     "span": Style(
+                          //       fontSize: FontSize(
+                          //           (tutorial.description?.fontSize)
+                          //               ?.toDouble()),
+                          //       fontFamily: tutorial.description?.fontName,
+                          //     ),
+                          //     "li": Style(
+                          //         fontSize: FontSize(
+                          //             (tutorial.description?.fontSize)
+                          //                 ?.toDouble()),
+                          //         fontFamily:
+                          //             tutorial.description?.fontName),
+                          //     "ul": Style(
+                          //         fontSize: FontSize(
+                          //             (tutorial.description?.fontSize)
+                          //                 ?.toDouble()),
+                          //         fontFamily:
+                          //             tutorial.description?.fontName),
+                          //   },
+                          // )),
                         ],
                       ),
                     ),
