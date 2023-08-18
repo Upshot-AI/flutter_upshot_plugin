@@ -737,7 +737,7 @@ class ShowTutorialsModel extends ChangeNotifier {
 <head>
 <style>
 body {padding: 0px; margin: 0px;}
-p {font-size: ${(pixelRatio * 20)}px; padding: 0px; margin: 0px;}
+p {font-size: ${(pixelRatio * fontSize)}px; padding: 0px; margin: 0px;}
 div {padding: 0px; margin: 0px;}
 </style>
 </head>
@@ -844,8 +844,8 @@ div {padding: 0px; margin: 0px;}
   Future<void> calculateHeightWebView() async {
     if (tutorialList[_selectedIndex].description != null) {
       final data = tutorialList[_selectedIndex].description!;
-      // data.fontSize = (data.fontSize ?? 16) - 1;
-      data.fontSize = 20 - 1;
+      data.fontSize = (data.fontSize ?? 16) - 1;
+      // data.fontSize = fontSize - 1;
       channel.invokeMethod("fetchWebViewHeight", data.toMap());
     } else {
       log('Description is empty');
