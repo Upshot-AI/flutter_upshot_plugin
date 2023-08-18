@@ -76,18 +76,21 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                 children: [
                   Flexible(
                     child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
                       child: Column(
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: model
-                                        .getColor(tutorial.description?.bgColor)
-                                        ?.withOpacity(
-                                            (tutorial.description?.opacity ?? 1)
-                                                .toDouble()) ??
-                                    Colors.white.withOpacity(
-                                        (tutorial.description?.opacity ?? 1)
-                                            .toDouble())),
+                                color: Colors.black.withOpacity(0.5)
+                                // color: model
+                                //         .getColor(tutorial.description?.bgColor)
+                                //         ?.withOpacity(
+                                //             (tutorial.description?.opacity ?? 1)
+                                //                 .toDouble()) ??
+                                //     Colors.white.withOpacity(
+                                //         (tutorial.description?.opacity ?? 1)
+                                //             .toDouble()),
+                                ),
                             padding: widget.isUp
                                 ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
                                 : const EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -99,8 +102,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                       tutorial.description?.text))
                                   ..setNavigationDelegate(NavigationDelegate(
                                     onPageFinished: (url) {
-                                      model.webViewController.runJavaScript(
-                                          'document.body.style.overflow = "hidden";');
+                                      // model.webViewController.runJavaScript(
+                                      //     'document.body.style.overflow = "hidden";');
                                     },
                                   )),
                               ),

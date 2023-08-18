@@ -565,6 +565,29 @@ class UpshotHelper: NSObject {
             controller.present(alertController, animated: false, completion: nil)
         }
     }
+    
+    func getContentHeight(data: [String: Any]) {
+        
+        if let content = data["text"] as? String,
+           let contentData = content.data(using: .unicode),
+           let mutableString = try? NSMutableAttributedString(data: contentData, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.unicode.rawValue], documentAttributes: nil) {
+            let fontName = data["fontName"] as? String ?? ""
+            let fontSize = data["fontSize"] as? Int ?? 14
+            var font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+            if let cFont = UIFont(name: fontName, size: CGFloat(fontSize)) {
+        font = cFont
+    }
+        let width = UIScreen.main.bounds.width * 0.9 - 40
+            let height = NSString(string: mutableString.string).boundingRect(with: CGSize(width: width,height:Double.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController{
+        let upshotChannel=FlutterMethodChannel(name:"flutter_upshot_plugin",binaryMessenger:controller.binaryMessenger)
+        upshotChannel.invokeMethod("webViewHeight", arguments: height)
+        
+    }
+            
+        }
+        
+    }
 }
 
 extension UpshotHelper: BrandKinesisDelegate {
@@ -693,3 +716,15 @@ extension UpshotHelper: BrandKinesisDelegate {
         }
     }
 }
+
+extension NSAttributedString {
+    func heightWithConstrainedWidth(width: CGFloat) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, context: nil)
+
+        return boundingBox.height
+    }
+
+}
+
+

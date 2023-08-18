@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # flutter_html: ^2.2.1
   webview_flutter: ^4.2.2
 
 dev_dependencies:

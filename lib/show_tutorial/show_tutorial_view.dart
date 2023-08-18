@@ -15,14 +15,16 @@ class ShowTutorials extends StatefulWidget {
     try {
       final m = ShowTutorialsModel.instance;
       m.getScreenDetails(context);
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        m.getToolTipSize();
-        m.getYAxis(
-            statusBarHeight:
-                MediaQuery.of(ShowTutorialsModel.context!).viewPadding.top,
-            index: 0);
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+        await m.calculateHeightWebView();
         m.getWebViewHeight();
-        m.calculateHeightWebView();
+        // m.getToolTipSize();
+        // m.getYAxis(
+        //     statusBarHeight:
+        //         MediaQuery.of(ShowTutorialsModel.context!).viewPadding.top,
+        //     index: 0);
+        // m.getWebViewHeight();
+        // m.calculateHeightWebView();
       });
     } catch (e) {
       rethrow;

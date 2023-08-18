@@ -21,7 +21,7 @@ class UpshotMethodChannelInternal {
       if (context != null &&
           data != null &&
           !ShowTutorialsModel.instance.isTutorialPresent) {
-        log('Upshot showTutorials====' + UpshotMethodChannelInternal.data!);
+        // log('Upshot showTutorials====' + UpshotMethodChannelInternal.data!);
         Future.delayed(const Duration(milliseconds: 400), () {
           showTutorials(context!, UpshotMethodChannelInternal.data!);
         });
