@@ -81,16 +81,15 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.5)
-                                // color: model
-                                //         .getColor(tutorial.description?.bgColor)
-                                //         ?.withOpacity(
-                                //             (tutorial.description?.opacity ?? 1)
-                                //                 .toDouble()) ??
-                                //     Colors.white.withOpacity(
-                                //         (tutorial.description?.opacity ?? 1)
-                                //             .toDouble()),
-                                ),
+                              color: model
+                                      .getColor(tutorial.description?.bgColor)
+                                      ?.withOpacity(
+                                          (tutorial.description?.opacity ?? 1)
+                                              .toDouble()) ??
+                                  Colors.white.withOpacity(
+                                      (tutorial.description?.opacity ?? 1)
+                                          .toDouble()),
+                            ),
                             padding: widget.isUp
                                 ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
                                 : const EdgeInsets.fromLTRB(10, 10, 10, 10),
