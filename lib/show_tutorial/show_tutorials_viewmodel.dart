@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show MethodChannel, rootBundle;
+import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/description_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/footer_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
@@ -844,9 +845,16 @@ div {padding: 0px; margin: 0px;}
   Future<void> calculateHeightWebView() async {
     if (tutorialList[_selectedIndex].description != null) {
       final data = tutorialList[_selectedIndex].description!;
-      data.fontSize = (data.fontSize ?? 16) - 1;
+
+      // data.fontSize = (data.fontSize ?? 16) - 1;
       // data.fontSize = fontSize - 1;
-      channel.invokeMethod("fetchWebViewHeight", data.toMap());
+      final descriptionInfo = DescriptionInfo(
+          text: data.text,
+          bgColor: data.bgColor,
+          fontName: data.fontName,
+          fontSize: (data.fontSize ?? 16) - 1,
+          opacity: data.opacity);
+      channel.invokeMethod("fetchWebViewHeight", descriptionInfo.toMap());
     } else {
       log('Description is empty');
     }

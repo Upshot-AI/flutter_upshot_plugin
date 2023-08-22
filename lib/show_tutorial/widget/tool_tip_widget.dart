@@ -64,7 +64,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                     repeat: tutorial.scaleType == 1
                         ? ImageRepeat.repeat
                         : ImageRepeat.noRepeat,
-                    height: model.toolTipHeight,
+                    height: model.toolTipHeight + model.webViewHeight,
                     width: double.infinity,
                   )
                 : const SizedBox(),
