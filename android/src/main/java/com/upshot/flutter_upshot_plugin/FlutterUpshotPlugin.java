@@ -809,7 +809,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 try{
                     final int height= helper.calculateWebViewHeight(context,payload);
                     Log.e("webView","The description is"+payload);
-                    channel.invokeMethod("webViewHeight",height);
+                    internal_channel.invokeMethod("webViewHeight",height);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

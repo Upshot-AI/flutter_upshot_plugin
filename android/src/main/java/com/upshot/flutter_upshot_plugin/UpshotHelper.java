@@ -266,13 +266,25 @@ class UpshotHelper {
         TextView textView = new TextView(context);
         final float densityDpi=context.getResources().getDisplayMetrics().densityDpi;
         final int fontSize=Integer.parseInt(description.get("fontSize").toString());
+        final String fontName=description.get("fontName").toString();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_PX,
+                fontSize,
+                context.getResources().getDisplayMetrics()
+        );
         final int descriptionWidth= (int) (((displayMetrics.widthPixels*0.9)-40)/(densityDpi/ DisplayMetrics.DENSITY_DEFAULT));
-        String text = HtmlCompat.fromHtml("<html><body>"+description.get("text").toString()+"</body></html>", HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS).toString();
+        String text = HtmlCompat.fromHtml("<html> <head>\n" +
+                "<style>\n" +
+                "body {padding: 0px; margin: 0px; font-family:" +fontName+";}\n" +
+                "p {padding: 0px; margin: 0px; font-family:" +fontName+";}\n" +
+                "div {padding: 0px; margin: 0px; font-family:" +fontName+";}\n" +
+                "</style>\n" +
+                "</head> <body>"+description.get("text").toString()+"</body></html>", HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
         textView.setText(text.substring(0, text.length() - 1));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,fontSize-1);
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(descriptionWidth, View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);

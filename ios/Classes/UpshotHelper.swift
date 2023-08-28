@@ -580,7 +580,7 @@ class UpshotHelper: NSObject {
         let width = UIScreen.main.bounds.width * 0.9 - 40
             let height = NSString(string: mutableString.string).boundingRect(with: CGSize(width: width,height:Double.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController{
-        let upshotChannel=FlutterMethodChannel(name:"flutter_upshot_plugin",binaryMessenger:controller.binaryMessenger)
+        let upshotChannel=FlutterMethodChannel(name:"flutter_upshot_plugin_internal",binaryMessenger:controller.binaryMessenger)
         upshotChannel.invokeMethod("webViewHeight", arguments: height)
         
     }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show MethodChannel, rootBundle;
+import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/description_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/footer_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
@@ -35,6 +36,8 @@ class ShowTutorialInheritedNotifier
 
 class ShowTutorialsModel extends ChangeNotifier {
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
+  final MethodChannel channelInternal =
+      const MethodChannel('flutter_upshot_plugin_internal');
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
   double _parentHeight = 0.0;
@@ -737,9 +740,9 @@ class ShowTutorialsModel extends ChangeNotifier {
 <html>
 <head>
 <style>
-body {padding: 0px; margin: 0px;}
-p {font-size: ${(pixelRatio * fontSize)}px; padding: 0px; margin: 0px;}
-div {padding: 0px; margin: 0px;}
+body {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].description?.fontName ?? ''};}
+p {font-size: ${(pixelRatio * fontSize)}px; padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].description?.fontName ?? ''};}
+div {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].description?.fontName ?? ''};}
 </style>
 </head>
 <body> $text
@@ -862,7 +865,8 @@ div {padding: 0px; margin: 0px;}
 
   void getWebViewHeight() {
     try {
-      channel.setMethodCallHandler((call) async {
+      channelInternal.setMethodCallHandler((call) async {
+        print('The method is ${call.method}');
         if (call.method == "webViewHeight") {
           // double _webHeight = ;
           webViewHeight = ((_toolTipHeight + call.arguments) > _toolTipMaxHeight
