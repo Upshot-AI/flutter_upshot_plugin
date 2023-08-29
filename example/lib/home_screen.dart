@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
-import 'package:flutter_upshot_plugin_example/demo_screen.dart';
-import 'package:flutter_upshot_plugin_example/upshot_method_channel.dart';
+import 'package:flutter_upshot_plugin_example/test_page.dart';
+
+import 'demo_screen.dart';
 
 class DemoApp extends StatelessWidget {
-  DemoApp({Key? key}) : super(key: key) {
-    UpshotMethodChannel();
-  }
+  const DemoApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

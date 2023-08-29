@@ -11,9 +11,7 @@ class UpshotMethodChannel {
 
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     Map data = call.arguments as Map;
-    if (call.method == 'upshotActivityDeeplink') {
-      print(data);
-    }
+
     print("callback method name=======" + call.method);
     print("callback method data=======" + data.toString());
   }

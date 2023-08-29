@@ -63,6 +63,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   @override
   void dispose() {
     ShowTutorialsModel.instance.disposeViewModel();
+
     super.dispose();
   }
 

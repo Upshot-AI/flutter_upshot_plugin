@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show MethodChannel, rootBundle;
-import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/description_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/footer_info.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/interactive_tutorial_model.dart';
@@ -36,7 +35,7 @@ class ShowTutorialInheritedNotifier
 
 class ShowTutorialsModel extends ChangeNotifier {
   static const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
-  final MethodChannel channelInternal =
+  final MethodChannel _channelInternal =
       const MethodChannel('flutter_upshot_plugin_internal');
   static BuildContext? context;
   final toolTipGlobalKey = LabeledGlobalKey('toolTipKey');
@@ -111,6 +110,13 @@ class ShowTutorialsModel extends ChangeNotifier {
   bool get isTutorialPresent => _isTutorialPresent;
   set isTutorialPresent(bool val) {
     _isTutorialPresent = val;
+    notifyListeners();
+  }
+
+  bool _isTutorialProcessing = false;
+  bool get isTutorialProcessing => _isTutorialProcessing;
+  set isTutorialProcessing(bool val) {
+    _isTutorialProcessing = val;
     notifyListeners();
   }
 
@@ -774,6 +780,7 @@ div {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].desc
     _currentToolTipDataClass = null;
     _scrollElement = null;
     _currentWidget = null;
+    _webViewHeight = 0;
     _screenHeight = 0.0;
     _screenWidth = 0.0;
     _toolTipHeight = 0.0;
@@ -784,6 +791,7 @@ div {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].desc
     _hasAppHeight = false;
     _hasBottomNavBarHeight = false;
     _isTutorialPresent = false;
+    _isTutorialProcessing = false;
     tutorialList.clear();
     _interactiveTutorialModel = null;
     _currentWidget = null;
@@ -865,8 +873,7 @@ div {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].desc
 
   void getWebViewHeight() {
     try {
-      channelInternal.setMethodCallHandler((call) async {
-        print('The method is ${call.method}');
+      _channelInternal.setMethodCallHandler((call) async {
         if (call.method == "webViewHeight") {
           // double _webHeight = ;
           webViewHeight = ((_toolTipHeight + call.arguments) > _toolTipMaxHeight
@@ -874,9 +881,8 @@ div {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].desc
                   : call.arguments)
               .toInt();
           // webViewHeight = (call.arguments).toInt();
-          print("The new height is $webViewHeight");
-          print("The call height is ${call.arguments}");
-
+          log("The new height is $webViewHeight");
+          log("The call height is ${call.arguments}");
           getToolTipSize();
           getYAxis(index: _selectedIndex);
         }
