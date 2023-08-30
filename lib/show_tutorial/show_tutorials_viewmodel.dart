@@ -737,6 +737,11 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   String descriptionText(String? text) {
+    final fontName = (tutorialList[_selectedIndex].description?.fontName !=
+                null ||
+            tutorialList[_selectedIndex].description?.fontName != '')
+        ? 'font-family: ${tutorialList[_selectedIndex].description?.fontName};'
+        : 'font-family: Arial, sans-serif;';
     final pixelRatio = Platform.isAndroid
         ? WidgetsBinding.instance.window.devicePixelRatio
         : 1;
@@ -746,9 +751,9 @@ class ShowTutorialsModel extends ChangeNotifier {
 <html>
 <head>
 <style>
-body {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].description?.fontName ?? ''};}
-p {font-size: ${(pixelRatio * fontSize)}px; padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].description?.fontName ?? ''};}
-div {padding: 0px; margin: 0px; font-family: ${tutorialList[_selectedIndex].description?.fontName ?? ''};}
+body {padding: 0px; margin: 0px; $fontName }
+p {font-size: ${(pixelRatio * fontSize)}px; padding: 0px; margin: 0px; $fontName }
+div {padding: 0px; margin: 0px; $fontName }
 </style>
 </head>
 <body> $text

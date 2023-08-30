@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'services/custom_border_paint.dart';
 import 'services/custom_transparent_painter.dart';
 import 'show_tutorials_viewmodel.dart';
@@ -40,6 +41,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     model = ShowTutorialsModel.instance;
     FlutterError.onError = (FlutterErrorDetails details) {
       log('The eror is $details');
@@ -63,7 +65,12 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   @override
   void dispose() {
     ShowTutorialsModel.instance.disposeViewModel();
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
