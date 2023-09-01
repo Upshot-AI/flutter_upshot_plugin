@@ -41,8 +41,11 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     model = ShowTutorialsModel.instance;
+    SystemChrome.setPreferredOrientations(model.orientation ==
+            Orientation.portrait
+        ? [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
+        : [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     FlutterError.onError = (FlutterErrorDetails details) {
       log('The eror is $details');
     };

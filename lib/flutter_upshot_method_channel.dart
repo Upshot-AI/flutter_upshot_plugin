@@ -45,7 +45,8 @@ class UpshotMethodChannelInternal {
       ShowTutorialsModel.instance.isTutorialPresent = true;
       ShowTutorialsModel.context = context;
       ShowTutorials.of(context);
-
+      ShowTutorialsModel.instance.orientation =
+          MediaQuery.of(context).orientation;
       Navigator.push(context,
           TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
     } else {

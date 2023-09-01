@@ -99,6 +99,13 @@ class ShowTutorialsModel extends ChangeNotifier {
   //   webViewController.runJavaScript(js);
   // }
 
+  Orientation _orientation = Orientation.portrait;
+  Orientation get orientation => _orientation;
+  set orientation(Orientation val) {
+    _orientation = val;
+    notifyListeners();
+  }
+
   ToolTipDataClass? _currentToolTipDataClass;
   ToolTipDataClass? get currentToolTipDataClass => _currentToolTipDataClass;
   set currentToolTipDataClass(ToolTipDataClass? value) {
@@ -737,9 +744,7 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   String descriptionText(String? text) {
-    final fontName = (tutorialList[_selectedIndex].description?.fontName !=
-                null ||
-            tutorialList[_selectedIndex].description?.fontName != '')
+    final fontName = (tutorialList[_selectedIndex].description?.fontName != '')
         ? 'font-family: ${tutorialList[_selectedIndex].description?.fontName};'
         : 'font-family: Arial, sans-serif;';
     final pixelRatio = Platform.isAndroid
