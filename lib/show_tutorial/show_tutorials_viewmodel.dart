@@ -748,7 +748,8 @@ class ShowTutorialsModel extends ChangeNotifier {
         ? 'font-family: ${tutorialList[_selectedIndex].description?.fontName};'
         : 'font-family: Arial, sans-serif;';
     final pixelRatio = Platform.isAndroid
-        ? WidgetsBinding.instance.window.devicePixelRatio
+        ? WidgetsBinding.instance.window.devicePixelRatio /
+            (orientation == Orientation.landscape ? 2 : 1)
         : 1;
     final fontSize = tutorialList[_selectedIndex].description?.fontSize ?? 16;
     String newText = '''
