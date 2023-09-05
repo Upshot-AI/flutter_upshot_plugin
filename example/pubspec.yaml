@@ -56,16 +56,43 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-     - assets/UpshotCustomisation.json
+     - assets/UpshotPollTheme.json
+     - assets/UpshotRatingTheme.json
+     - assets/UpshotSurveyTheme.json
+     - assets/UpshotTriviaTheme.json     
      - assets/new_tutorial_json.json
+     - assets/images/avg_active.png
+     - assets/images/avg_in_active.png
+     - assets/images/bad_active.png
+     - assets/images/bad_in_active.png
+     - assets/images/happy_active.png
+     - assets/images/happy_in_active.png
+     - assets/images/buttonBg.png
+     - assets/images/check_def.png
      - assets/images/check_sel.png
+     - assets/images/close.png
+     - assets/images/dislike_active.png
+     - assets/images/dislike_in_active.png
+     - assets/images/like_active.png     
+     - assets/images/like_in_active.png
      - assets/images/close.png
      - assets/images/radio_def.png
      - assets/images/radio_sel.png
      - assets/images/check_def.png
-     - assets/images/slider_max.png
-     - assets/images/slider_min.png
+     - assets/images/ratingBG.png
+     - assets/images/slider_max1.jpg
+     - assets/images/slider_min1.jpg
      - assets/images/slider_thumb.jpg
+     - assets/images/star_active.png
+     - assets/images/star_in_active.png
+     - assets/images/surveyBG.png
+     - assets/images/triviaBG.jpg
+     - assets/images/unhappy_active.png
+     - assets/images/unhappy_in_active.png
+     - assets/images/upshot.png
+     - assets/images/veryhappy_active.png
+     - assets/images/veryhappy_in_active.png
+     
   fonts:
      - family: PFHandbookPro
        fonts:

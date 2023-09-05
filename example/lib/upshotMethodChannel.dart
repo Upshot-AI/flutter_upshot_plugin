@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,7 +15,9 @@ class UpshotMethodChannel {
 
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     Map data = call.arguments as Map;
-    print("callback method name=======" + call.method);
-    print("callback method data=======" + data.toString());
+    if (kDebugMode) {
+      print("callback method name=======" + call.method);
+      print("callback method data=======" + data.toString());
+    }
   }
 }

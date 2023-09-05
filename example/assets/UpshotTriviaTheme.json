@@ -1,0 +1,157 @@
+{
+    "image": {
+        "background": "surveyBG.png",
+        "logo": "upshot.png",
+        "radio_def": "radio_def.png",
+        "radio_sel": "radio_sel.png",
+        "checkbox_def": "check_def.png",
+        "checkbox_sel": "check_sel.png"
+    },
+    "color": {
+        "headerBG": "#00000000",
+        "background": "#000000BF",
+        "option_def_border": "#FFFFFF",
+        "option_sel_border": "#FFFFFF20",
+        "pagenationdots_def": "#00000070",
+        "pagenationdots_answered": "#000000",
+        "pagenationdots_current": "#FFFFFF20"
+    },
+    "button": {
+        "next": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": "#FF0000"
+        },
+        "prev": {
+            "color": "##E8BB1B",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": "#FF0000"
+        },
+        "submit": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": "#FF0000"
+        },
+        "skip": {
+            "image": "close.png"
+        },
+        "continue": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": "#FF0000"
+        }
+    },
+    "label_text": {
+        "header": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "desc": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 22
+        },
+        "question": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 20
+        },
+        "option": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "thankyou": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 22
+        },
+        "score": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 18
+        }
+    },
+    "leaderBoard": {
+        "result": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "yourScore": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "yourGrade": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "userGrade": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "userScore": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 18
+        },
+        "tabular_response_header": {
+            "color": "#cc5500",
+            "font_name": "",
+            "size": 18
+        },
+        "tabular_grade_header": {
+            "color": "#fcddc9",
+            "font_name": "",
+            "size": 18
+        },
+        "tabular_grade_range": {
+            "color": "#5050f4",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 20
+        },
+        "tabular_response_count": {
+            "color": "#7df9ff",
+            "font_name": "PFHandbookPro-Medium.ttf",
+            "size": 20
+        }
+    },
+    "graph": {
+        "bar": [
+            "#FFE381",
+            "#E4F1F9",
+            "#30BDC4",
+            "#E73750",
+            "#00FFFF"
+        ],
+        "pie": [
+            "#FFE381",
+            "#E4F1F9",
+            "#30BDC4",
+            "#E73750",
+            "#00FFFF"
+        ],
+        "yAxis": "#FFFFFF",
+        "percentage": "#FFFFFF",
+        "bar_line": "#FFFFFF",
+        "xAxis_Header": "#FFFFFF",
+        "yAxis_Header": "#FFFFFF",
+        "legends": "#FFFFFF"
+    }
+}

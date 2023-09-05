@@ -12,6 +12,11 @@ class UpshotHelper: NSObject {
     
     static var defaultHelper = UpshotHelper()
     
+    var surveyThemeData: Data?
+    var ratingThemeData: Data?
+    var pollThemeData: Data?
+    var triviaThemeData: Data?
+    
     var customizationData: Data?
     var registrar:FlutterPluginRegistrar?
 
@@ -19,9 +24,7 @@ class UpshotHelper: NSObject {
     
     func initializeUpshotUsingConfigFile() {
         BrandKinesis.sharedInstance().initialize(withDelegate: self)
-        customisation.registrar = registrar
-        customisation.customiseData = customizationData
-        BKUIPreferences.preferences().delegate = customisation                
+        setCustomisationData()
     }
     
     func initializeUsingOptions(options: [String: Any]) {
@@ -39,10 +42,17 @@ class UpshotHelper: NSObject {
                            BKExceptionHandler: enableCrashlogs] as? [String: Any] {
             
             BrandKinesis.sharedInstance().initialize(options: initOptions, delegate: self)
-            customisation.registrar = registrar
-            customisation.customiseData = customizationData
-            BKUIPreferences.preferences().delegate = customisation
+            setCustomisationData()                        
         }        
+    }
+    
+    func setCustomisationData() {
+        customisation.surveyThemeData = surveyThemeData
+        customisation.ratingThemeData = ratingThemeData
+        customisation.pollThemeData = pollThemeData
+        customisation.triviaThemeData = triviaThemeData
+        customisation.registrar = registrar
+        BKUIPreferences.preferences().delegate = customisation
     }
     
     func terminate() {

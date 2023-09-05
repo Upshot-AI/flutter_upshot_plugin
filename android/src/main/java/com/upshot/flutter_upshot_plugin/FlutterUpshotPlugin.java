@@ -47,7 +47,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import netscape.javascript.JSObject;
 import io.flutter.plugin.common.EventChannel;
 
 /**
@@ -133,14 +132,29 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         handler = new Handler(Looper.getMainLooper());
         binding = flutterPluginBinding;
         FlutterLoader loader = FlutterInjector.instance().flutterLoader();
-        String key = loader.getLookupKeyForAsset("assets/UpshotCustomisation.json");
 
-        // AssetManager assetManager = binding.getApplicationContext().getAssets();
+        String surveyTheme = loader.getLookupKeyForAsset("assets/UpshotSurveyTheme.json");
+        String ratingTheme = loader.getLookupKeyForAsset("assets/UpshotRatingTheme.json");
+        String pollTheme = loader.getLookupKeyForAsset("assets/UpshotPollTheme.json");
+        String triviaTheme = loader.getLookupKeyForAsset("assets/UpshotTriviaTheme.json");
 
+        String unhappy_activeKey = loader.getLookupKeyForAsset("assets/images/unhappy_active.png");
+
+         AssetManager assetManager = binding.getApplicationContext().getAssets();
+        try {
+            InputStream unhappy_active = context.getAssets().open(unhappy_activeKey);
+            Log.d("unhappy_active", "unhappy_active");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         // AssetFileDescriptor fd = assetManager.openFd(key);
-        String customizationJson = loadJSONFromAsset(context, key);
 
-        helper.setCustomizationData(customizationJson, context);
+        String surveyThemeJson = loadJSONFromAsset(context, surveyTheme);
+        String ratingThemeJson = loadJSONFromAsset(context, ratingTheme);
+        String pollThemeJson = loadJSONFromAsset(context, pollTheme);
+        String triviaThemeJson = loadJSONFromAsset(context, triviaTheme);
+
+        helper.setCustomizationData(surveyThemeJson, ratingThemeJson, pollThemeJson, triviaThemeJson, context, loader, binding);
 
         new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/pushClick")
                 .setStreamHandler(new EventChannel.StreamHandler() {
