@@ -1,0 +1,66 @@
+{
+    "image": {
+        "background": "surveyBG.png",
+        "logo": "upshot.png",
+        "radio_def": "radio_def.png",
+        "radio_sel": "radio_sel.png"
+    },
+    "color": {
+        "headerBG": "#00000000",
+        "background": "#000000BF",
+        "option_def_border": "#FFFFFF",
+        "option_sel_border": "#FFFFFF20"
+    },
+    "button": {
+        "submit": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": ""
+        },
+        "skip": {
+            "image": "close.png"
+        }
+    },
+    "label_text": {
+        "question": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 20
+        },
+        "option": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 18
+        },
+        "thankyou": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 20
+        }
+    },
+    "graph": {
+        "bar": [
+            "#FFE381",
+            "#E4F1F9",
+            "#30BDC4",
+            "#E73750",
+            "#00FFFF"
+        ],
+        "pie": [
+            "#FFE381",
+            "#E4F1F9",
+            "#30BDC4",
+            "#E73750",
+            "#00FFFF"
+        ],
+        "yAxis": "#FF0000",
+        "percentage": "#00FF00",
+        "bar_line": "#0000FF",
+        "xAxis_Header": "#FFFF00",
+        "yAxis_Header": "#00FFFF",
+        "legends": "#FFFFFF"
+    }
+}

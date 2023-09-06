@@ -17,7 +17,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // ShowCaseWidget.of(finalBuildContext).startShowCase([findIndex]);
       // UpshotMethodChannelInternal().showTutorials(context, '');
       // initializeBrandKinesisWithOptions();

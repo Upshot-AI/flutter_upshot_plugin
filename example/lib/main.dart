@@ -36,13 +36,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    String platformVersion;
     try {
       // platformVersion = await FlutterUpshotPlugin.getSDKVersion ??
       //     'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+      // ignore: empty_catches
+    } on PlatformException {}
     if (!mounted) return;
 
     setState(() {
@@ -60,8 +58,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initializeBrandKinesisWithOptions() async {
     Map optionsMap = {
-      UpshotInitOptions.appId: "d9e26e88-8fcb-40da-8254-5182fc149d5f",
-      UpshotInitOptions.ownerId: "5ea33dde-b35e-4ebd-9da6-86037947bfd2",
+      UpshotInitOptions.appId: "250ded4e-b4ae-4f66-b2c3-1091f6349764",
+      UpshotInitOptions.ownerId: "f3bf1d6f-5771-41f7-a6ff-640d3af4805e",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,

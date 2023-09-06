@@ -1,6 +1,7 @@
 package com.upshot.flutter_upshot_plugin;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -11,7 +12,16 @@ import android.widget.TextView;
 
 import androidx.core.text.HtmlCompat;
 
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+
 import com.brandkinesis.BKProperties;
+import com.brandkinesis.BKUIPrefComponents;
 import com.brandkinesis.BKUserInfo;
 import com.brandkinesis.BrandKinesis;
 import com.brandkinesis.activitymanager.BKActivityTypes;
@@ -23,6 +33,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import io.flutter.embedding.engine.loader.FlutterLoader;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+
 class UpshotHelper {
 
     public void initialize(HashMap<String, Object> options, Context context) {
@@ -33,10 +46,15 @@ class UpshotHelper {
             }
             String appId = options.containsKey("appId") ? options.get("appId").toString() : "";
             String ownerId = options.containsKey("ownerId") ? options.get("ownerId").toString() : "";
-            Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation") : false;
-            Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs") : false;
-            Boolean useExternalStorage = options.containsKey("enableExternalStorage") ? (Boolean) options.get("enableExternalStorage") : false;
-            Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs") : false;
+            Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation")
+                    : false;
+            Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs")
+                    : false;
+            Boolean useExternalStorage = options.containsKey("enableExternalStorage")
+                    ? (Boolean) options.get("enableExternalStorage")
+                    : false;
+            Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs")
+                    : false;
             if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
 
                 Bundle bundle = new Bundle();
@@ -50,9 +68,9 @@ class UpshotHelper {
             }
         } catch (Exception e) {
             e.printStackTrace();
-//            if (BuildConfig.DEBUG) {
-//
-//            }
+            // if (BuildConfig.DEBUG) {
+            //
+            // }
         }
     }
 
@@ -251,39 +269,333 @@ class UpshotHelper {
         return data;
     }
 
-    public void setCustomizationData(String customizationJson, Context context) {
+    public void setCustomizationData(String surveyThemeJson, String ratingThemeJson, String pollThemeJson,
+            String triviaThemeJson, Context context, FlutterLoader loader, FlutterPlugin.FlutterPluginBinding binding) {
 
-        try {
-            BrandKinesis bkInstance = BrandKinesis.getBKInstance();
-            UpshotCustomization upshotCustomization = new UpshotCustomization();
-            upshotCustomization.setCustomizationData(new JSONObject(customizationJson), bkInstance, context);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        {
+            try {
+                JSONObject surveyJSON = new JSONObject(surveyThemeJson);
+                JSONObject ratingJSON = new JSONObject(ratingThemeJson);
+                JSONObject pollJSON = new JSONObject(pollThemeJson);
+                JSONObject triviaJSON = new JSONObject(triviaThemeJson);
+                UpshotSurveyCustomization surveyCustomization = new UpshotSurveyCustomization(context, surveyJSON);
+                UpshotRatingCustomization ratingCustomization = new UpshotRatingCustomization(context, ratingJSON);
+                UpshotOpinionPollCustomization pollCustomization = new UpshotOpinionPollCustomization(context,
+                        pollJSON);
+                UpshotTriviaCustomization triviaCustomization = new UpshotTriviaCustomization(context, triviaJSON,
+                        loader, binding);
+
+                BKUIPrefComponents components = new BKUIPrefComponents() {
+                    @Override
+                    public void setPreferencesForRelativeLayout(RelativeLayout relativeLayout,
+                            BKActivityTypes bkActivityTypes,
+                            BKActivityRelativeLayoutTypes bkActivityRelativeLayoutTypes, boolean b) {
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeRelativeLayout(bkActivityRelativeLayoutTypes,
+                                        relativeLayout, b);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeRelativeLayout(bkActivityRelativeLayoutTypes,
+                                        relativeLayout, b);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeRelativeLayout(bkActivityRelativeLayoutTypes, relativeLayout,
+                                        b);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeRelativeLayout(bkActivityRelativeLayoutTypes,
+                                        relativeLayout, b);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setPreferencesForImageButton(ImageButton imageButton, BKActivityTypes bkActivityTypes,
+                            BKActivityImageButtonTypes bkActivityImageButtonTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeImageButton(imageButton, bkActivityImageButtonTypes);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeImageButton(imageButton, bkActivityImageButtonTypes);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeImageButton(imageButton, bkActivityImageButtonTypes);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeImageButton(imageButton, bkActivityImageButtonTypes);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setPreferencesForButton(Button button, BKActivityTypes bkActivityTypes,
+                            BKActivityButtonTypes bkActivityButtonTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeButton(button, bkActivityButtonTypes);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeButton(button, bkActivityButtonTypes);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeButton(button, bkActivityButtonTypes);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeButton(button, bkActivityButtonTypes);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setPreferencesForTextView(TextView textView, BKActivityTypes bkActivityTypes,
+                            BKActivityTextViewTypes bkActivityTextViewTypes) {
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeTextView(bkActivityTextViewTypes, textView);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeTextView(bkActivityTextViewTypes, textView);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeTextView(bkActivityTextViewTypes, textView);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeTextView(bkActivityTextViewTypes, textView);
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void setPreferencesForImageView(ImageView imageView, BKActivityTypes bkActivityTypes,
+                            BKActivityImageViewType bkActivityImageViewType) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeImageView(imageView, bkActivityImageViewType);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeImageView(imageView, bkActivityImageViewType);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeImageView(imageView, bkActivityImageViewType);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeImageView(imageView, bkActivityImageViewType);
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void setPreferencesForOptionsSeparatorView(View view, BKActivityTypes bkActivityTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeForOptionsSeparatorView(view);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeForOptionsSeparatorView(view);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeForOptionsSeparatorView(view);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeForOptionsSeparatorView(view);
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void setCheckBoxRadioSelectorResource(BKUICheckBox bkuiCheckBox,
+                            BKActivityTypes bkActivityTypes, boolean b) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeRadioButton(bkuiCheckBox, b);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeRadioButton(bkuiCheckBox, b);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeRadioButton(bkuiCheckBox, b);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeRadioButton(bkuiCheckBox, b);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setRatingSelectorResource(List<Bitmap> list, List<Bitmap> list1,
+                            BKActivityTypes bkActivityTypes, BKActivityRatingTypes bkActivityRatingTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeRating(list, list1, bkActivityRatingTypes);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeRating(list, list1, bkActivityRatingTypes);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeRating(list, list1, bkActivityRatingTypes);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeRating(list, list1, bkActivityRatingTypes);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setPreferencesForUIColor(BKBGColors bkbgColors, BKActivityTypes bkActivityTypes,
+                            BKActivityColorTypes bkActivityColorTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeBGColor(bkbgColors, bkActivityColorTypes);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeBGColor(bkbgColors, bkActivityColorTypes);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeBGColor(bkbgColors, bkActivityColorTypes);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeBGColor(bkbgColors, bkActivityColorTypes);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setPreferencesForGraphColor(BKGraphType bkGraphType, List<Integer> list,
+                            BKActivityTypes bkActivityTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeForGraphColor(bkGraphType, list);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeForGraphColor(bkGraphType, list);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeForGraphColor(bkGraphType, list);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeForGraphColor(bkGraphType, list);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public int getPositionPercentageFromBottom(BKActivityTypes bkActivityTypes, BKViewType bkViewType) {
+                        return 0;
+                    }
+
+                    @Override
+                    public void setPreferencesForSeekBar(SeekBar seekBar, BKActivityTypes bkActivityTypes,
+                            BKActivitySeekBarTypes bkActivitySeekBarTypes) {
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+
+                                surveyCustomization.customizeSeekBar(bkActivitySeekBarTypes, seekBar);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeSeekBar(bkActivitySeekBarTypes, seekBar);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeSeekBar(bkActivitySeekBarTypes, seekBar);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeSeekBar(bkActivitySeekBarTypes, seekBar);
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void setPreferencesForEditText(EditText editText, BKActivityTypes bkActivityTypes,
+                            BKActivityEditTextTypes bkActivityEditTextTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeEditText(bkActivityEditTextTypes, editText);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeEditText(bkActivityEditTextTypes, editText);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeEditText(bkActivityEditTextTypes, editText);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeEditText(bkActivityEditTextTypes, editText);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void setPreferencesForLinearLayout(LinearLayout linearLayout,
+                            BKActivityTypes bkActivityTypes, BKActivityLinearLayoutTypes bkActivityLinearLayoutTypes) {
+
+                        switch (bkActivityTypes) {
+                            case ACTIVITY_SURVEY:
+                                surveyCustomization.customizeForLinearLayout(linearLayout, bkActivityLinearLayoutTypes);
+                                break;
+                            case ACTIVITY_RATINGS:
+                                ratingCustomization.customizeForLinearLayout(linearLayout, bkActivityLinearLayoutTypes);
+                                break;
+                            case ACTIVITY_OPINION_POLL:
+                                pollCustomization.customizeForLinearLayout(linearLayout, bkActivityLinearLayoutTypes);
+                                break;
+                            case ACTIVITY_TRIVIA:
+                                triviaCustomization.customizeForLinearLayout(linearLayout, bkActivityLinearLayoutTypes);
+                                break;
+                        }
+                    }
+                };
+                BrandKinesis.getBKInstance().setUIPreferences(components);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
         }
+        // try {
+        // BrandKinesis bkInstance = BrandKinesis.getBKInstance();
+        // UpshotCustomization upshotCustomization = new UpshotCustomization();
+        // upshotCustomization.setCustomizationData(new JSONObject(customizationJson),
+        // bkInstance, context);
+        // } catch (JSONException e) {
+        // e.printStackTrace();
+        // }
     }
 
     public int calculateWebViewHeight(Context context, Map<String, Object> description) {
         TextView textView = new TextView(context);
-        final float densityDpi=context.getResources().getDisplayMetrics().densityDpi;
-        final int fontSize=Integer.parseInt(description.get("fontSize").toString());
-        final String fontName=description.get("fontName").toString();
+        final float densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+        final int fontSize = Integer.parseInt(description.get("fontSize").toString());
+        final String fontName = description.get("fontName").toString();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         float px = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_PX,
                 fontSize,
-                context.getResources().getDisplayMetrics()
-        );
-        final int descriptionWidth= (int) (((displayMetrics.widthPixels*0.9)-40)/(densityDpi/ DisplayMetrics.DENSITY_DEFAULT));
+                context.getResources().getDisplayMetrics());
+        final int descriptionWidth = (int) (((displayMetrics.widthPixels * 0.9) - 40)
+                / (densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         String text = HtmlCompat.fromHtml("<html><head>\n" +
-                "</head> <body>"+description.get("text").toString()+"</body></html>", HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS).toString();
+                "</head> <body>" + description.get("text").toString() + "</body></html>",
+                HtmlCompat.FROM_HTML_OPTION_USE_CSS_COLORS).toString();
         textView.setText(text.substring(0, text.length() - 1));
 
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,fontSize-1);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize - 1);
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(descriptionWidth, View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);
-        return textView.getMeasuredHeight()+5;
+        return textView.getMeasuredHeight() + 5;
     }
 }

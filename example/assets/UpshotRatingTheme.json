@@ -1,0 +1,138 @@
+{
+    "image": {
+        "background": "ratingBG.png",
+        "logo": "upshot.png",
+        "star_sel": "star_active.png",
+        "star_def": "star_in_active.png",
+        "smiley_vbad_def": "unhappy_active.png",
+        "smiley_bad_def": "bad_active.png",
+        "smiley_avg_def": "avg_active.png",
+        "smiley_good_def": "happy_active.png",
+        "smiley_Vgood_def": "veryhappy_active.png",
+        "smiley_vbad_sel": "unhappy_in_active.png",
+        "smiley_bad_sel": "bad_in_active.png",
+        "smiley_avg_sel": "avg_in_active.png",
+        "smiley_good_sel": "happy_in_active.png",
+        "smiley_Vgood_sel": "veryhappy_in_active.png",
+        "like_sel": "like_active.png",
+        "disLike_sel": "dislike_active.png",
+        "like_def": "like_in_active.png",
+        "disLike_def": "dislike_in_active.png"
+    },
+    "color": {
+        "headerBG": "",
+        "background": "#000000BF"
+    },
+    "button": {
+        "yes": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14,
+            "image": "",
+            "bgcolor": "#E73750"
+        },
+        "no": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14,
+            "image": "",
+            "bgcolor": "#E73750"
+        },
+        "submit": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14,
+            "image": "",
+            "bgcolor": "#E73750"
+        },
+        "skip": {
+            "image": "close.png"
+        }
+    },
+    "label_text": {
+        "appStoreHint": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "feedback_header": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "question": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "thankyou": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "slider_score": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "slider_minScore": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "slider_maxScore": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "slider_minText": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        },
+        "slider_maxText": {
+            "color": "#FFFFFF",
+            "font_name": "",
+            "size": 14
+        }
+    },
+    "feedbackBox": {
+        "color": "#FFFFFF",
+        "font_name": "PFHandbookPro-Regular",
+        "size": 14,
+        "bgcolor": "#00000000",
+        "border_color": "#E73750"
+    },
+    "slider": {
+        "min_image": "slider_min1.jpg",
+        "max_image": "slider_max1.jpg",
+        "thumb_image": "slider_thumb.jpg",
+        "min_color": "#CFE2FF",
+        "max_color": "#E73750",
+        "slider_score": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular.ttf",
+            "size": 14
+        },
+        "slider_minScore": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular.ttf",
+            "size": 14
+        },
+        "slider_maxScore": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        },
+        "slider_minText": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        },
+        "slider_maxText": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        }
+    }
+}

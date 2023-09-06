@@ -1,0 +1,134 @@
+{
+    "image": {
+        "background": "surveyBG.png",
+        "logo": "upshot.png",
+        "radio_def": "radio_def.png",
+        "radio_sel": "radio_sel.png",
+        "checkbox_def": "check_def.png",
+        "checkbox_sel": "check_sel.png",
+        "star_sel": "star_active.png",
+        "star_def": "star_in_active.png",
+        "smiley_vbad_def": "unhappy_active.png",
+        "smiley_bad_def": "bad_active.png",
+        "smiley_avg_def": "avg_active.png",
+        "smiley_good_def": "happy_active.png",
+        "smiley_Vgood_def": "veryhappy_active.png",
+        "smiley_vbad_sel": "unhappy_in_active.png",
+        "smiley_bad_sel": "bad_in_active.png",
+        "smiley_avg_sel": "avg_in_active.png",
+        "smiley_good_sel": "happy_in_active.png",
+        "smiley_Vgood_sel": "veryhappy_in_active.png"
+    },
+    "color": {
+        "headerBG": "#00000000",
+        "background": "##000000BF",
+        "pagenationdots_def": "#00000070",
+        "pagenationdots_answered": "#000000",
+        "pagenationdots_current": "#FFFFFF",
+        "option_def_border": "#FFFFFF",
+        "option_sel_border": "#FFFFFF20"
+    },
+    "button": {
+        "next": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": ""
+        },
+        "prev": {
+            "color": "##E8BB1B",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#FFFFFF",
+            "border_color": "#E8BB1B"
+        },
+        "submit": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": ""
+        },
+        "skip": {
+            "image": "close.png"
+        },
+        "continue": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 18,
+            "image": "",
+            "bgcolor": "#E8BB1B",
+            "border_color": ""
+        }
+    },
+    "label_text": {
+        "header": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 16
+        },
+        "desc": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 16
+        },
+        "question": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Medium",
+            "size": 15
+        },
+        "option": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 15
+        },
+        "thankyou": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        }
+    },
+    "feedbackBox": {
+        "color": "#FFFFFF",
+        "font_name": "PFHandbookPro-Regular",
+        "size": 14,
+        "bgcolor": "#00000000",
+        "border_color": "#E73750"
+    },
+    "slider": {
+        "min_image": "slider_min1.jpg",
+        "max_image": "slider_max1.jpg",
+        "thumb_image": "slider_thumb.jpg",
+        "min_color": "#CFE2FF",
+        "max_color": "#E73750",
+        "slider_score": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular.ttf",
+            "size": 14
+        },
+        "slider_minScore": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular.ttf",
+            "size": 14
+        },
+        "slider_maxScore": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        },
+        "slider_minText": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        },
+        "slider_maxText": {
+            "color": "#FFFFFF",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 14
+        }
+    }
+}

@@ -20,6 +20,7 @@ public class UpshotApplication extends FlutterApplication {
     public static HashMap<String, Object> options = null;
 
     private UpshotListener customListener;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,7 +45,6 @@ public class UpshotApplication extends FlutterApplication {
                 }
             }
         }
-
 
         @Override
         public void onAppGoesBackground() {
@@ -72,7 +72,7 @@ public class UpshotApplication extends FlutterApplication {
         }
         String appId = "";
         if (options.containsKey("appId")) {
-           appId = (String) options.get("appId");
+            appId = (String) options.get("appId");
         }
 
         String ownerId = "";
