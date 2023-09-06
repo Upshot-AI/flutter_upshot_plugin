@@ -11,7 +11,7 @@ import 'package:flutter_upshot_plugin_example/upshot_method_channel.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(DemoApp());
+  runApp(const DemoApp());
 }
 
 class MyApp extends StatefulWidget {

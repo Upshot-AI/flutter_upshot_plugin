@@ -589,7 +589,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     _canShow = false;
     _currentWidget = null;
     selectedIndex = _selectedIndex - 1;
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await calculateHeightWebView();
       getWebViewHeight();
       // getToolTipSize();
@@ -607,7 +607,7 @@ class ShowTutorialsModel extends ChangeNotifier {
         isVisible = false;
         canShow = false;
         _currentWidget = null;
-        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
           await calculateHeightWebView();
           getWebViewHeight();
           // getToolTipSize();

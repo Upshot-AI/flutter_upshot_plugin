@@ -16,7 +16,7 @@ class ShowTutorials extends StatefulWidget {
     try {
       final m = ShowTutorialsModel.instance;
       m.getScreenDetails(context);
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
         await m.calculateHeightWebView();
         m.getWebViewHeight();
         // m.getToolTipSize();
@@ -49,7 +49,7 @@ class _ShowTutorialsState extends State<ShowTutorials> {
     FlutterError.onError = (FlutterErrorDetails details) {
       log('The eror is $details');
     };
-    WidgetsBinding.instance?.endOfFrame.then((_) => {
+    WidgetsBinding.instance.endOfFrame.then((_) => {
           ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {
             'campaignId': model.interactiveTutorialModel?.campaignId ?? '',
             'activityId': model.interactiveTutorialModel?.activityId ?? '',

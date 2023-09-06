@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
-import 'package:flutter_upshot_plugin/upshotConstants.dart';
 
 class MyStatelessWidget extends StatefulWidget {
   const MyStatelessWidget({Key? key}) : super(key: key);
