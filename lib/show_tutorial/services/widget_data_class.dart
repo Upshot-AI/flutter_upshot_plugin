@@ -5,6 +5,8 @@ class WidgetDataClass {
   double yAxis;
   final Rect rect;
   final Element child;
+  double get maxYAxis => yAxis + rect.height;
+  double get maxXAxis => xAxis + rect.width;
 
   WidgetDataClass(
       {required this.xAxis,

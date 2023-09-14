@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
-import 'package:flutter_upshot_plugin_example/demo_screen.dart';
+import 'package:flutter_upshot_plugin_example/test_page.dart';
+
+import 'demo_screen.dart';
 
 class DemoApp extends StatelessWidget {
   const DemoApp({Key? key}) : super(key: key);
@@ -44,13 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: IconButton(
                   icon: const Icon(Icons.arrow_back,
-                      key: UpshotGlobalKey('arrow_back')),
+                      key: UpshotGlobalKey('target_5')),
                   onPressed: () => Navigator.pop(context)),
             ),
             Expanded(
               child: IconButton(
-                  icon: const Icon(Icons.arrow_back,
-                      key: UpshotGlobalKey('arrow_back1')),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context)),
             ),
           ],
@@ -58,13 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: const [
           Text(
             'Ho',
-            key: Key('logout1'),
             style: TextStyle(fontSize: 20),
           ),
           SizedBox(width: 10),
           Text(
             'Ho',
-            key: Key('logout'),
             style: TextStyle(fontSize: 20),
           ),
           // Icon(Icons.logout, key: UpshotLabeledGlobalKey('logout'))
@@ -72,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: const Text(
           'HomeScreen',
-          key: Key('appbar_text'),
+          key: Key('target_6'),
           style: TextStyle(fontSize: 20),
         ),
       ),
@@ -166,6 +165,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     'You have pushed the button this many times:',
                     key: ValueKey('demoValue'),
                   ),
+                  Text(
+                    '14',
+                    key: const ValueKey('target_4'),
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '15',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '16',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                       onPressed: () {
@@ -199,6 +211,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     '10',
                     style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  Text(
+                    '10',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '10',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '10',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '10',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '10',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '11',
+                    key: const ValueKey('target_1'),
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '12',
+                    key: const ValueKey('target_2'),
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    '13',
+                    key: const ValueKey('target_3'),
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   Text(
                     '10',
@@ -287,36 +334,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     '10',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '10',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '10',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '10',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '10',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '101',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '10',
-                    key: const ValueKey('item19'),
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    '10',
-                    key: const ValueKey('item21'),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(

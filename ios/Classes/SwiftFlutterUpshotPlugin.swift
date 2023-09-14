@@ -234,6 +234,10 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             UpshotHelper.defaultHelper.setTechnologyType()
         case "fetchStreaks":
             UpshotHelper.defaultHelper.fetchStreaks()
+       case "fetchWebViewHeight":
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.getContentHeight(data: details)
+            }
         default:
             result(FlutterMethodNotImplemented)
         }

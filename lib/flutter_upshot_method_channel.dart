@@ -18,10 +18,14 @@ class UpshotMethodChannelInternal {
     log('Upshot _methodCallHandler====' + call.method);
     if (call.method == "upshot_interactive_tutoInfo") {
       data = call.arguments as String;
+      if (ShowTutorialsModel.instance.isTutorialProcessing) {
+        return;
+      }
+      ShowTutorialsModel.instance.isTutorialProcessing = true;
       if (context != null &&
           data != null &&
           !ShowTutorialsModel.instance.isTutorialPresent) {
-        log('Upshot showTutorials====' + UpshotMethodChannelInternal.data!);
+        // log('Upshot showTutorials====' + UpshotMethodChannelInternal.data!);
         Future.delayed(const Duration(milliseconds: 400), () {
           showTutorials(context!, UpshotMethodChannelInternal.data!);
         });
@@ -41,6 +45,8 @@ class UpshotMethodChannelInternal {
       ShowTutorialsModel.instance.isTutorialPresent = true;
       ShowTutorialsModel.context = context;
       ShowTutorials.of(context);
+      ShowTutorialsModel.instance.orientation =
+          MediaQuery.of(context).orientation;
       Navigator.push(context,
           TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
     } else {

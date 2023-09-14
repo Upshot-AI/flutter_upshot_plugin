@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'services/custom_border_paint.dart';
 import 'services/custom_transparent_painter.dart';
 import 'show_tutorials_viewmodel.dart';
@@ -15,12 +16,16 @@ class ShowTutorials extends StatefulWidget {
     try {
       final m = ShowTutorialsModel.instance;
       m.getScreenDetails(context);
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        m.getToolTipSize();
-        m.getYAxis(
-            statusBarHeight:
-                MediaQuery.of(ShowTutorialsModel.context!).viewPadding.top,
-            index: 0);
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await m.calculateHeightWebView();
+        m.getWebViewHeight();
+        // m.getToolTipSize();
+        // m.getYAxis(
+        //     statusBarHeight:
+        //         MediaQuery.of(ShowTutorialsModel.context!).viewPadding.top,
+        //     index: 0);
+        // m.getWebViewHeight();
+        // m.calculateHeightWebView();
       });
     } catch (e) {
       rethrow;
@@ -37,10 +42,14 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   void initState() {
     super.initState();
     model = ShowTutorialsModel.instance;
+    SystemChrome.setPreferredOrientations(model.orientation ==
+            Orientation.portrait
+        ? [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
+        : [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     FlutterError.onError = (FlutterErrorDetails details) {
       log('The eror is $details');
     };
-    WidgetsBinding.instance?.endOfFrame.then((_) => {
+    WidgetsBinding.instance.endOfFrame.then((_) => {
           ShowTutorialsModel.channel.invokeMethod("activityShown_Internal", {
             'campaignId': model.interactiveTutorialModel?.campaignId ?? '',
             'activityId': model.interactiveTutorialModel?.activityId ?? '',
@@ -59,6 +68,12 @@ class _ShowTutorialsState extends State<ShowTutorials> {
   @override
   void dispose() {
     ShowTutorialsModel.instance.disposeViewModel();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 

@@ -27,7 +27,7 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -35,6 +35,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
+        multiDexEnabled true
     }
 }
 

@@ -19,9 +19,22 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // ShowCaseWidget.of(finalBuildContext).startShowCase([findIndex]);
       // UpshotMethodChannelInternal().showTutorials(context, '');
-      FlutterUpshotPlugin.showActivity(-1, "", context);
+      // initializeBrandKinesisWithOptions();
+      FlutterUpshotPlugin.showActivity(7, "", context);
     });
   }
+
+  // void initializeBrandKinesisWithOptions() {
+  //   Map<String, dynamic> optionsMap = {
+  //     UpshotInitOptions.appId: "250ded4e-b4ae-4f66-b2c3-1091f6349764",
+  //     UpshotInitOptions.ownerId: "f3bf1d6f-5771-41f7-a6ff-640d3af4805e",
+  //     UpshotInitOptions.enableDebuglogs: false,
+  //     UpshotInitOptions.enableLocation: false,
+  //     UpshotInitOptions.enableCrashlogs: true,
+  //     UpshotInitOptions.enableExternalStorage: false
+  //   };
+  //   FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -139,8 +152,8 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                   // This builder is called for each child.
                                   // In this example, we just number each list item.
                                   return ListTile(
-                                    key: ValueKey('item$index'),
-                                    title: Text('Item $index'),
+                                    key: ValueKey('target_$index'),
+                                    title: Text('target_$index'),
                                     // onTap: () => findIndex
                                     //     .currentContext!
                                     //     .findRenderObject()!

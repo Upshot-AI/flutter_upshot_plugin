@@ -3,7 +3,7 @@ description: Demonstrates how to use the flutter_upshot_plugin plugin.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -30,6 +30,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter_local_notifications: ^9.1.4
 
 dev_dependencies:
   flutter_test:
@@ -50,7 +51,6 @@ dependency_overrides:
   flutter_svg: 0.22.0
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -94,12 +94,12 @@ flutter:
      - assets/images/veryhappy_in_active.png
      
   fonts:
-     - family: PFHandbookPro
-       fonts:
-         - asset: fonts/PFHandbookPro-Regular.ttf
-           weight: 500
-         - asset: fonts/PFHandbookPro-Medium.ttf
-           weight: 800
+    - family: PFHandbookPro
+      fonts:
+        - asset: fonts/PFHandbookPro-Regular.ttf
+          weight: 500
+        - asset: fonts/PFHandbookPro-Medium.ttf
+          weight: 800
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

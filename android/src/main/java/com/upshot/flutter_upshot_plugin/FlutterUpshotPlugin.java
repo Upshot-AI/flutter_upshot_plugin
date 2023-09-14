@@ -819,6 +819,17 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     e.printStackTrace();
                 }
             }
+            case "fetchWebViewHeight":{
+                Map<String,Object> payload= (Map<String, Object>) call.arguments;
+                try{
+                    final int height= helper.calculateWebViewHeight(context,payload);
+                    Log.e("webView","The description is"+payload);
+                    internal_channel.invokeMethod("webViewHeight",height);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
             default:
                 Log.d("Upshot", "No Method");
         }
