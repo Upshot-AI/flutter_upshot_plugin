@@ -140,7 +140,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
 
         String unhappy_activeKey = loader.getLookupKeyForAsset("assets/images/unhappy_active.png");
 
-         AssetManager assetManager = binding.getApplicationContext().getAssets();
+        AssetManager assetManager = binding.getApplicationContext().getAssets();
         try {
             InputStream unhappy_active = context.getAssets().open(unhappy_activeKey);
             Log.d("unhappy_active", "unhappy_active");
@@ -154,7 +154,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         String pollThemeJson = loadJSONFromAsset(context, pollTheme);
         String triviaThemeJson = loadJSONFromAsset(context, triviaTheme);
 
-        helper.setCustomizationData(surveyThemeJson, ratingThemeJson, pollThemeJson, triviaThemeJson, context, loader, binding);
+        helper.setCustomizationData(surveyThemeJson, ratingThemeJson, pollThemeJson, triviaThemeJson, context, loader,
+                binding);
 
         new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_upshot_plugin/pushClick")
                 .setStreamHandler(new EventChannel.StreamHandler() {
@@ -223,6 +224,21 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     private void setUpshotGlobalCallback() {
         BrandKinesis bkInstance = BrandKinesis.getBKInstance();
         bkInstance.setBrandkinesisCallback(new BrandKinesisCallback() {
+            @Override
+            public void notificationsResponse(Object o) {
+
+            }
+
+            @Override
+            public void onErrorReceived(Object o) {
+
+            }
+
+            @Override
+            public void notificationsCount(int i) {
+
+            }
+
             @Override
             public void brandKinesisInboxActivityPresented() {
                 handler.post(new Runnable() {
@@ -819,13 +835,13 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     e.printStackTrace();
                 }
             }
-            case "fetchWebViewHeight":{
-                Map<String,Object> payload= (Map<String, Object>) call.arguments;
-                try{
-                    final int height= helper.calculateWebViewHeight(context,payload);
-                    Log.e("webView","The description is"+payload);
-                    internal_channel.invokeMethod("webViewHeight",height);
-                }catch (Exception e){
+            case "fetchWebViewHeight": {
+                Map<String, Object> payload = (Map<String, Object>) call.arguments;
+                try {
+                    final int height = helper.calculateWebViewHeight(context, payload);
+                    Log.e("webView", "The description is" + payload);
+                    internal_channel.invokeMethod("webViewHeight", height);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

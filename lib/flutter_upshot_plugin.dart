@@ -7,6 +7,7 @@ import 'flutter_upshot_method_channel.dart';
 
 class FlutterUpshotPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
+  static BuildContext? _currentBuildContext;
 
   static void initializeUpshotUsingConfigFile() {
     _channel.invokeMethod("setTechnologyType");
@@ -99,7 +100,14 @@ class FlutterUpshotPlugin {
   }
 
   static void showActivityWithId(String activityId) {
+    if (_currentBuildContext != null) {
+      UpshotMethodChannelInternal(context: _currentBuildContext);
+    }
     _channel.invokeMethod("showActivityWithId", activityId);
+  }
+
+  static void setCurrentBuildContext(BuildContext? context) {
+    _currentBuildContext = context;
   }
 
   static void removeTutorial() {
