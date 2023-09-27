@@ -1,7 +1,9 @@
 package com.upshot.flutter_upshot_plugin;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
@@ -10,7 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Bundle;
 import android.view.View;
-
+import androidx.core.app.ActivityCompat;
 import androidx.annotation.NonNull;
 
 import com.brandkinesis.BrandKinesis;
@@ -43,6 +45,8 @@ import io.flutter.FlutterInjector;
 import io.flutter.Log;
 import io.flutter.embedding.engine.loader.FlutterLoader;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -52,7 +56,7 @@ import io.flutter.plugin.common.EventChannel;
 /**
  * FlutterUpshotPlugin
  */
-public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
+public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native
     /// Android
     ///
@@ -67,7 +71,29 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
     public static EventChannel.EventSink pushReceiveSinkChannel = null;
     private Context context;
 
+    private Activity activity;
+
     UpshotHelper helper = new UpshotHelper();
+
+    @Override
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+
+    }
 
     private class UserInfoAsync extends AsyncTask<Set<String>, Void, Map<String, Object>> {
 
@@ -95,7 +121,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             is.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                ex.printStackTrace();
+            }
             return null;
         }
         return json;
@@ -111,7 +139,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
             is.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                ex.printStackTrace();
+            }
             return null;
         }
         return json;
@@ -126,7 +156,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         internal_channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(),
                 "flutter_upshot_plugin_internal");
         internal_channel.setMethodCallHandler(this);
-        Log.d("Upshot", "flutter_upshot_plugin_internal onAttachedToEngine");
 
         this.context = flutterPluginBinding.getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
@@ -138,15 +167,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
         String pollTheme = loader.getLookupKeyForAsset("assets/UpshotPollTheme.json");
         String triviaTheme = loader.getLookupKeyForAsset("assets/UpshotTriviaTheme.json");
 
-        String unhappy_activeKey = loader.getLookupKeyForAsset("assets/images/unhappy_active.png");
-
-        AssetManager assetManager = binding.getApplicationContext().getAssets();
-        try {
-            InputStream unhappy_active = context.getAssets().open(unhappy_activeKey);
-            Log.d("unhappy_active", "unhappy_active");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         // AssetFileDescriptor fd = assetManager.openFd(key);
 
         String surveyThemeJson = loadJSONFromAsset(context, surveyTheme);
@@ -215,9 +235,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                         }
                     });
         } catch (Exception e) {
-            // if (BuildConfig.DEBUG) {
-            // e.printStackTrace();
-            // }
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -384,7 +404,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                             } catch (JSONException e) {
                                 response.put("deepLink", data);
                                 channel.invokeMethod("upshotActivityDeeplink", response);
-                                e.printStackTrace();
+                                if (BuildConfig.DEBUG) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
@@ -403,7 +425,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                                 Log.d("upshot_interactive_tutoInfo", "callback send");
 
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                if (BuildConfig.DEBUG) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
@@ -832,7 +856,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                         }
                     });
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    if (BuildConfig.DEBUG) {
+                        e.printStackTrace();
+                    }
                 }
             }
             case "fetchWebViewHeight": {
@@ -842,9 +868,20 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                     Log.e("webView", "The description is" + payload);
                     internal_channel.invokeMethod("webViewHeight", height);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (BuildConfig.DEBUG) {
+                        e.printStackTrace();
+                    }
                 }
 
+            }
+            case "registerForPushNotifications": {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ActivityCompat.checkSelfPermission(context,
+                            Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+                    }
+                }
             }
             default:
                 Log.d("Upshot", "No Method");
@@ -888,7 +925,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace();
+                }
             }
         }
 

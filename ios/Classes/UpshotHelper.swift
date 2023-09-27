@@ -540,6 +540,28 @@ class UpshotHelper: NSObject {
     func setTechnologyType() {
         BrandKinesis.sharedInstance().setTechnologyType("flutter")
     }
+
+    func registerForPushNotifications() {
+        
+        if #available(iOS 10.0, *) {
+            
+            var delegate = UIApplication.shared.delegate
+            if (delegate != nil) {
+                
+                let notificationCenter = UNUserNotificationCenter.current()
+                notificationCenter.requestAuthorization(options: [.badge, .alert, .sound]) { status, error in
+                    if status == true {
+                        DispatchQueue.main.async {
+                            if let notificationCenterDelegate = delegate as? UNUserNotificationCenterDelegate {
+                                notificationCenter.delegate = notificationCenterDelegate
+                            }
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     func jsonToString(json: [String: Any]) -> String? {
         do {

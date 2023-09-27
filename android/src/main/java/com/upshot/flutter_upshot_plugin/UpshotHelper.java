@@ -68,10 +68,9 @@ class UpshotHelper {
                 BrandKinesis.initialiseBrandKinesis(context, bundle, null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            // if (BuildConfig.DEBUG) {
-            //
-            // }
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -79,7 +78,9 @@ class UpshotHelper {
         try {
             BrandKinesis.initialiseBrandKinesis(context, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -158,7 +159,9 @@ class UpshotHelper {
             BrandKinesis bkInstance = BrandKinesis.getBKInstance();
             bkInstance.setUserInfoBundle(bundle, null);
         } catch (JSONException e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -264,7 +267,9 @@ class UpshotHelper {
                 data.put(key, value);
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace();
+                }
             }
         }
         return data;
@@ -275,10 +280,27 @@ class UpshotHelper {
 
         {
             try {
-                JSONObject surveyJSON = new JSONObject(surveyThemeJson);
-                JSONObject ratingJSON = new JSONObject(ratingThemeJson);
-                JSONObject pollJSON = new JSONObject(pollThemeJson);
-                JSONObject triviaJSON = new JSONObject(triviaThemeJson);
+                JSONObject surveyJSON = null;
+                JSONObject ratingJSON = null;
+                JSONObject pollJSON = null;
+                JSONObject triviaJSON = null;
+
+                if (surveyThemeJson != null) {
+                    surveyJSON = new JSONObject(surveyThemeJson);
+                }
+
+                if (ratingThemeJson != null) {
+                    ratingJSON = new JSONObject(ratingThemeJson);
+                }
+
+                if (pollThemeJson != null) {
+                    pollJSON = new JSONObject(pollThemeJson);
+                }
+
+                if (triviaThemeJson != null) {
+                    triviaJSON = new JSONObject(triviaThemeJson);
+                }
+
                 UpshotSurveyCustomization surveyCustomization = new UpshotSurveyCustomization(context, surveyJSON);
                 UpshotRatingCustomization ratingCustomization = new UpshotRatingCustomization(context, ratingJSON);
                 UpshotOpinionPollCustomization pollCustomization = new UpshotOpinionPollCustomization(context,
@@ -560,7 +582,9 @@ class UpshotHelper {
                 };
                 BrandKinesis.getBKInstance().setUIPreferences(components);
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace();
+                }
             }
 
         }

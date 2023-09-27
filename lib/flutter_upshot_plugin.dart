@@ -110,6 +110,10 @@ class FlutterUpshotPlugin {
     _currentBuildContext = context;
   }
 
+  static void registerForPushNotifications() {
+    _channel.invokeMethod("registerForPushNotifications");
+  }
+
   static void removeTutorial() {
     _channel.invokeMethod("removeTutorial");
   }

@@ -33,6 +33,7 @@ class _DemoClassState extends State<DemoClass> {
       UpshotInitOptions.enableExternalStorage: false
     };
     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
+    FlutterUpshotPlugin.registerForPushNotifications();
   }
 
   Color? getColor(String? hexColor) {

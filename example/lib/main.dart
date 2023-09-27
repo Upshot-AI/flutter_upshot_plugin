@@ -66,6 +66,8 @@ class _MyAppState extends State<MyApp> {
       UpshotInitOptions.enableExternalStorage: false
     };
     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
+    print("******* registerForPushNotifications ***********");
+    FlutterUpshotPlugin.registerForPushNotifications();
   }
 
   Future<void> createEvent(

@@ -10,14 +10,11 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
         let instance = SwiftFlutterUpshotPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         
-//        let fileKey = registrar.lookupKey(forAsset: "assets/UpshotCustomisation.json")
-        
         let surveyThemeKey = registrar.lookupKey(forAsset: "assets/UpshotSurveyTheme.json")
         let ratingThemeKey = registrar.lookupKey(forAsset: "assets/UpshotRatingTheme.json")
         let pollThemeKey = registrar.lookupKey(forAsset: "assets/UpshotPollTheme.json")
         let triviaThemeKey = registrar.lookupKey(forAsset: "assets/UpshotTriviaTheme.json")
         
-//        let filePath =  Bundle.main.path(forResource: fileKey, ofType: nil)
         let surveyFilePath =  Bundle.main.path(forResource: surveyThemeKey, ofType: nil)
         let ratingFilePath =  Bundle.main.path(forResource: ratingThemeKey, ofType: nil)
         let pollFilePath =  Bundle.main.path(forResource: pollThemeKey, ofType: nil)
@@ -238,6 +235,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             if let details = call.arguments as? [String: Any] {
                 UpshotHelper.defaultHelper.getContentHeight(data: details)
             }
+        case "registerForPushNotifications":
+             UpshotHelper.defaultHelper.registerForPushNotifications()
         default:
             result(FlutterMethodNotImplemented)
         }
