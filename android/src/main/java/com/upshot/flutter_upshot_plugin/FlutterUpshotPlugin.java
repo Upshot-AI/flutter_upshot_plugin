@@ -73,7 +73,13 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
 
     private Activity activity;
 
+    public static EventSinkChannelCallback mCallback;
+
     UpshotHelper helper = new UpshotHelper();
+
+    public static void onEventSinkChannelListener(EventSinkChannelCallback callback) {
+        mCallback = callback;
+    }
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
@@ -129,24 +135,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
         return json;
     }
 
-    public String loadJSONFromAsset(Context context, AssetFileDescriptor afd) {
-        String json = null;
-        try {
-            InputStream is = afd.createInputStream();
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            if (BuildConfig.DEBUG) {
-                ex.printStackTrace();
-            }
-            return null;
-        }
-        return json;
-    }
-
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
@@ -182,6 +170,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                     @Override
                     public void onListen(Object arguments, EventChannel.EventSink events) {
                         eventSinkChannel = events;
+                        if (mCallback != null) {
+                            mCallback.onEventSinkChannelReady();
+                        }
                     }
 
                     @Override
@@ -879,7 +870,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ActivityCompat.checkSelfPermission(context,
                             Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+                        ActivityCompat.requestPermissions(activity,
+                                new String[] { android.Manifest.permission.POST_NOTIFICATIONS }, 1);
                     }
                 }
             }
@@ -938,4 +930,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
     }
+}
+
+interface EventSinkChannelCallback {
+    public void onEventSinkChannelReady();
 }
