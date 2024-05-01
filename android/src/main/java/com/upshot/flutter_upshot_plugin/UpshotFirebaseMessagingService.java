@@ -10,7 +10,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
-
 import com.brandkinesis.BrandKinesis;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -33,7 +32,7 @@ public class UpshotFirebaseMessagingService extends FirebaseMessagingService {
             bundle.putString(entry.getKey(), entry.getValue());
         }
         if (bundle.containsKey("bk")) {
-            sendPushBundleToBK(bundle, this, true);            
+            sendPushBundleToBK(bundle, this, true);
         }
         if (FlutterUpshotPlugin.pushReceiveSinkChannel != null) {
             Map<String, String> remoteData = remoteMessage.getData();

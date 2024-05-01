@@ -10,14 +10,42 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
         let instance = SwiftFlutterUpshotPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         
-        let fileKey = registrar.lookupKey(forAsset: "assets/UpshotCustomisation.json")
-        let filePath =  Bundle.main.path(forResource: fileKey, ofType: nil)
-        if let path = filePath {
-            let fileUrl = URL(fileURLWithPath: path)
+        let surveyThemeKey = registrar.lookupKey(forAsset: "assets/UpshotSurveyTheme.json")
+        let ratingThemeKey = registrar.lookupKey(forAsset: "assets/UpshotRatingTheme.json")
+        let pollThemeKey = registrar.lookupKey(forAsset: "assets/UpshotPollTheme.json")
+        let triviaThemeKey = registrar.lookupKey(forAsset: "assets/UpshotTriviaTheme.json")
+        
+        let surveyFilePath =  Bundle.main.path(forResource: surveyThemeKey, ofType: nil)
+        let ratingFilePath =  Bundle.main.path(forResource: ratingThemeKey, ofType: nil)
+        let pollFilePath =  Bundle.main.path(forResource: pollThemeKey, ofType: nil)
+        let triviaFilePath =  Bundle.main.path(forResource: triviaThemeKey, ofType: nil)
+        
+        
+        if let sPath = surveyFilePath {
+            let fileUrl = URL(fileURLWithPath: sPath)
             let data = try? Data(contentsOf: fileUrl)
-            UpshotHelper.defaultHelper.customizationData = data
-            UpshotHelper.defaultHelper.registrar = registrar
-        }                    
+            UpshotHelper.defaultHelper.surveyThemeData = data
+        }
+        
+        if let rPath = ratingFilePath {
+            let fileUrl = URL(fileURLWithPath: rPath)
+            let data = try? Data(contentsOf: fileUrl)
+            UpshotHelper.defaultHelper.ratingThemeData = data
+        }
+        
+        if let pPath = pollFilePath {
+            let fileUrl = URL(fileURLWithPath: pPath)
+            let data = try? Data(contentsOf: fileUrl)
+            UpshotHelper.defaultHelper.pollThemeData = data
+        }
+        
+        if let tPath = triviaFilePath {
+            let fileUrl = URL(fileURLWithPath: tPath)
+            let data = try? Data(contentsOf: fileUrl)
+            UpshotHelper.defaultHelper.triviaThemeData = data
+        }
+        
+        UpshotHelper.defaultHelper.registrar = registrar                         
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -153,9 +181,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
                 UpshotHelper.defaultHelper.redeemRewards(programId: programId, transactionValue: transactionValue, redeemAmount: redeemAmount, tag: tag)
             }
         case "disableUser":
-            if let isDisable = call.arguments as? Bool {
-                UpshotHelper.defaultHelper.disableUser(shouldDisable: isDisable)
-            }
+            UpshotHelper.defaultHelper.disableUser()
+            
         case "dispatchInterval":
             if let interval = call.arguments as? Int {
                 UpshotHelper.defaultHelper.dispatchInterval(interval: interval)
@@ -175,8 +202,13 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             }
         case "getUnreadNotificationsCount":
             
-            let limit = call.arguments as? Int ?? 10
-            UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit)
+            var limit = 10
+            var inboxType = 1
+            if let details = call.arguments as? [String: Any] {
+                limit = details["limit"] as? Int ?? 10
+                inboxType = details["inboxType"] as? Int ?? 1
+            }
+            UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit, inboxType: inboxType)
 
         case "activityShown_Internal":
             if let details = call.arguments as? [String: Any] {                
@@ -196,6 +228,14 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             }
         case "setTechnologyType":
             UpshotHelper.defaultHelper.setTechnologyType()
+        case "fetchStreaks":
+            UpshotHelper.defaultHelper.fetchStreaks()
+       case "fetchWebViewHeight":
+            if let details = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.getContentHeight(data: details)
+            }
+        case "registerForPushNotifications":
+             UpshotHelper.defaultHelper.registerForPushNotifications()
         default:
             result(FlutterMethodNotImplemented)
         }

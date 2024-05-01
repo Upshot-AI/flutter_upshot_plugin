@@ -27,7 +27,7 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -39,7 +39,8 @@ android {
 }
 
 dependencies{
-    implementation 'com.github.upshot-git:upshotpushlib:v1.6.64x'
+    
+    implementation 'com.github.upshot-git:upshotpushlib:v1.7.0x'
     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.cardview:cardview:1.0.0"

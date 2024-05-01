@@ -12,6 +12,11 @@ class UpshotHelper: NSObject {
     
     static var defaultHelper = UpshotHelper()
     
+    var surveyThemeData: Data?
+    var ratingThemeData: Data?
+    var pollThemeData: Data?
+    var triviaThemeData: Data?
+    
     var customizationData: Data?
     var registrar:FlutterPluginRegistrar?
 
@@ -19,9 +24,7 @@ class UpshotHelper: NSObject {
     
     func initializeUpshotUsingConfigFile() {
         BrandKinesis.sharedInstance().initialize(withDelegate: self)
-        customisation.registrar = registrar
-        customisation.customiseData = customizationData
-        BKUIPreferences.preferences().delegate = customisation                
+        setCustomisationData()
     }
     
     func initializeUsingOptions(options: [String: Any]) {
@@ -39,10 +42,17 @@ class UpshotHelper: NSObject {
                            BKExceptionHandler: enableCrashlogs] as? [String: Any] {
             
             BrandKinesis.sharedInstance().initialize(options: initOptions, delegate: self)
-            customisation.registrar = registrar
-            customisation.customiseData = customizationData
-            BKUIPreferences.preferences().delegate = customisation
+            setCustomisationData()                        
         }        
+    }
+    
+    func setCustomisationData() {
+        customisation.surveyThemeData = surveyThemeData
+        customisation.ratingThemeData = ratingThemeData
+        customisation.pollThemeData = pollThemeData
+        customisation.triviaThemeData = triviaThemeData
+        customisation.registrar = registrar
+        BKUIPreferences.preferences().delegate = customisation
     }
     
     func terminate() {
@@ -329,8 +339,12 @@ class UpshotHelper: NSObject {
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
                 
                 var notificationStatus: [String : Any] =  [:]
-                if let res = response as? [String: Any] {
-                    notificationStatus = ["status": "Success", "response": self.jsonToString(json: res) ?? ""]
+                if let res = response as? [String: Any],
+                   let streakArray = res["data"] as? [[String: Any]],
+                   let jsonString = self.jsonArrayToString(json: streakArray) {
+                    notificationStatus = ["status": "Success", "response":  jsonString]
+                } else {
+                    notificationStatus = ["status": "Fail", "errorMessage": "something went wrong.."]
                 }
                 if let err = errorMessage {
                     notificationStatus = ["status": "Fail", "errorMessage": err]
@@ -338,6 +352,33 @@ class UpshotHelper: NSObject {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     upshotChannel.invokeMethod("upshotGetNotifications", arguments: notificationStatus)
+                }
+            }
+        }
+    }
+    
+    func fetchStreaks() {
+        
+        BrandKinesis.sharedInstance().getStreaksData { response, error in
+            
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                
+                var streakData: [String : Any] =  [:]
+                if let res = response as? [String: Any],
+                    let streaksArray = res["data"] as? [[String: Any]],
+                    let jsonString = self.jsonArrayToString(json: streaksArray) {
+                    streakData = ["response":  jsonString]
+                } else {
+                    streakData = ["status": "Fail", "errorMessage": "something went wrong..."]
+                }
+                if let err = error {
+                    streakData = ["status": "Fail", "errorMessage": err]
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    upshotChannel.invokeMethod("upshotStreakResponse", arguments: streakData)
                 }
             }
         }
@@ -461,9 +502,9 @@ class UpshotHelper: NSObject {
         return "Others"
     }
 
-    func disableUser(shouldDisable: Bool) {
+    func disableUser() {
         
-        BrandKinesis.sharedInstance().disableUser(shouldDisable) { (status, error) in
+        BrandKinesis.sharedInstance().disableUser(true, completion: { status, error in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
@@ -472,15 +513,17 @@ class UpshotHelper: NSObject {
                     upshotChannel.invokeMethod("upshotUserStateCompletion", arguments: status)
                 }
             }
-        }
+        })
     }
     
     func showInboxScreen(options: [String: Any]) {
         BrandKinesis.sharedInstance().showInboxController(options)
     }
 
-    func getUnreadNotificationsCount(limit: Int) {
+    func getUnreadNotificationsCount(limit: Int, inboxType: Int) {
      
+       let type = BKInboxMessageType(rawValue: inboxType) ?? .OnlyPushNotifications
+        
         BrandKinesis.sharedInstance().getUnreadNotificationsCount(limit) { count in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
@@ -497,6 +540,28 @@ class UpshotHelper: NSObject {
     func setTechnologyType() {
         BrandKinesis.sharedInstance().setTechnologyType("flutter")
     }
+
+    func registerForPushNotifications() {
+        
+        if #available(iOS 10.0, *) {
+            
+            var delegate = UIApplication.shared.delegate
+            if (delegate != nil) {
+                
+                let notificationCenter = UNUserNotificationCenter.current()
+                notificationCenter.requestAuthorization(options: [.badge, .alert, .sound]) { status, error in
+                    if status == true {
+                        DispatchQueue.main.async {
+                            if let notificationCenterDelegate = delegate as? UNUserNotificationCenterDelegate {
+                                notificationCenter.delegate = notificationCenterDelegate
+                            }
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     func jsonToString(json: [String: Any]) -> String? {
         do {
@@ -509,6 +574,19 @@ class UpshotHelper: NSObject {
         return nil
     }
     
+    func jsonArrayToString(json: [[String: Any]]) -> String? {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let jsonString = String(data: data, encoding: .utf8)
+            return jsonString
+        } catch let myJSONError {
+            print(myJSONError)
+        }
+        return nil
+    }
+    
+    
+    
     func showAlert(title: String, message: String) {
         
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
@@ -518,6 +596,29 @@ class UpshotHelper: NSObject {
             alertController.addAction(action)
             controller.present(alertController, animated: false, completion: nil)
         }
+    }
+    
+    func getContentHeight(data: [String: Any]) {
+        
+        if let content = data["text"] as? String,
+           let contentData = content.data(using: .unicode),
+           let mutableString = try? NSMutableAttributedString(data: contentData, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.unicode.rawValue], documentAttributes: nil) {
+            let fontName = data["fontName"] as? String ?? ""
+            let fontSize = data["fontSize"] as? Int ?? 14
+            var font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+            if let cFont = UIFont(name: fontName, size: CGFloat(fontSize)) {
+        font = cFont
+    }
+        let width = UIScreen.main.bounds.width * 0.9 - 40
+            let height = NSString(string: mutableString.string).boundingRect(with: CGSize(width: width,height:Double.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil).height
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController{
+        let upshotChannel=FlutterMethodChannel(name:"flutter_upshot_plugin_internal",binaryMessenger:controller.binaryMessenger)
+        upshotChannel.invokeMethod("webViewHeight", arguments: height)
+        
+    }
+            
+        }
+        
     }
 }
 
@@ -568,6 +669,18 @@ extension UpshotHelper: BrandKinesisDelegate {
             
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 upshotChannel.invokeMethod("upshotActivityDidDismiss", arguments: activityPayload)
+            }
+        }
+    }
+    func brandKinesisActivitySkipped(_ brandKinesis: BrandKinesis, for activityType: BKActivityType) {
+        
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+            let activityPayload = ["activityType": activityType.rawValue] as [String : Any]
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshotActivitySkip", arguments: activityPayload)
             }
         }
     }
@@ -647,3 +760,14 @@ extension UpshotHelper: BrandKinesisDelegate {
         }
     }
 }
+
+extension NSAttributedString {
+    func heightWithConstrainedWidth(width: CGFloat) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, context: nil)
+
+        return boundingBox.height
+    }
+
+}
+
