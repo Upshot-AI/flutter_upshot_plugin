@@ -4,8 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -32,8 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -117,24 +113,6 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
         }
     }
 
-    public String loadJSONFromAsset(Context context, String fileName) {
-        String json = null;
-        try {
-            InputStream is = context.getAssets().open(fileName);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            if (BuildConfig.DEBUG) {
-                ex.printStackTrace();
-            }
-            return null;
-        }
-        return json;
-    }
-
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
@@ -155,12 +133,10 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
         String pollTheme = loader.getLookupKeyForAsset("assets/UpshotPollTheme.json");
         String triviaTheme = loader.getLookupKeyForAsset("assets/UpshotTriviaTheme.json");
 
-        // AssetFileDescriptor fd = assetManager.openFd(key);
-
-        String surveyThemeJson = loadJSONFromAsset(context, surveyTheme);
-        String ratingThemeJson = loadJSONFromAsset(context, ratingTheme);
-        String pollThemeJson = loadJSONFromAsset(context, pollTheme);
-        String triviaThemeJson = loadJSONFromAsset(context, triviaTheme);
+        String surveyThemeJson = UpshotHelper.loadJSONFromAsset(context, surveyTheme);
+        String ratingThemeJson = UpshotHelper.loadJSONFromAsset(context, ratingTheme);
+        String pollThemeJson = UpshotHelper.loadJSONFromAsset(context, pollTheme);
+        String triviaThemeJson = UpshotHelper.loadJSONFromAsset(context, triviaTheme);
 
         helper.setCustomizationData(surveyThemeJson, ratingThemeJson, pollThemeJson, triviaThemeJson, context, loader,
                 binding);
@@ -226,9 +202,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                         }
                     });
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
+            UpshotHelper.logException(e);
         }
     }
 
@@ -368,6 +342,13 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
             }
 
             @Override
+            public void onActivitySkipped(BKActivityTypes bkActivityTypes) {
+                HashMap<String, Integer> response = new HashMap<>();
+                response.put("activityType", bkActivityTypes.getValue());
+                channel.invokeMethod("upshotActivitySkip", response);
+            }
+
+            @Override
             public void getBannerView(View bannerView, String tag) {
 
             }
@@ -395,9 +376,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                             } catch (JSONException e) {
                                 response.put("deepLink", data);
                                 channel.invokeMethod("upshotActivityDeeplink", response);
-                                if (BuildConfig.DEBUG) {
-                                    e.printStackTrace();
-                                }
+                                UpshotHelper.logException(e);
                             }
                         }
                     }
@@ -416,12 +395,9 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                                 Log.d("upshot_interactive_tutoInfo", "callback send");
 
                             } catch (Exception e) {
-                                if (BuildConfig.DEBUG) {
-                                    e.printStackTrace();
-                                }
+                                UpshotHelper.logException(e);
                             }
                         }
-
                     }
                 });
             }
@@ -512,7 +488,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 BrandKinesis bkInstance = BrandKinesis.getBKInstance();
                 String latitude = call.argument("latitude");
                 String longitude = call.argument("longitude");
-                helper.createLocationEvent(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                String eventId = helper.createLocationEvent(Double.parseDouble(latitude),
+                        Double.parseDouble(longitude));
             }
                 break;
             case "setValueAndClose": {
@@ -721,8 +698,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 break;
             case "disableUser": {
 
-                boolean disable = (boolean) call.arguments;
-                BrandKinesis.getBKInstance().disableUser(disable, context, new BrandKinesisUserStateCompletion() {
+                BrandKinesis.getBKInstance().disableUser(context, new BrandKinesisUserStateCompletion() {
                     @Override
                     public void userStateCompletion(final boolean status) {
 
@@ -839,7 +815,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                     JSONArray streakObj = jsonObject.getJSONArray("streakData");
                     String jsonString = streakObj.toString();
                     HashMap<String, Object> data = new HashMap<>();
-                    data.put("response", streakData);
+                    data.put("response", jsonString);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -847,9 +823,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                         }
                     });
                 } catch (JSONException e) {
-                    if (BuildConfig.DEBUG) {
-                        e.printStackTrace();
-                    }
+                    UpshotHelper.logException(e);
                 }
             }
             case "fetchWebViewHeight": {
@@ -859,9 +833,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                     Log.e("webView", "The description is" + payload);
                     internal_channel.invokeMethod("webViewHeight", height);
                 } catch (Exception e) {
-                    if (BuildConfig.DEBUG) {
-                        e.printStackTrace();
-                    }
+                    UpshotHelper.logException(e);
                 }
 
             }
@@ -883,10 +855,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
     private static Bundle convertMapToBundle(HashMap<String, Object> data) {
 
         Bundle bundle = new Bundle();
-        Iterator<String> iterator = data.keySet().iterator();
-        while (iterator.hasNext()) {
+        for (String key : data.keySet()) {
 
-            String key = iterator.next();
             Object value = data.get(key);
             try {
 
@@ -906,20 +876,16 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                         if (json instanceof JSONArray || json instanceof JSONObject) {
                             bundle.putString(key, json.toString());
                         } else {
-                            Log.i("Data", "invalid value for '" + key);
+                            Log.d("Upshot Data", "invalid value for '" + key);
                         }
                     } else {
-                        Log.i("Data", "invalid value for '" + key);
+                        Log.d(" Upshot Data", "invalid value for '" + key);
                     }
                 } else {
-
-                    Log.i("Data", "invalid value for '" + key);
+                    Log.d("Upshot Data", "invalid value for '" + key);
                 }
-
             } catch (Exception e) {
-                if (BuildConfig.DEBUG) {
-                    e.printStackTrace();
-                }
+                UpshotHelper.logException(e);
             }
         }
 
@@ -933,5 +899,5 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
 }
 
 interface EventSinkChannelCallback {
-    public void onEventSinkChannelReady();
+    void onEventSinkChannelReady();
 }

@@ -1,24 +1,24 @@
 {
     "image": {
-        "background": "surveyBG.png",
-        "logo": "upshot.png",
+        "background": "poll_bg.png",
+        "logo": "",
         "radio_def": "radio_def.png",
-        "radio_sel": "radio_sel.png"
+        "radio_sel": "radio_sel"
     },
     "color": {
-        "headerBG": "#00000000",
-        "background": "#000000BF",
+        "headerBG": "",
+        "background": "",
         "option_def_border": "#FFFFFF",
-        "option_sel_border": "#FFFFFF20"
+        "option_sel_border": "#FF0000"
     },
     "button": {
         "submit": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Medium",
+            "color": "#E73750",
+            "font_name": "PFHandbookPro-Medium.ttf",
             "size": 18,
             "image": "",
-            "bgcolor": "#E8BB1B",
-            "border_color": ""
+            "bgcolor": "#FFFFFF",
+            "border_color": "#E73750"
         },
         "skip": {
             "image": "close.png"
@@ -27,17 +27,17 @@
     "label_text": {
         "question": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Medium",
+            "font_name": "PFHandbookPro-Regular.ttf",
             "size": 20
         },
         "option": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Medium",
+            "font_name": "PFHandbookPro-Regular.ttf",
             "size": 18
         },
         "thankyou": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Medium",
+            "font_name": "PFHandbookPro-Regular.ttf",
             "size": 20
         }
     },
@@ -56,11 +56,11 @@
             "#E73750",
             "#00FFFF"
         ],
-        "yAxis": "#FF0000",
-        "percentage": "#00FF00",
-        "bar_line": "#0000FF",
-        "xAxis_Header": "#FFFF00",
-        "yAxis_Header": "#00FFFF",
+        "yAxis": "#FFFFFF",
+        "percentage": "#FFFFFF",
+        "bar_line": "#FFFFFF",
+        "xAxis_Header": "#FFFFFF",
+        "yAxis_Header": "#FFFFFF",
         "legends": "#FFFFFF"
     }
 }

@@ -1,7 +1,7 @@
 {
     "image": {
-        "background": "ratingBG.png",
-        "logo": "upshot.png",
+        "background": "rating_bg.png",
+        "logo": "",
         "star_sel": "star_active.png",
         "star_def": "star_in_active.png",
         "smiley_vbad_def": "unhappy_active.png",
@@ -21,29 +21,32 @@
     },
     "color": {
         "headerBG": "",
-        "background": "#000000BF"
+        "background": ""
     },
     "button": {
         "yes": {
             "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14,
-            "image": "",
-            "bgcolor": "#E73750"
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18,
+            "image": "PFHandbookPro-Regular",
+            "bgcolor": "#E8BB1B",
+            "border_color": "#FFFFFF"
         },
         "no": {
-            "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14,
+            "color": "#E8BB1B",
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18,
             "image": "",
-            "bgcolor": "#E73750"
+            "bgcolor": "#FFFFFF",
+            "border_color": "#E8BB1B"
         },
         "submit": {
             "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14,
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18,
             "image": "",
-            "bgcolor": "#E73750"
+            "bgcolor": "#E8BB1B",
+            "border_color": "#FFFFFF"
         },
         "skip": {
             "image": "close.png"
@@ -52,63 +55,36 @@
     "label_text": {
         "appStoreHint": {
             "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18
         },
         "feedback_header": {
             "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18
         },
         "question": {
             "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18
         },
         "thankyou": {
             "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
-        },
-        "slider_score": {
-            "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
-        },
-        "slider_minScore": {
-            "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
-        },
-        "slider_maxScore": {
-            "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
-        },
-        "slider_minText": {
-            "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
-        },
-        "slider_maxText": {
-            "color": "#FFFFFF",
-            "font_name": "",
-            "size": 14
+            "font_name": "PFHandbookPro-Regular",
+            "size": 18
         }
     },
     "feedbackBox": {
         "color": "#FFFFFF",
         "font_name": "PFHandbookPro-Regular",
-        "size": 14,
+        "size": 18,
         "bgcolor": "#00000000",
-        "border_color": "#E73750"
+        "border_color": "#E8BB1B"
     },
     "slider": {
-        "min_image": "slider_min1.jpg",
-        "max_image": "slider_max1.jpg",
         "thumb_image": "slider_thumb.jpg",
-        "min_color": "#CFE2FF",
-        "max_color": "#E73750",
+        "min_color": "#FFFFFF",
+        "max_color": "#2D7AED",
         "slider_score": {
             "color": "#FFFFFF",
             "font_name": "PFHandbookPro-Regular.ttf",

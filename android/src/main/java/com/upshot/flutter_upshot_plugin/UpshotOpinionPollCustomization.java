@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,32 +19,44 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import io.flutter.embedding.engine.loader.FlutterLoader;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+
 public class UpshotOpinionPollCustomization extends UpshotCustomization {
 
     private Context mContext;
-    private JSONObject mJsonObject = null;
-    public UpshotOpinionPollCustomization(Context context, JSONObject pollJSON) {
+    private JSONObject opinionPollJson = null;
+    private FlutterLoader flutterLoader;
+    private FlutterPlugin.FlutterPluginBinding flutterBinding;
+
+    public UpshotOpinionPollCustomization(Context context, JSONObject pollJSON, FlutterLoader loader,
+            FlutterPlugin.FlutterPluginBinding binding) {
         mContext = context;
         try {
-            mJsonObject = pollJSON;//new JSONObject(loadJSONFromAsset(context, "UpshotPollTheme.json"));
+            opinionPollJson = pollJSON;
+            flutterLoader = loader;
+            flutterBinding = binding;
         } catch (Exception e) {
-            e.printStackTrace();
+            UpshotHelper.logException(e);
         }
     }
+
     public void customizeRadioButton(BKUIPrefComponents.BKUICheckBox checkBox, boolean isCheckBox) {
         super.customizeRadioButton(checkBox, isCheckBox);
-        if (mJsonObject != null) {
+
+        if (opinionPollJson != null) {
             try {
-                JSONObject imageJsonObject = (JSONObject) mJsonObject.get("image");
-                Bitmap check_select, default_select;
+                JSONObject imageJson = (JSONObject) opinionPollJson.get("image");
 
-                check_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(imageJsonObject, "radio_sel")));
-                checkBox.setSelectedCheckBox(check_select);
+                Bitmap check_select = BitmapFactory.decodeResource(mContext.getResources(),
+                        getIdentifier(mContext, getImageName(imageJson, "radio_sel")));
 
-                default_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(imageJsonObject, "radio_def")));
+                Bitmap default_select = BitmapFactory.decodeResource(mContext.getResources(),
+                        getIdentifier(mContext, validateJsonString(imageJson, "radio_def")));
                 checkBox.setUnselectedCheckBox(default_select);
+                checkBox.setSelectedCheckBox(check_select);
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -54,20 +65,18 @@ public class UpshotOpinionPollCustomization extends UpshotCustomization {
     public void customizeButton(Button button, BKActivityButtonTypes buttonType) {
         super.customizeButton(button, buttonType);
 
-        if (mJsonObject != null) {
-
+        if (opinionPollJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("button");
+                JSONObject buttonJson = (JSONObject) opinionPollJson.get("button");
 
                 switch (buttonType) {
                     case BKACTIVITY_SUBMIT_BUTTON:
-                        JSONObject submitButtonJsonObject = (JSONObject) buttonJsonObject.get("submit");
-                        applyButtonProperties(mContext, submitButtonJsonObject, button);
+                        JSONObject submitButtonJsonObject = (JSONObject) buttonJson.get("submit");
+                        applyButtonProperties(mContext, submitButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -76,89 +85,129 @@ public class UpshotOpinionPollCustomization extends UpshotCustomization {
     public void customizeTextView(BKActivityTextViewTypes textViewType, TextView textView) {
         super.customizeTextView(textViewType, textView);
 
-        if (mJsonObject != null) {
+        if (opinionPollJson != null) {
             try {
-                JSONObject label_textJsonObject = (JSONObject) mJsonObject.get("label_text");
+                JSONObject label_textJson = (JSONObject) opinionPollJson.get("label_text");
+                JSONObject graphJsonObject = (JSONObject) opinionPollJson.get("graph");
+
                 switch (textViewType) {
                     case BKACTIVITY_QUESTION_TV:
-                        JSONObject question = (JSONObject) label_textJsonObject.get("question");
-                        applyTextViewProperties(mContext, question, textView);
+                        JSONObject questionJson = (JSONObject) label_textJson.get("question");
+                        applyTextViewProperties(questionJson, textView, flutterLoader, flutterBinding);
                         break;
 
                     case BKACTIVITY_THANK_YOU_TV:
-                        JSONObject thanksJsonObject = (JSONObject) label_textJsonObject.get("thankyou");
-                        applyTextViewProperties(mContext, thanksJsonObject, textView);
-                        JSONObject colorJsonObject = (JSONObject) mJsonObject.get("color");
-                        if (colorJsonObject != null) {
-                            String bgColor = validateJsonString(colorJsonObject, "background");
+
+                        JSONObject thanksJson = (JSONObject) label_textJson.get("thankyou");
+                        JSONObject colorJson = (JSONObject) opinionPollJson.get("color");
+                        JSONObject imageJson = (JSONObject) opinionPollJson.get("image");
+
+                        applyTextViewProperties(thanksJson, textView, flutterLoader, flutterBinding);
+
+                        if (colorJson != null) {
+                            String bgColor = validateJsonString(colorJson, "background");
                             if (bgColor != null && !bgColor.isEmpty()) {
                                 textView.setBackgroundColor(Color.parseColor(bgColor));
                             }
+                        }
+
+                        if (imageJson != null) {
+                            String bgData = getImageName(imageJson, "background");
+                            setImageToView(mContext, bgData, textView);
                         }
                         break;
 
                     case BKACTIVITY_OPTION_TV:
                     case BKACTIVITY_QUESTION_OPTION_TV:
-                        JSONObject option = (JSONObject) label_textJsonObject.get("option");
-                        applyTextViewProperties(mContext, option, textView);
+                        JSONObject optionJson = (JSONObject) label_textJson.get("option");
+                        applyTextViewProperties(optionJson, textView, flutterLoader, flutterBinding);
                         break;
+                    /* To customise graph legends */
                     case BKACTIVITY_LEGEND_TV:
-                        JSONObject graph_legends = (JSONObject) label_textJsonObject.get("graph_legends");
-                        applyTextViewProperties(mContext, graph_legends, textView);
+                        String legendsColor = graphJsonObject.getString("legends");
+                        if (!legendsColor.isEmpty()) {
+                            textView.setTextColor(Color.parseColor(legendsColor));
+                        }
                         break;
+                    /* To customise bar graph Y axis header */
                     case BKACTIVITY_LEADER_BOARD_BAR_RESPONSES_TV:
-                        JSONObject option_response = (JSONObject) label_textJsonObject.get("graph_users_text");
-                        applyTextViewProperties(mContext, option_response, textView);
+                        String yAxis_HeaderColor = graphJsonObject.getString("yAxis_Header");
+                        if (!yAxis_HeaderColor.isEmpty()) {
+                            textView.setTextColor(Color.parseColor(yAxis_HeaderColor));
+                        }
                         break;
+                    /* To customise bar graph X axis header */
                     case BKACTIVITY_LEADER_BOARD_BAR_GRADES_TV:
-                        JSONObject bar_option = (JSONObject) label_textJsonObject.get("graph_options_text");
-                        applyTextViewProperties(mContext, bar_option, textView);
+                        String xAxis_HeaderColor = graphJsonObject.getString("xAxis_Header");
+                        if (!xAxis_HeaderColor.isEmpty()) {
+                            textView.setTextColor(Color.parseColor(xAxis_HeaderColor));
+                        }
                         break;
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
+
     @Override
-    public void customizeBGColor(BKUIPrefComponents.BKBGColors color, BKUIPrefComponents.BKActivityColorTypes colorType) {
+    public void customizeBGColor(BKUIPrefComponents.BKBGColors color,
+            BKUIPrefComponents.BKActivityColorTypes colorType) {
         super.customizeBGColor(color, colorType);
 
-        if (mJsonObject != null) {
+        if (opinionPollJson != null) {
             try {
-                JSONObject jsonObject = (JSONObject) mJsonObject.get("color");
+                JSONObject colorJson = (JSONObject) opinionPollJson.get("color");
+                JSONObject graphJson = (JSONObject) opinionPollJson.get("graph");
                 switch (colorType) {
                     case BKACTIVITY_OPTION_DEF_BORDER:
-                        String bgColor = validateJsonString(jsonObject, "option_def_border");
-                        if (bgColor != null && !bgColor.isEmpty()) {
-                            color.setColor(Color.parseColor(bgColor));
+                        String optionDefBorderColor = validateJsonString(colorJson, "option_def_border");
+                        if (optionDefBorderColor != null && !optionDefBorderColor.isEmpty()) {
+                            color.setColor(Color.parseColor(optionDefBorderColor));
                         }
                         break;
                     case BKACTIVITY_OPTION_SEL_BORDER:
-                        String bgColor_sel = validateJsonString(jsonObject, "option_sel_border");
-                        if (bgColor_sel != null && !bgColor_sel.isEmpty()) {
-                            color.setColor(Color.parseColor(bgColor_sel));
+                        String optionSelBorderColor = validateJsonString(colorJson, "option_sel_border");
+                        if (optionSelBorderColor != null && !optionSelBorderColor.isEmpty()) {
+                            color.setColor(Color.parseColor(optionSelBorderColor));
                         }
                         break;
                     case BKACTIVITY_BG_COLOR:
-                        String bgColor_bg = validateJsonString(jsonObject, "background");
-                        color.setColor(Color.parseColor(bgColor_bg));
+                        String bgColor = validateJsonString(colorJson, "background");
+                        color.setColor(Color.parseColor(bgColor));
                         break;
                     case BKACTIVITY_SURVEY_HEADER_COLOR:
-                        String headerBG = validateJsonString(jsonObject, "headerBG");
-                        color.setColor(Color.parseColor(headerBG));
+                        String headerColor = validateJsonString(colorJson, "headerBG");
+                        color.setColor(Color.parseColor(headerColor));
                         break;
-                    case BKACTIVITY_XAXIS_COLOR:
-                    case BKACTIVITY_XAXIS_TEXT_COLOR_COLOR:
+
+                    /* To customise Bar graph Y axis range */
                     case BKACTIVITY_YAXIS_TEXT_COLOR_COLOR:
-                    case BKACTIVITY_YAXIS_COLOR:
-                        String percentageText = validateJsonString(jsonObject, "percentageText");
-                        color.setColor(Color.parseColor(percentageText));
+                    case BKACTIVITY_XAXIS_TEXT_COLOR_COLOR: {
+                        String yAxisColor = validateJsonString(graphJson, "yAxis");
+                        if (yAxisColor != null && !yAxisColor.isEmpty()) {
+                            color.setColor(Color.parseColor(yAxisColor));
+                        }
+                    }
                         break;
+                    /* To customise Bar graph line */
+                    case BKACTIVITY_YAXIS_COLOR:
+                    case BKACTIVITY_XAXIS_COLOR:
+                        String barGraphLine = validateJsonString(graphJson, "bar_line");
+                        if (barGraphLine != null && !barGraphLine.isEmpty()) {
+                            color.setColor(Color.parseColor(barGraphLine));
+                        }
+                        break;
+                    case BKACTIVITY_PERCENTAGE_COLOR:
+                        String percentageColor = validateJsonString(graphJson, "percentage");
+                        if (percentageColor != null && !percentageColor.isEmpty()) {
+                            color.setColor(Color.parseColor(percentageColor));
+                        }
+
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -166,48 +215,45 @@ public class UpshotOpinionPollCustomization extends UpshotCustomization {
     public void customizeImageView(ImageView imageView, BKUIPrefComponents.BKActivityImageViewType imageType) {
         super.customizeImageView(imageView, imageType);
 
-        if (mJsonObject != null) {
+        if (opinionPollJson != null) {
             try {
-                JSONObject jImageBg = (JSONObject) mJsonObject.get("image");
+                JSONObject imageJson = (JSONObject) opinionPollJson.get("image");
                 switch (imageType) {
                     case BKACTIVITY_PORTRAIT_LOGO:
-                        String bgData = validateJsonString(jImageBg, "logo");
-                        applyImageProperties(mContext, bgData, imageView);
-                        break;
                     case BKACTIVITY_LANDSCAPE_LOGO:
-                        String landscapeBackground = validateJsonString(jImageBg, "landscapeLogo");
-                        applyImageProperties(mContext, landscapeBackground, imageView);
+                        String logo = getImageName(imageJson, "logo");
+                        setImageToView(mContext, logo, imageView);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
 
     @Override
-    public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes, RelativeLayout relativeLayout, boolean isFullScreen) {
+    public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes,
+            RelativeLayout relativeLayout, boolean isFullScreen) {
         super.customizeRelativeLayout(relativeLayoutTypes, relativeLayout, isFullScreen);
-        if (mJsonObject != null) {
+        if (opinionPollJson != null) {
 
             try {
-                JSONObject jImageBg = (JSONObject) mJsonObject.get("image");
-                JSONObject colorJsonObject = (JSONObject) mJsonObject.get("color");
-                if (colorJsonObject != null) {
-                    String bgColor = validateJsonString(colorJsonObject, "background");
+                JSONObject imageJson = (JSONObject) opinionPollJson.get("image");
+                JSONObject colorJson = (JSONObject) opinionPollJson.get("color");
+                if (colorJson != null) {
+                    String bgColor = validateJsonString(colorJson, "background");
                     if (bgColor != null && !bgColor.isEmpty()) {
                         relativeLayout.setBackgroundColor(Color.parseColor(bgColor));
                     }
                 }
                 switch (relativeLayoutTypes) {
                     case BKACTIVITY_BACKGROUND_IMAGE:
-                        String bgData = validateJsonString(jImageBg, "background");
-
-                        applyRelativeLayoutProperties(mContext, bgData, relativeLayout);
+                        String bgImage = getImageName(imageJson, "background");
+                        setImageToView(mContext, bgImage, relativeLayout);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -216,31 +262,29 @@ public class UpshotOpinionPollCustomization extends UpshotCustomization {
     public void customizeForGraphColor(BKUIPrefComponents.BKGraphType graphType, List<Integer> colorsList) {
         super.customizeForGraphColor(graphType, colorsList);
 
-        if (mJsonObject != null) {
+        if (opinionPollJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("graph");
+                JSONObject graphJson = (JSONObject) opinionPollJson.get("graph");
                 switch (graphType) {
                     case BKACTIVITY_BAR_GRAPH:
                         colorsList.clear();
 
-                        JSONArray jsonArray = buttonJsonObject.getJSONArray("barcolors");
+                        JSONArray barColors = graphJson.getJSONArray("barcolors");
 
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            colorsList.add(Color.parseColor(jsonArray.getString(i)));
+                        for (int i = 0; i < barColors.length(); i++) {
+                            colorsList.add(Color.parseColor(barColors.getString(i)));
                         }
                         break;
                     case BKACTIVITY_PIE_GRAPH:
                         colorsList.clear();
-                        JSONArray piecolors = buttonJsonObject.getJSONArray("piecolors");
-                        for (int i = 0; i < piecolors.length(); i++) {
-                            colorsList.add(Color.parseColor(piecolors.getString(i)));
+                        JSONArray pieColors = graphJson.getJSONArray("piecolors");
+                        for (int i = 0; i < pieColors.length(); i++) {
+                            colorsList.add(Color.parseColor(pieColors.getString(i)));
                         }
-
                         break;
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -249,20 +293,19 @@ public class UpshotOpinionPollCustomization extends UpshotCustomization {
     public void customizeImageButton(ImageButton button, BKUIPrefComponents.BKActivityImageButtonTypes buttonType) {
         super.customizeImageButton(button, buttonType);
 
-        if (mJsonObject != null) {
+        if (opinionPollJson != null) {
 
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("button");
-
+                JSONObject buttonJson = (JSONObject) opinionPollJson.get("button");
                 switch (buttonType) {
                     case BKACTIVITY_SKIP_BUTTON:
-                        JSONObject submitButtonJsonObject = (JSONObject) buttonJsonObject.get("skip");
-                        applyImageButtonProperties(mContext, submitButtonJsonObject, button);
+                        JSONObject skipButtonJson = (JSONObject) buttonJson.get("skip");
+                        applySkipImage(mContext, skipButtonJson, button);
                         break;
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }

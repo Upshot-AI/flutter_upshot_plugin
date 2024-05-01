@@ -181,9 +181,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
                 UpshotHelper.defaultHelper.redeemRewards(programId: programId, transactionValue: transactionValue, redeemAmount: redeemAmount, tag: tag)
             }
         case "disableUser":
-            if let isDisable = call.arguments as? Bool {
-                UpshotHelper.defaultHelper.disableUser(shouldDisable: isDisable)
-            }
+            UpshotHelper.defaultHelper.disableUser()
+            
         case "dispatchInterval":
             if let interval = call.arguments as? Int {
                 UpshotHelper.defaultHelper.dispatchInterval(interval: interval)

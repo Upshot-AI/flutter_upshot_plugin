@@ -53,11 +53,11 @@ class UpshotProfileAttributes {
   static String email = "email";
   static String age = "age";
   static String gender = "gender";
-  static String email_opt = "email_opt";
-  static String sms_opt = "sms_opt";
-  static String push_opt = "push_opt";
-  static String data_opt = "data_opt";
-  static String ip_opt = "ip_opt";
+  static String emailOpt = "email_opt";
+  static String smsOpt = "sms_opt";
+  static String pushOpt = "push_opt";
+  static String dataOpt = "data_opt";
+  static String ipOpt = "ip_opt";
   static String appuID = "appuID";
   static String facebookID = "facebookID";
   static String twitterID = "twitterID";

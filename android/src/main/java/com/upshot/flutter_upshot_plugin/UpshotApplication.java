@@ -27,7 +27,6 @@ public class UpshotApplication extends FlutterApplication {
 
         application = this;
         BKAppStatusUtil.getInstance().register(this, listener);
-        strictModePolicy();
     }
 
     BKAppStatusUtil.BKAppStatusListener listener = new BKAppStatusUtil.BKAppStatusListener() {
@@ -59,10 +58,9 @@ public class UpshotApplication extends FlutterApplication {
 
     private void initializeUsingConfig() {
         try {
-            Log.d("Upshot", "initializeUsingConfig:");
             BrandKinesis.initialiseBrandKinesis(this, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            UpshotHelper.logException(e);
         }
     }
 
@@ -108,11 +106,6 @@ public class UpshotApplication extends FlutterApplication {
             bundle.putBoolean(BKProperties.BK_EXCEPTION_HANDLER, enableCrashLogs);
             BrandKinesis.initialiseBrandKinesis(this, bundle, null);
         }
-    }
-
-    private void strictModePolicy() {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
     }
 
     public void setCustomListener(UpshotListener customListener) {

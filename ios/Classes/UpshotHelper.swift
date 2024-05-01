@@ -502,9 +502,9 @@ class UpshotHelper: NSObject {
         return "Others"
     }
 
-    func disableUser(shouldDisable: Bool) {
+    func disableUser() {
         
-        BrandKinesis.sharedInstance().disableUser(shouldDisable) { (status, error) in
+        BrandKinesis.sharedInstance().disableUser() { (status, error) in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
@@ -669,6 +669,18 @@ extension UpshotHelper: BrandKinesisDelegate {
             
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 upshotChannel.invokeMethod("upshotActivityDidDismiss", arguments: activityPayload)
+            }
+        }
+    }
+    func brandKinesisActivitySkipped(_ brandKinesis: BrandKinesis, for activityType: BKActivityType) {
+        
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+            let activityPayload = ["activityType": activityType.rawValue] as [String : Any]
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                upshotChannel.invokeMethod("upshotActivitySkip", arguments: activityPayload)
             }
         }
     }

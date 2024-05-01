@@ -5,16 +5,9 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.InsetDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,58 +28,70 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import io.flutter.embedding.engine.loader.FlutterLoader;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+
 public class UpshotSurveyCustomization extends UpshotCustomization {
     Context mContext;
-    private JSONObject mJsonObject = null;
+    private JSONObject surveyJson = null;
+    private FlutterLoader flutterLoader;
 
-    public UpshotSurveyCustomization(Context context, JSONObject surveyJSON) {
+    private FlutterPlugin.FlutterPluginBinding flutterBinding;
+
+    public UpshotSurveyCustomization(Context context, JSONObject surveyJSON, FlutterLoader loader,
+                                     FlutterPlugin.FlutterPluginBinding binding) {
         mContext = context;
         try {
-            mJsonObject = surveyJSON;//new JSONObject(loadJSONFromAsset(context, "UpshotSurveyTheme.json"));
+            surveyJson = surveyJSON;
+            flutterLoader = loader;
+            flutterBinding = binding;
         } catch (Exception e) {
-            e.printStackTrace();
+            UpshotHelper.logException(e);
         }
     }
 
     public void customizeRadioButton(BKUIPrefComponents.BKUICheckBox checkBox, boolean isCheckBox) {
         super.customizeRadioButton(checkBox, isCheckBox);
-        if (mJsonObject != null) {
+
+        if (surveyJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("image");
+                JSONObject imageJson = (JSONObject) surveyJson.get("image");
 
                 if (isCheckBox) {
                     Bitmap check_select, default_select;
-                    check_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(buttonJsonObject, "checkbox_sel")));
+                    check_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, getImageName(imageJson, "checkbox_sel")));
                     checkBox.setSelectedCheckBox(check_select);
 
-                    default_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(buttonJsonObject, "checkbox_def")));
+                    default_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, getImageName(imageJson, "checkbox_def")));
                     checkBox.setUnselectedCheckBox(default_select);
                 } else {
                     Bitmap check_select, default_select;
-                    check_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(buttonJsonObject, "radio_sel")));
+                    check_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, getImageName(imageJson, "radio_sel")));
                     checkBox.setSelectedCheckBox(check_select);
 
-                    default_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(buttonJsonObject, "radio_def")));
+                    default_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, getImageName(imageJson, "radio_def")));
                     checkBox.setUnselectedCheckBox(default_select);
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
 
     @Override
-    public void customizeSeekBar(BKUIPrefComponents.BKActivitySeekBarTypes seekBarTypes, SeekBar
-            seekBar) {
+    public void customizeSeekBar(BKUIPrefComponents.BKActivitySeekBarTypes seekBarTypes, SeekBar seekBar) {
         super.customizeSeekBar(seekBarTypes, seekBar);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject sliderJsonObject = (JSONObject) mJsonObject.get("slider");
-                String minColor = validateJsonString(sliderJsonObject, "min_color");
-                String maxColor = validateJsonString(sliderJsonObject, "max_color");
+                JSONObject sliderJson = (JSONObject) surveyJson.get("slider");
+                String minColor = validateJsonString(sliderJson, "min_color");
+                String maxColor = validateJsonString(sliderJson, "max_color");
                 Drawable bitmapDrawable;
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -97,13 +102,14 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
                     if (maxColor != null && !maxColor.isEmpty()) {
                         seekBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(maxColor)));
                     }
-                    bitmapDrawable = ContextCompat.getDrawable(mContext, getIdentifier(mContext, validateJsonString(sliderJsonObject, "thumb_image")));
-                    if(bitmapDrawable != null) {
+                    bitmapDrawable = ContextCompat.getDrawable(mContext,
+                            getIdentifier(mContext, getImageName(sliderJson, "thumb_image")));
+                    if (bitmapDrawable != null) {
                         seekBar.setThumb(bitmapDrawable);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -112,27 +118,18 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
     public void customizeEditText(BKUIPrefComponents.BKActivityEditTextTypes EditTextType, EditText editText) {
         super.customizeEditText(EditTextType, editText);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("label_text");
+                JSONObject feedbackJson = (JSONObject) surveyJson.get("feedbackBox");
 
                 switch (EditTextType) {
                     case BKACTIVITY_SURVEY_EDIT_TEXT:
                     default:
-                        JSONObject inputFieldJsonObject = (JSONObject) buttonJsonObject.get("feedback_box");
-                        GradientDrawable gd = new GradientDrawable();
-                        String borderColor = validateJsonString(inputFieldJsonObject, "border_color");
-                        if (borderColor != null && !borderColor.isEmpty()) {
-                            gd.setStroke(3, Color.parseColor(borderColor));
-                        }
-                        gd.setCornerRadius(8);
-                        gd.setColor(Color.TRANSPARENT);
-                        editText.setBackground(gd);
-                        applyEditTextProperties(mContext, inputFieldJsonObject, editText);
+                        applyEditTextProperties(feedbackJson, editText, flutterLoader, flutterBinding);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -141,33 +138,33 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
     public void customizeButton(Button button, BKActivityButtonTypes buttonType) {
         super.customizeButton(button, buttonType);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("button");
+                JSONObject buttonJson = (JSONObject) surveyJson.get("button");
 
                 switch (buttonType) {
                     case BKACTIVITY_SUBMIT_BUTTON:
-
-                        JSONObject submitButtonJsonObject = (JSONObject) buttonJsonObject.get("submit");
-                        applyButtonProperties(mContext, submitButtonJsonObject, button);
+                        JSONObject submitButtonJsonObject = (JSONObject) buttonJson.get("submit");
+                        applyButtonProperties(mContext, submitButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SURVEY_CONTINUE_BUTTON:
-                        JSONObject continueButtonJsonObject = (JSONObject) buttonJsonObject.get("continue");
-                        applyButtonProperties(mContext, continueButtonJsonObject, button);
+                        JSONObject continueButtonJsonObject = (JSONObject) buttonJson.get("continue");
+                        applyButtonProperties(mContext, continueButtonJsonObject, button, flutterLoader,
+                                flutterBinding);
                         break;
                     case BKACTIVITY_SURVEY_NEXT_BUTTON:
-                        JSONObject nextButtonJsonObject = (JSONObject) buttonJsonObject.get("next");
-                        applyButtonProperties(mContext, nextButtonJsonObject, button);
+                        JSONObject nextButtonJsonObject = (JSONObject) buttonJson.get("next");
+                        applyButtonProperties(mContext, nextButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SURVEY_PREVIOUS_BUTTON:
-                        JSONObject prevButtonJsonObject = (JSONObject) buttonJsonObject.get("prev");
-                        applyButtonProperties(mContext, prevButtonJsonObject, button);
+                        JSONObject prevButtonJsonObject = (JSONObject) buttonJson.get("prev");
+                        applyButtonProperties(mContext, prevButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -176,59 +173,59 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
     public void customizeBGColor(BKBGColors color, BKActivityColorTypes colorType) {
         super.customizeBGColor(color, colorType);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject jsonObject = (JSONObject) mJsonObject.get("color");
+                JSONObject colorJson = (JSONObject) surveyJson.get("color");
 
                 switch (colorType) {
                     case BKACTIVITY_OPTION_DEF_BORDER:
-                        String bgColor = validateJsonString(jsonObject, "option_def_border");
+                        String bgColor = validateJsonString(colorJson, "option_def_border");
                         if (bgColor != null && !bgColor.isEmpty()) {
                             color.setColor(Color.parseColor(bgColor));
                         }
 
                         break;
                     case BKACTIVITY_OPTION_SEL_BORDER:
-                        String bgColor_sel = validateJsonString(jsonObject, "option_sel_border");
+                        String bgColor_sel = validateJsonString(colorJson, "option_sel_border");
                         if (bgColor_sel != null && !bgColor_sel.isEmpty()) {
                             color.setColor(Color.parseColor(bgColor_sel));
                         }
 
                         break;
                     case BKACTIVITY_BG_COLOR:
-                        String bgColor_bg = validateJsonString(jsonObject, "background");
+                        String bgColor_bg = validateJsonString(colorJson, "background");
                         if (bgColor_bg != null && !bgColor_bg.isEmpty()) {
                             color.setColor(Color.parseColor(bgColor_bg));
                         }
                         break;
                     case BKACTIVITY_SURVEY_HEADER_COLOR:
-                        String headerBG = validateJsonString(jsonObject, "headerBG");
+                        String headerBG = validateJsonString(colorJson, "headerBG");
                         if (headerBG != null && !headerBG.isEmpty()) {
                             color.setColor(Color.parseColor(headerBG));
                         }
 
                         break;
                     case BKACTIVITY_BOTTOM_COLOR:
-                        String bottomBG = validateJsonString(jsonObject, "bottomBG");
+                        String bottomBG = validateJsonString(colorJson, "bottomBG");
                         if (bottomBG != null && !bottomBG.isEmpty()) {
                             color.setColor(Color.parseColor(bottomBG));
                         }
                         break;
                     case BKACTIVITY_PAGINATION_BORDER_COLOR:
-                        String pagenationdots_current = validateJsonString(jsonObject, "pagenationdots_current");
+                        String pagenationdots_current = validateJsonString(colorJson, "pagenationdots_current");
                         if (pagenationdots_current != null && !pagenationdots_current.isEmpty()) {
                             color.setColor(Color.parseColor(pagenationdots_current));
                         }
                         break;
                     case BKACTIVITY_PAGINATION_ANSWERED_COLOR:
-                        String pagenationdots_answered = validateJsonString(jsonObject, "pagenationdots_answered");
+                        String pagenationdots_answered = validateJsonString(colorJson, "pagenationdots_answered");
                         if (pagenationdots_answered != null && !pagenationdots_answered.isEmpty()) {
                             color.setColor(Color.parseColor(pagenationdots_answered));
                         }
                         break;
                     case BKACTIVITY_PAGINATION_DEFAULT_COLOR:
-                        String pagenationdots_def = validateJsonString(jsonObject, "pagenationdots_def");
+                        String pagenationdots_def = validateJsonString(colorJson, "pagenationdots_def");
                         if (pagenationdots_def != null && !pagenationdots_def.isEmpty()) {
                             color.setColor(Color.parseColor(pagenationdots_def));
                         }
@@ -236,26 +233,27 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
 
     @Override
-    public void customizeRating(List<Bitmap> selectedRatingList, List<Bitmap> unselectedRatingList, BKUIPrefComponents.BKActivityRatingTypes ratingType) {
+    public void customizeRating(List<Bitmap> selectedRatingList, List<Bitmap> unselectedRatingList,
+                                BKUIPrefComponents.BKActivityRatingTypes ratingType) {
         super.customizeRating(selectedRatingList, unselectedRatingList, ratingType);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject ratingJsonObject = (JSONObject) mJsonObject.get("image");
+                JSONObject imageJson = (JSONObject) surveyJson.get("image");
 
                 switch (ratingType) {
                     case BKACTIVITY_STAR_RATING:
                         Bitmap selected = BitmapFactory.decodeResource(mContext.getResources(),
-                                getIdentifier(mContext, validateJsonString(ratingJsonObject, "star_sel")));
+                                getIdentifier(mContext, getImageName(imageJson, "star_sel")));
                         Bitmap unselected = BitmapFactory.decodeResource(mContext.getResources(),
-                                getIdentifier(mContext, validateJsonString(ratingJsonObject, "star_def")));
+                                getIdentifier(mContext, getImageName(imageJson, "star_def")));
 
                         if (selected != null && unselected != null) {
                             selectedRatingList.add(selected);
@@ -265,23 +263,29 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
 
                     case BKACTIVITY_EMOJI_RATING:
 
-                        Bitmap veryBad_def = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_vbad_def")));
-                        Bitmap bad_def = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_bad_def")));
-                        Bitmap avg_def = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_avg_def")));
-                        Bitmap good_def = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_good_def")));
-                        Bitmap vGood_def = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_Vgood_def")));
+                        Bitmap veryBad_def = getBitmap(
+                                getIdentifier(mContext, getImageName(imageJson, "smiley_vbad_def")));
+                        Bitmap bad_def = getBitmap(getIdentifier(mContext, getImageName(imageJson, "smiley_bad_def")));
+                        Bitmap avg_def = getBitmap(getIdentifier(mContext, getImageName(imageJson, "smiley_avg_def")));
+                        Bitmap good_def = getBitmap(
+                                getIdentifier(mContext, getImageName(imageJson, "smiley_good_def")));
+                        Bitmap vGood_def = getBitmap(
+                                getIdentifier(mContext, getImageName(imageJson, "smiley_Vgood_def")));
 
-                        Bitmap veryBad_sel = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_vbad_sel")));
-                        Bitmap bad_sel = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_bad_sel")));
-                        Bitmap avg_sel = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_avg_sel")));
-                        Bitmap good_sel = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_good_sel")));
-                        Bitmap vGood_sel = getBitmap(getIdentifier(mContext, validateJsonString(ratingJsonObject, "smiley_Vgood_sel")));
+                        Bitmap veryBad_sel = getBitmap(
+                                getIdentifier(mContext, getImageName(imageJson, "smiley_vbad_sel")));
+                        Bitmap bad_sel = getBitmap(getIdentifier(mContext, getImageName(imageJson, "smiley_bad_sel")));
+                        Bitmap avg_sel = getBitmap(getIdentifier(mContext, getImageName(imageJson, "smiley_avg_sel")));
+                        Bitmap good_sel = getBitmap(
+                                getIdentifier(mContext, getImageName(imageJson, "smiley_good_sel")));
+                        Bitmap vGood_sel = getBitmap(
+                                getIdentifier(mContext, getImageName(imageJson, "smiley_Vgood_sel")));
 
-                        if(veryBad_sel != null && veryBad_def != null &&
-                            bad_def != null && bad_sel != null &&
-                            avg_sel != null && avg_def != null &&
-                            good_sel != null && good_def != null &&
-                            vGood_sel != null && vGood_def != null) {
+                        if (veryBad_sel != null && veryBad_def != null &&
+                                bad_def != null && bad_sel != null &&
+                                avg_sel != null && avg_def != null &&
+                                good_sel != null && good_def != null &&
+                                vGood_sel != null && vGood_def != null) {
 
                             unselectedRatingList.add(veryBad_def);
                             unselectedRatingList.add(bad_def);
@@ -297,7 +301,7 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
                         }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -311,62 +315,69 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
     public void customizeTextView(BKActivityTextViewTypes textViewType, TextView textView) {
         super.customizeTextView(textViewType, textView);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject label_textJsonObject = (JSONObject) mJsonObject.get("label_text");
+                JSONObject label_textJson = (JSONObject) surveyJson.get("label_text");
+                JSONObject sliderJson = (JSONObject) surveyJson.get("slider");
                 switch (textViewType) {
                     case BKACTIVITY_HEADER_TV:
-                        JSONObject header = (JSONObject) label_textJsonObject.get("header");
-                        applyTextViewProperties(mContext, header, textView);
+                        JSONObject header = (JSONObject) label_textJson.get("header");
+                        applyTextViewProperties(header, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SURVEY_DESC_TV:
-                        JSONObject desc = (JSONObject) label_textJsonObject.get("desc");
-                        applyTextViewProperties(mContext, desc, textView);
+                        JSONObject desc = (JSONObject) label_textJson.get("desc");
+                        applyTextViewProperties(desc, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SLIDE_TEXT_TV:
-                        JSONObject slider_score = (JSONObject) label_textJsonObject.get("slider_score");
-                        applyTextViewProperties(mContext, slider_score, textView);
+                        JSONObject slider_score = (JSONObject) sliderJson.get("slider_score");
+                        applyTextViewProperties(slider_score, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SLIDE_MAX_TV:
-                        JSONObject slider_maxScore = (JSONObject) label_textJsonObject.get("slider_maxScore");
-                        applyTextViewProperties(mContext, slider_maxScore, textView);
+                        JSONObject slider_maxScore = (JSONObject) sliderJson.get("slider_maxScore");
+                        applyTextViewProperties(slider_maxScore, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SLIDE_MIN_TV:
-                        JSONObject slider_minScore = (JSONObject) label_textJsonObject.get("slider_minScore");
-                        applyTextViewProperties(mContext, slider_minScore, textView);
+                        JSONObject slider_minScore = (JSONObject) sliderJson.get("slider_minScore");
+                        applyTextViewProperties(slider_minScore, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SLIDE_MAX_LABEL_TV:
-                        JSONObject slider_maxText = (JSONObject) label_textJsonObject.get("slider_maxText");
-                        applyTextViewProperties(mContext, slider_maxText, textView);
+                        JSONObject slider_maxText = (JSONObject) sliderJson.get("slider_maxText");
+                        applyTextViewProperties(slider_maxText, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_SLIDE_MIN_LABEL_TV:
-                        JSONObject slider_minText = (JSONObject) label_textJsonObject.get("slider_minText");
-                        applyTextViewProperties(mContext, slider_minText, textView);
+                        JSONObject slider_minText = (JSONObject) sliderJson.get("slider_minText");
+                        applyTextViewProperties(slider_minText, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_QUESTION_TV:
-                        JSONObject question = (JSONObject) label_textJsonObject.get("question");
-                        applyTextViewProperties(mContext, question, textView);
+                        JSONObject question = (JSONObject) label_textJson.get("question");
+                        applyTextViewProperties(question, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_THANK_YOU_TV:
-                        JSONObject thanksJsonObject = (JSONObject) label_textJsonObject.get("thankyou");
-                        applyTextViewProperties(mContext, thanksJsonObject, textView);
-                        JSONObject colorJsonObject = (JSONObject) mJsonObject.get("color");
-                        if (colorJsonObject != null) {
-                            String bgColor = validateJsonString(colorJsonObject, "background");
+                        JSONObject thanksJson = (JSONObject) label_textJson.get("thankyou");
+                        JSONObject imageJson = (JSONObject) surveyJson.get("image");
+                        JSONObject colorJson = (JSONObject) surveyJson.get("color");
+                        applyTextViewProperties(thanksJson, textView, flutterLoader, flutterBinding);
+
+                        if (colorJson != null) {
+                            String bgColor = validateJsonString(colorJson, "background");
                             if (bgColor != null && !bgColor.isEmpty()) {
                                 textView.setBackgroundColor(Color.parseColor(bgColor));
                             }
                         }
+                        if (imageJson != null) {
+                            String bgData = getImageName(imageJson, "background");
+                            setImageToView(mContext, bgData, textView);
+                        }
                         break;
                     case BKACTIVITY_OPTION_TV:
-                        JSONObject option = (JSONObject) label_textJsonObject.get("option");
-                        applyTextViewProperties(mContext, option, textView);
+                        JSONObject option = (JSONObject) label_textJson.get("option");
+                        applyTextViewProperties(option, textView, flutterLoader, flutterBinding);
                         break;
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -374,49 +385,47 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
     public void customizeImageView(ImageView imageView, BKUIPrefComponents.BKActivityImageViewType imageType) {
         super.customizeImageView(imageView, imageType);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
             try {
-                JSONObject jImageBg = (JSONObject) mJsonObject.get("image");
+                JSONObject imageJson = (JSONObject) surveyJson.get("image");
 
                 switch (imageType) {
                     case BKACTIVITY_PORTRAIT_LOGO:
-                        String bgData = validateJsonString(jImageBg, "logo");
-                        applyImageProperties(mContext, bgData, imageView);
-                        break;
                     case BKACTIVITY_LANDSCAPE_LOGO:
-                        String landscapeBackground = validateJsonString(jImageBg, "landscapeLogo");
-                        applyImageProperties(mContext, landscapeBackground, imageView);
+                        String bgData = getImageName(imageJson, "logo");
+                        setImageToView(mContext, bgData, imageView);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
 
     @Override
-    public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes, RelativeLayout relativeLayout, boolean isFullScreen) {
+    public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes,
+                                        RelativeLayout relativeLayout, boolean isFullScreen) {
         super.customizeRelativeLayout(relativeLayoutTypes, relativeLayout, isFullScreen);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject jImageBg = (JSONObject) mJsonObject.get("image");
-                JSONObject colorJsonObject = (JSONObject) mJsonObject.get("color");
-                if (colorJsonObject != null) {
-                    String bgColor = validateJsonString(colorJsonObject, "background");
+                JSONObject imageJson = (JSONObject) surveyJson.get("image");
+                JSONObject colorJson = (JSONObject) surveyJson.get("color");
+                if (colorJson != null) {
+                    String bgColor = validateJsonString(colorJson, "background");
                     if (bgColor != null && !bgColor.isEmpty()) {
                         relativeLayout.setBackgroundColor(Color.parseColor(bgColor));
                     }
                 }
                 switch (relativeLayoutTypes) {
                     case BKACTIVITY_BACKGROUND_IMAGE:
-                        String bgData = validateJsonString(jImageBg, "background");
-                        applyRelativeLayoutProperties(mContext, bgData, relativeLayout);
+                        String bgData = getImageName(imageJson, "background");
+                        setImageToView(mContext, bgData, relativeLayout);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -425,18 +434,18 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
     public void customizeImageButton(ImageButton button, BKUIPrefComponents.BKActivityImageButtonTypes buttonType) {
         super.customizeImageButton(button, buttonType);
 
-        if (mJsonObject != null) {
+        if (surveyJson != null) {
 
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("button");
+                JSONObject buttonJson = (JSONObject) surveyJson.get("button");
                 switch (buttonType) {
                     case BKACTIVITY_SKIP_BUTTON:
-                        JSONObject submitButtonJsonObject = (JSONObject) buttonJsonObject.get("skip");
-                        applyImageButtonProperties(mContext, submitButtonJsonObject, button);
+                        JSONObject submitButtonJsonObject = (JSONObject) buttonJson.get("skip");
+                        applySkipImage(mContext, submitButtonJsonObject, button);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }

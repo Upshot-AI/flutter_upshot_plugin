@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,15 +28,19 @@ import com.brandkinesis.activitymanager.BKActivityTypes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.flutter.BuildConfig;
 import io.flutter.embedding.engine.loader.FlutterLoader;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
 class UpshotHelper {
+
 
     public void initialize(HashMap<String, Object> options, Context context) {
 
@@ -45,17 +48,14 @@ class UpshotHelper {
             if (options == null) {
                 return;
             }
-            String appId = options.containsKey("appId") ? options.get("appId").toString() : "";
-            String ownerId = options.containsKey("ownerId") ? options.get("ownerId").toString() : "";
-            Boolean fetchLocation = options.containsKey("enableLocation") ? (Boolean) options.get("enableLocation")
-                    : false;
-            Boolean enableDebugLogs = options.containsKey("enableDebuglogs") ? (Boolean) options.get("enableDebuglogs")
-                    : false;
-            Boolean useExternalStorage = options.containsKey("enableExternalStorage")
-                    ? (Boolean) options.get("enableExternalStorage")
-                    : false;
-            Boolean enableCrashLogs = options.containsKey("enableCrashlogs") ? (Boolean) options.get("enableCrashlogs")
-                    : false;
+
+            String appId = validateHashmapString(options,"appId");
+            String ownerId = validateHashmapString(options,"ownerId");
+            Boolean fetchLocation = validateHashmapBoolean(options, "enableLocation");
+            Boolean enableDebugLogs = validateHashmapBoolean(options, "enableDebuglogs");
+            Boolean useExternalStorage = validateHashmapBoolean(options, "enableExternalStorage");
+            Boolean enableCrashLogs = validateHashmapBoolean(options, "enableCrashlogs");
+
             if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
 
                 Bundle bundle = new Bundle();
@@ -68,9 +68,7 @@ class UpshotHelper {
                 BrandKinesis.initialiseBrandKinesis(context, bundle, null);
             }
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
+            logException(e);
         }
     }
 
@@ -78,9 +76,7 @@ class UpshotHelper {
         try {
             BrandKinesis.initialiseBrandKinesis(context, null);
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
+            logException(e);
         }
     }
 
@@ -90,7 +86,7 @@ class UpshotHelper {
 
     public void setUserProfile(HashMap<String, Object> userData) {
 
-        HashMap<String, String> predefinedKeys = new HashMap();
+        HashMap<String, String> predefinedKeys = new HashMap<>();
 
         predefinedKeys.put("lastName", BKUserInfo.BKUserData.LAST_NAME);
         predefinedKeys.put("middleName", BKUserInfo.BKUserData.MIDDLE_NAME);
@@ -136,7 +132,7 @@ class UpshotHelper {
                 if (predefinedKeys.containsKey(key)) {
                     // predefined
                     String bkKey = predefinedKeys.get(key);
-                    if (value instanceof Integer) {
+                    if (value instanceof Integer && userData.get(key) != null) {
                         bundle.putInt(bkKey, (Integer) userData.get(key));
                     } else if (value instanceof Float) {
                         bundle.putFloat(bkKey, (float) userData.get(key));
@@ -159,9 +155,7 @@ class UpshotHelper {
             BrandKinesis bkInstance = BrandKinesis.getBKInstance();
             bkInstance.setUserInfoBundle(bundle, null);
         } catch (JSONException e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
+            logException(e);
         }
     }
 
@@ -202,7 +196,7 @@ class UpshotHelper {
         if (pageName == null || pageName.isEmpty()) {
             return null;
         }
-        HashMap data = new HashMap<String, Object>();
+        HashMap<String, Object> data = new HashMap<>();
         data.put(BrandKinesis.BK_CURRENT_PAGE, pageName);
         return BrandKinesis.getBKInstance().createEvent(BKProperties.BKPageViewEvent.NATIVE, data, true);
     }
@@ -267,9 +261,7 @@ class UpshotHelper {
                 data.put(key, value);
 
             } catch (JSONException e) {
-                if (BuildConfig.DEBUG) {
-                    e.printStackTrace();
-                }
+                logException(e);
             }
         }
         return data;
@@ -301,10 +293,10 @@ class UpshotHelper {
                     triviaJSON = new JSONObject(triviaThemeJson);
                 }
 
-                UpshotSurveyCustomization surveyCustomization = new UpshotSurveyCustomization(context, surveyJSON);
-                UpshotRatingCustomization ratingCustomization = new UpshotRatingCustomization(context, ratingJSON);
+                UpshotSurveyCustomization surveyCustomization = new UpshotSurveyCustomization(context, surveyJSON, loader, binding);
+                UpshotRatingCustomization ratingCustomization = new UpshotRatingCustomization(context, ratingJSON, loader, binding);
                 UpshotOpinionPollCustomization pollCustomization = new UpshotOpinionPollCustomization(context,
-                        pollJSON);
+                        pollJSON, loader, binding);
                 UpshotTriviaCustomization triviaCustomization = new UpshotTriviaCustomization(context, triviaJSON,
                         loader, binding);
 
@@ -582,9 +574,7 @@ class UpshotHelper {
                 };
                 BrandKinesis.getBKInstance().setUIPreferences(components);
             } catch (JSONException e) {
-                if (BuildConfig.DEBUG) {
-                    e.printStackTrace();
-                }
+                logException(e);
             }
 
         }
@@ -622,5 +612,57 @@ class UpshotHelper {
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);
         return textView.getMeasuredHeight() + 5;
+    }
+
+    public static void logException(Exception e){
+        if (BuildConfig.DEBUG) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String loadJSONFromAsset(Context context, String fileName) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            UpshotHelper.logException(ex);
+            return null;
+        }
+        return json;
+    }
+
+    public String validateHashmapString(HashMap hashMap, String key) {
+        try {
+            if (hashMap.containsKey(key)) {
+                if (hashMap.get(key) == null || !(hashMap.get(key) instanceof String)) {
+                    return "";
+                } else {
+                    return (String) hashMap.get(key);
+                }
+            }
+        } catch (Exception e) {
+            UpshotHelper.logException(e);
+        }
+        return "";
+    }
+
+    public Boolean validateHashmapBoolean(HashMap hashMap, String key) {
+        try {
+            if (hashMap.containsKey(key)) {
+                if (hashMap.get(key) == null || !(hashMap.get(key) instanceof Boolean)) {
+                    return false;
+                } else {
+                    return (boolean) hashMap.get(key);
+                }
+            }
+        } catch (Exception e) {
+            UpshotHelper.logException(e);
+        }
+        return false;
     }
 }

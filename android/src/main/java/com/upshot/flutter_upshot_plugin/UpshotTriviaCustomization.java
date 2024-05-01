@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,25 +30,27 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
 public class UpshotTriviaCustomization extends UpshotCustomization {
     private Context mContext;
-    private JSONObject mJsonObject = null;
+    private JSONObject triviaJson = null;
 
     private FlutterLoader flutterLoader;
 
     private FlutterPlugin.FlutterPluginBinding flutterBinding;
 
-    public UpshotTriviaCustomization(Context context, JSONObject triviaJSON, FlutterLoader loader, FlutterPlugin.FlutterPluginBinding binding) {
+    public UpshotTriviaCustomization(Context context, JSONObject triviaJSON, FlutterLoader loader,
+                                     FlutterPlugin.FlutterPluginBinding binding) {
         mContext = context;
         try {
-            mJsonObject = triviaJSON;
+            triviaJson = triviaJSON;
             flutterLoader = loader;
             flutterBinding = binding;
         } catch (Exception e) {
-            e.printStackTrace();
+            UpshotHelper.logException(e);
         }
     }
 
     @Override
-    public void customizeForLinearLayout(LinearLayout linearLayout, BKUIPrefComponents.BKActivityLinearLayoutTypes linearLayoutTypes) {
+    public void customizeForLinearLayout(LinearLayout linearLayout,
+                                         BKUIPrefComponents.BKActivityLinearLayoutTypes linearLayoutTypes) {
         super.customizeForLinearLayout(linearLayout, linearLayoutTypes);
         switch (linearLayoutTypes) {
             case BKACTIVITY_BACKGROUND_IMAGE:
@@ -61,7 +62,6 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     @Override
     public void customizeForOptionsSeparatorView(View view) {
         super.customizeForOptionsSeparatorView(view);
-        view.setBackgroundColor(Color.RED);
     }
 
     /**
@@ -71,91 +71,126 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     public void customizeTextView(BKActivityTextViewTypes textViewType, TextView textView) {
         super.customizeTextView(textViewType, textView);
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
 
             try {
-                JSONObject label_textJsonObject = (JSONObject) mJsonObject.get("label_text");
+                JSONObject label_textJson = (JSONObject) triviaJson.get("label_text");
+                JSONObject leaderBoardJson = (JSONObject) triviaJson.get("leaderBoard");
+                JSONObject graphJson = (JSONObject) triviaJson.get("graph");
 
                 switch (textViewType) {
                     case BKACTIVITY_HEADER_TV:
-                        JSONObject header = (JSONObject) label_textJsonObject.get("header");
-                        applyTextViewProperties(mContext, header, textView, flutterLoader, flutterBinding);
+                        JSONObject header = (JSONObject) label_textJson.get("header");
+                        applyTextViewProperties(header, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_TRIVIA_DESC_TV:
-                        JSONObject desc = (JSONObject) label_textJsonObject.get("desc");
-                        applyTextViewProperties(mContext, desc, textView, flutterLoader, flutterBinding);
+                        JSONObject desc = (JSONObject) label_textJson.get("desc");
+                        applyTextViewProperties(desc, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_QUESTION_TV:
-                        JSONObject question = (JSONObject) label_textJsonObject.get("question");
-                        applyTextViewProperties(mContext, question, textView, flutterLoader, flutterBinding);
+                        JSONObject question = (JSONObject) label_textJson.get("question");
+                        applyTextViewProperties(question, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_THANK_YOU_TV:
-                        JSONObject thanksJsonObject = (JSONObject) label_textJsonObject.get("thankyou");
-                        applyTextViewProperties(mContext, thanksJsonObject, textView);
-                        JSONObject colorJsonObject = (JSONObject) mJsonObject.get("color");
-                        if (colorJsonObject != null) {
-                            String bgColor = validateJsonString(colorJsonObject, "background");
+
+                        JSONObject thanksJson = (JSONObject) label_textJson.get("thankyou");
+                        JSONObject colorJson = (JSONObject) triviaJson.get("color");
+                        JSONObject imageJson = (JSONObject) triviaJson.get("image");
+
+                        applyTextViewProperties(thanksJson, textView, flutterLoader, flutterBinding);
+
+                        if (colorJson != null) {
+                            String bgColor = validateJsonString(colorJson, "background");
                             if (bgColor != null && !bgColor.isEmpty()) {
                                 textView.setBackgroundColor(Color.parseColor(bgColor));
                             }
                         }
+                        if (imageJson != null) {
+                            String bgData = getImageName(imageJson, "background");
+                            setImageToView(mContext, bgData, textView);
+                        }
                         break;
                     case BKACTIVITY_QUESTION_OPTION_TV:
                     case BKACTIVITY_OPTION_TV:
-                        JSONObject option = (JSONObject) label_textJsonObject.get("option");
-                        applyTextViewProperties(mContext, option, textView, flutterLoader, flutterBinding);
+                        JSONObject option = (JSONObject) label_textJson.get("option");
+                        applyTextViewProperties(option, textView, flutterLoader, flutterBinding);
                         break;
-
 
                     case BKACTIVITY_SCORE_TV:
-                        JSONObject option_score = (JSONObject) label_textJsonObject.get("score");
-                        applyTextViewProperties(mContext, option_score, textView, flutterLoader, flutterBinding);
+                        JSONObject option_score = (JSONObject) label_textJson.get("score");
+                        applyTextViewProperties(option_score, textView, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_LEADER_BOARD_TITLE_TV: {
-                        JSONObject leaderBoardJSON = (JSONObject) mJsonObject.get("leaderBoard");
-                        JSONObject option_result = (JSONObject) leaderBoardJSON.get("result");
-                        applyTextViewProperties(mContext, option_result, textView, flutterLoader, flutterBinding);
+                        JSONObject option_result = (JSONObject) leaderBoardJson.get("result");
+                        applyTextViewProperties(option_result, textView, flutterLoader, flutterBinding);
                     }
                     break;
                     case BKACTIVITY_LEADER_BOARD_SCORE_VALUE_TV: {
-                        JSONObject leaderBoardJSON = (JSONObject) mJsonObject.get("leaderBoard");
-                        JSONObject option_result = (JSONObject) leaderBoardJSON.get("yourScore");
-                        applyTextViewProperties(mContext, option_result, textView, flutterLoader, flutterBinding);
+                        JSONObject option_result = (JSONObject) leaderBoardJson.get("yourScore");
+                        applyTextViewProperties(option_result, textView, flutterLoader, flutterBinding);
                     }
                     break;
                     case BKACTIVITY_LEADER_BOARD_GRADE_VALUE_TV: {
-                        JSONObject leaderBoardJSON = (JSONObject) mJsonObject.get("leaderBoard");
-                        JSONObject option_yourGrade = (JSONObject) leaderBoardJSON.get("yourGrade");
-                        applyTextViewProperties(mContext, option_yourGrade, textView, flutterLoader, flutterBinding);
+                        JSONObject option_yourGrade = (JSONObject) leaderBoardJson.get("yourGrade");
+                        applyTextViewProperties(option_yourGrade, textView, flutterLoader, flutterBinding);
                     }
                     break;
                     case BKACTIVITY_LEADER_BOARD_SCORE_TV: {
-                        JSONObject leaderBoardJSON = (JSONObject) mJsonObject.get("leaderBoard");
-                        JSONObject option_userScore = (JSONObject) leaderBoardJSON.get("userScore");
-                        applyTextViewProperties(mContext, option_userScore, textView, flutterLoader, flutterBinding);
+                        JSONObject option_userScore = (JSONObject) leaderBoardJson.get("userScore");
+                        applyTextViewProperties(option_userScore, textView, flutterLoader, flutterBinding);
                     }
                     break;
 
                     case BKACTIVITY_LEADER_BOARD_GRADE_TV: {
-                        JSONObject leaderBoardJSON = (JSONObject) mJsonObject.get("leaderBoard");
-                        JSONObject option_userGrade = (JSONObject) leaderBoardJSON.get("userGrade");
-                        applyTextViewProperties(mContext, option_userGrade, textView, flutterLoader, flutterBinding);
+                        JSONObject option_userGrade = (JSONObject) leaderBoardJson.get("userGrade");
+                        applyTextViewProperties(option_userGrade, textView, flutterLoader, flutterBinding);
                     }
                     break;
                     case BKACTIVITY_LEADER_BOARD_BAR_RESPONSES_TV:
-                    case BKACTIVITY_TRIVIA_GRADE_HEADER_TABLE_TV:
-                    case BKACTIVITY_TRIVIA_RESPONSE_HEADER_TABLE_TV:
-                        JSONObject option_userText = (JSONObject) label_textJsonObject.get("graph_users_text");
-                        applyTextViewProperties(mContext, option_userText, textView, flutterLoader, flutterBinding);
+                        String yAxis_HeaderColor = graphJson.getString("yAxis_Header");
+                        if (!yAxis_HeaderColor.isEmpty()) {
+                            textView.setTextColor(Color.parseColor(yAxis_HeaderColor));
+                        }
                         break;
+                    case BKACTIVITY_LEGEND_TV:
+                        String legendsColor = graphJson.getString("legends");
+                        if (!legendsColor.isEmpty()) {
+                            textView.setTextColor(Color.parseColor(legendsColor));
+                        }
+                        break;
+
                     case BKACTIVITY_LEADER_BOARD_BAR_GRADES_TV:
-                        JSONObject option_optionsText = (JSONObject) label_textJsonObject.get("graph_options_text");
-                        applyTextViewProperties(mContext, option_optionsText, textView, flutterLoader, flutterBinding);
+                        String xAxis_HeaderColor = graphJson.getString("xAxis_Header");
+                        if (!xAxis_HeaderColor.isEmpty()) {
+                            textView.setTextColor(Color.parseColor(xAxis_HeaderColor));
+                        }
+                        break;
+                    /* User Responses Header Text */
+                    case BKACTIVITY_TRIVIA_RESPONSE_HEADER_TABLE_TV:
+                        JSONObject option_userText = (JSONObject) leaderBoardJson.get("tabular_response_header");
+                        applyTextViewProperties(option_userText, textView, flutterLoader, flutterBinding);
+                        break;
+
+                    /* Tabular List Responses Text */
+                    case BKACTIVITY_TRIVIA_RESPONSE_DATA_TABLE_TV: {
+                        JSONObject tabular_response_header = (JSONObject) leaderBoardJson
+                                .get("tabular_response_count");
+                        applyTextViewProperties(tabular_response_header, textView, flutterLoader, flutterBinding);
+                    }
+                    break;
+                    /* User Grade Header Text */
+                    case BKACTIVITY_TRIVIA_GRADE_HEADER_TABLE_TV:
+                        JSONObject tabularResponseHeader = (JSONObject) leaderBoardJson.get("tabular_grade_header");
+                        applyTextViewProperties(tabularResponseHeader, textView, flutterLoader, flutterBinding);
+                        break;
+                    /* Tabular List Grade Range Text */
+                    case BKACTIVITY_TRIVIA_GRADE_DATA_TABLE_TV:
+                        JSONObject tabular_grade_range = (JSONObject) leaderBoardJson.get("tabular_grade_range");
+                        applyTextViewProperties(tabular_grade_range, textView, flutterLoader, flutterBinding);
                         break;
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -167,14 +202,14 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     public void customizeForGraphColor(BKUIPrefComponents.BKGraphType graphType, List<Integer> colorsList) {
         super.customizeForGraphColor(graphType, colorsList);
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("graph");
+                JSONObject graphJson = (JSONObject) triviaJson.get("graph");
 
                 switch (graphType) {
                     case BKACTIVITY_BAR_GRAPH:
                         colorsList.clear();
-                        JSONArray barColors = buttonJsonObject.getJSONArray("bar");
+                        JSONArray barColors = graphJson.getJSONArray("bar");
                         if (barColors.length() == 5) {
                             for (int i = 0; i < barColors.length(); i++) {
                                 colorsList.add(Color.parseColor(barColors.getString(i)));
@@ -183,7 +218,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                         break;
                     case BKACTIVITY_PIE_GRAPH:
                         colorsList.clear();
-                        JSONArray pieColors = buttonJsonObject.getJSONArray("pie");
+                        JSONArray pieColors = graphJson.getJSONArray("pie");
                         if (pieColors.length() == 5) {
                             for (int i = 0; i < pieColors.length(); i++) {
                                 colorsList.add(Color.parseColor(pieColors.getString(i)));
@@ -192,7 +227,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -204,30 +239,31 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     public void customizeButton(Button button, BKActivityButtonTypes buttonType) {
         super.customizeButton(button, buttonType);
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("button");
+                JSONObject buttonJson = (JSONObject) triviaJson.get("button");
 
                 switch (buttonType) {
                     case BKACTIVITY_SUBMIT_BUTTON:
-                        JSONObject submitButtonJsonObject = (JSONObject) buttonJsonObject.get("submit");
+                        JSONObject submitButtonJsonObject = (JSONObject) buttonJson.get("submit");
                         applyButtonProperties(mContext, submitButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_TRIVIA_CONTINUE_BUTTON:
-                        JSONObject continueButtonJsonObject = (JSONObject) buttonJsonObject.get("continue");
-                        applyButtonProperties(mContext, continueButtonJsonObject, button, flutterLoader, flutterBinding);
+                        JSONObject continueButtonJsonObject = (JSONObject) buttonJson.get("continue");
+                        applyButtonProperties(mContext, continueButtonJsonObject, button, flutterLoader,
+                                flutterBinding);
                         break;
                     case BKACTIVITY_TRIVIA_NEXT_BUTTON:
-                        JSONObject nextButtonJsonObject = (JSONObject) buttonJsonObject.get("next");
+                        JSONObject nextButtonJsonObject = (JSONObject) buttonJson.get("next");
                         applyButtonProperties(mContext, nextButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                     case BKACTIVITY_TRIVIA_PREVIOUS_BUTTON:
-                        JSONObject prevButtonJsonObject = (JSONObject) buttonJsonObject.get("prev");
+                        JSONObject prevButtonJsonObject = (JSONObject) buttonJson.get("prev");
                         applyButtonProperties(mContext, prevButtonJsonObject, button, flutterLoader, flutterBinding);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -239,15 +275,16 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     public void customizeBGColor(BKBGColors color, BKActivityColorTypes colorType) {
         super.customizeBGColor(color, colorType);
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
             try {
-                JSONObject jsonObject = (JSONObject) mJsonObject.get("color");
+                JSONObject colorJson = (JSONObject) triviaJson.get("color");
+                JSONObject graphJsonObject = (JSONObject) triviaJson.get("graph");
 
                 switch (colorType) {
 
                     case BKACTIVITY_TRIVIA_HEADER_COLOR:
                     case BKACTIVITY_TRIVIA_TITLE_COLOR:
-                        String headerBG = validateJsonString(jsonObject, "headerBG");
+                        String headerBG = validateJsonString(colorJson, "headerBG");
                         if (headerBG != null && !headerBG.isEmpty()) {
                             color.setColor(Color.parseColor(headerBG));
                         }
@@ -255,49 +292,48 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
 
                     case BKACTIVITY_BG_COLOR:
                     case BKACTIVITY_BOTTOM_COLOR:
-                        String bgColor = validateJsonString(jsonObject, "background");
+                        String bgColor = validateJsonString(colorJson, "background");
                         if (bgColor != null && !bgColor.isEmpty()) {
                             color.setColor(Color.parseColor(bgColor));
                         }
                         break;
 
                     case BKACTIVITY_OPTION_DEF_BORDER:
-                        String option_borderColor = validateJsonString(jsonObject, "option_def_border");
+                        String option_borderColor = validateJsonString(colorJson, "option_def_border");
                         if (option_borderColor != null && !option_borderColor.isEmpty()) {
                             color.setColor(Color.parseColor(option_borderColor));
                         }
                         break;
                     case BKACTIVITY_OPTION_SEL_BORDER:
-                        String option_sel_borderColor = validateJsonString(jsonObject, "option_sel_border");
+                        String option_sel_borderColor = validateJsonString(colorJson, "option_sel_border");
                         if (option_sel_borderColor != null && !option_sel_borderColor.isEmpty()) {
                             color.setColor(Color.parseColor(option_sel_borderColor));
                         }
                         break;
 
                     case BKACTIVITY_PAGINATION_BORDER_COLOR:
-                        String pagenationdots_current = validateJsonString(jsonObject, "pagenationdots_current");
+                        String pagenationdots_current = validateJsonString(colorJson, "pagenationdots_current");
                         if (pagenationdots_current != null && !pagenationdots_current.isEmpty()) {
                             color.setColor(Color.parseColor(pagenationdots_current));
                         }
                         break;
                     case BKACTIVITY_PAGINATION_ANSWERED_COLOR:
-                        String pagenationdots_answered = validateJsonString(jsonObject, "pagenationdots_answered");
+                        String pagenationdots_answered = validateJsonString(colorJson, "pagenationdots_answered");
                         if (pagenationdots_answered != null && !pagenationdots_answered.isEmpty()) {
                             color.setColor(Color.parseColor(pagenationdots_answered));
                         }
                         break;
 
                     case BKACTIVITY_PAGINATION_DEFAULT_COLOR:
-                        String pagenationdots_def = validateJsonString(jsonObject, "pagenationdots_def");
+                        String pagenationdots_def = validateJsonString(colorJson, "pagenationdots_def");
                         if (pagenationdots_def != null && !pagenationdots_def.isEmpty()) {
                             color.setColor(Color.parseColor(pagenationdots_def));
                         }
                         break;
 
                     case BKACTIVITY_TRIVIA_GRADE_COLOR:
-                        JSONObject label_textJsonObject = (JSONObject) mJsonObject.get("label_text");
-                        JSONObject header = (JSONObject) label_textJsonObject.get("tabular_response");
-
+                        JSONObject leaderBoardJson = (JSONObject) triviaJson.get("leaderBoard");
+                        JSONObject header = (JSONObject) leaderBoardJson.get("tabular_response");
                         String optionColor = validateJsonString(header, "color");
                         if (optionColor != null && !optionColor.isEmpty()) {
                             color.setColor(Color.parseColor(optionColor));
@@ -305,22 +341,27 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                         break;
                     case BKACTIVITY_XAXIS_TEXT_COLOR_COLOR:
                     case BKACTIVITY_YAXIS_TEXT_COLOR_COLOR:
-                        String percentageText = validateJsonString(jsonObject, "percentageText");
-                        if (percentageText != null && !percentageText.isEmpty()) {
-                            color.setColor(Color.parseColor(percentageText));
+                        String yAxisColor = validateJsonString(graphJsonObject, "yAxis");
+                        if (yAxisColor != null && !yAxisColor.isEmpty()) {
+                            color.setColor(Color.parseColor(yAxisColor));
                         }
                         break;
                     case BKACTIVITY_YAXIS_COLOR:
                     case BKACTIVITY_XAXIS_COLOR:
-                        String barGraphLine = validateJsonString(jsonObject, "barGraphLine");
+                        String barGraphLine = validateJsonString(graphJsonObject, "bar_line");
                         if (barGraphLine != null && !barGraphLine.isEmpty()) {
                             color.setColor(Color.parseColor(barGraphLine));
                         }
                         break;
+                    case BKACTIVITY_PERCENTAGE_COLOR:
+                        String percentageColor = validateJsonString(graphJsonObject, "percentage");
+                        if (percentageColor != null && !percentageColor.isEmpty()) {
+                            color.setColor(Color.parseColor(percentageColor));
+                        }
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -330,18 +371,19 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
      */
     public void customizeRadioButton(BKUICheckBox checkBox, boolean isCheckBox) {
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
             try {
-                JSONObject imageJsonObject = (JSONObject) mJsonObject.get("image");
-                Bitmap check_select, default_select;
+                JSONObject imageJson = (JSONObject) triviaJson.get("image");
                 if (isCheckBox) {
 
-                    String checkbox_sel_ImageName = imageJsonObject.getString("checkbox_sel");
-                    String checkbox_def_ImageName = imageJsonObject.getString("checkbox_def");
-                    check_select = getImageFromAssets(flutterLoader, checkbox_sel_ImageName, flutterBinding);
-                    default_select = getImageFromAssets(flutterLoader, checkbox_def_ImageName, flutterBinding);
+                    String checkbox_sel_ImageName = getImageName(imageJson, "checkbox_sel");
+                    String checkbox_def_ImageName = getImageName(imageJson, "checkbox_def");
 
-                    check_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(imageJsonObject, "checkbox_sel")));
+                    Bitmap check_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, checkbox_sel_ImageName));
+                    Bitmap default_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, checkbox_def_ImageName));
+
                     if (check_select != null) {
                         checkBox.setSelectedCheckBox(check_select);
                     }
@@ -349,26 +391,22 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                     if (default_select != null) {
                         checkBox.setUnselectedCheckBox(default_select);
                     }
-//                    default_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(imageJsonObject, "checkbox_def")));
-
                 } else {
-
-                    String radio_def_ImageName = imageJsonObject.getString("radio_def");
-                    String radio_sel_ImageName = imageJsonObject.getString("radio_sel");
-                    check_select = getImageFromAssets(flutterLoader, radio_sel_ImageName, flutterBinding);
-                    default_select = getImageFromAssets(flutterLoader, radio_def_ImageName, flutterBinding);
-//                    default_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(imageJsonObject, "radio_def")));
-//                    check_select = BitmapFactory.decodeResource(mContext.getResources(), getIdentifier(mContext, validateJsonString(imageJsonObject, "radio_sel")));
+                    String radio_def_ImageName = getImageName(imageJson, "radio_def");
+                    String radio_sel_ImageName = getImageName(imageJson, "radio_sel");
+                    Bitmap default_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, radio_def_ImageName));
+                    Bitmap check_select = BitmapFactory.decodeResource(mContext.getResources(),
+                            getIdentifier(mContext, radio_sel_ImageName));
                     if (check_select != null) {
                         checkBox.setSelectedCheckBox(check_select);
-
                     }
                     if (default_select != null) {
                         checkBox.setUnselectedCheckBox(default_select);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -382,45 +420,46 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
 
         switch (imageType) {
             case BKACTIVITY_PORTRAIT_LOGO:
-                if (mJsonObject != null) {
-                    {
-                        try {
-                            JSONObject imageJsonObject = (JSONObject) mJsonObject.get("image");
-                            String imageName = imageJsonObject.getString("logo");
-                            setImageToView(mContext, imageName, imageView, flutterLoader, flutterBinding);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            case BKACTIVITY_LANDSCAPE_LOGO:
+                if (triviaJson != null) {
+                    try {
+                        JSONObject imageJson = (JSONObject) triviaJson.get("image");
+                        String imageName = getImageName(imageJson, "logo");
+                        setImageToView(mContext, imageName, imageView);
+                    } catch (Exception e) {
+                        UpshotHelper.logException(e);
                     }
                 }
         }
     }
 
     /**
-     * CustomizeRelativeLayout is used to apply Background Color and Image For the Actions
+     * CustomizeRelativeLayout is used to apply Background Color and Image For the
+     * Actions
      */
     @Override
-    public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes, RelativeLayout relativeLayout, boolean isFullScreen) {
+    public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes,
+                                        RelativeLayout relativeLayout, boolean isFullScreen) {
         super.customizeRelativeLayout(relativeLayoutTypes, relativeLayout, isFullScreen);
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
             try {
-                JSONObject jImageBg = (JSONObject) mJsonObject.get("image");
-                JSONObject colorJsonObject = (JSONObject) mJsonObject.get("color");
-                if (colorJsonObject != null) {
-                    String bgColor = validateJsonString(colorJsonObject, "background");
+                JSONObject imageJson = (JSONObject) triviaJson.get("image");
+                JSONObject colorJson = (JSONObject) triviaJson.get("color");
+                if (colorJson != null) {
+                    String bgColor = validateJsonString(colorJson, "background");
                     if (bgColor != null && !bgColor.isEmpty()) {
                         relativeLayout.setBackgroundColor(Color.parseColor(bgColor));
                     }
                 }
                 switch (relativeLayoutTypes) {
                     case BKACTIVITY_BACKGROUND_IMAGE:
-                        String imageName = validateJsonString(jImageBg, "background");
-                        setImageToView(mContext,imageName, relativeLayout, flutterLoader, flutterBinding);
+                        String imageName = getImageName(imageJson, "background");
+                        setImageToView(mContext, imageName, relativeLayout);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
@@ -432,20 +471,18 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     public void customizeImageButton(ImageButton button, BKUIPrefComponents.BKActivityImageButtonTypes buttonType) {
         super.customizeImageButton(button, buttonType);
 
-        if (mJsonObject != null) {
+        if (triviaJson != null) {
             try {
-                JSONObject buttonJsonObject = (JSONObject) mJsonObject.get("button");
+                JSONObject buttonJson = (JSONObject) triviaJson.get("button");
                 switch (buttonType) {
                     case BKACTIVITY_SKIP_BUTTON:
-                        JSONObject skipJson = (JSONObject) buttonJsonObject.get("skip");
-                        String imageName = skipJson.getString("image");
-                        setImageToView(mContext, imageName, button, flutterLoader, flutterBinding);
+                        JSONObject skipJson = (JSONObject) buttonJson.get("skip");
+                        applySkipImage(mContext, skipJson, button);
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
         }
     }
 }
-

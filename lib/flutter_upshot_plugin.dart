@@ -150,8 +150,8 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod('redeemRewards', details);
   }
 
-  static void disableUser(bool shouldDisable) {
-    _channel.invokeMethod("disableUser", shouldDisable);
+  static void disableUser() {
+    _channel.invokeMethod("disableUser");
   }
 
   static void getNotifications(bool loadMore, int limit) {

@@ -58,7 +58,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
     func getImage(imageName: String) -> UIImage? {
         
         if let reg = registrar {
-            let fileKey = reg.lookupKey(forAsset: "assets/images/\(imageName)")
+            let fileKey = reg.lookupKey(forAsset: "assets/\(imageName)")
             let filePath =  Bundle.main.path(forResource: fileKey, ofType: nil)
             if let path = filePath {
                 let fileUrl = URL(fileURLWithPath: path)
@@ -680,16 +680,30 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                     if let desc = json["desc"] as? [String: Any] {
                         setLablePreferences(data:desc , label: label)
                     }
+                case .optionLabel:
+                    if let option = json["option"] as? [String: Any] {
+                        setLablePreferences(data:option , label: label)
+                    }
+                    
+                case .questionLabel:
+                    if let question = json["question"] as? [String: Any] {
+                        setLablePreferences(data:question , label: label)
+                    }
+                case .thankyouLabel:
+                    if let thanks = json["thankyou"] as? [String: Any] {
+                        setLablePreferences(data:thanks , label: label)
+                    }
+                case .scoreLabel:
+                    if let score = json["score"] as? [String: Any] {
+                        setLablePreferences(data:score , label: label)
+                    }
                     
                 case .triviaResultsLabel:
                     if let leaderboardJSON = triviaJson["leaderBoard"] as? [String: Any],
                        let result = leaderboardJSON["result"] as? [String: Any] {
                         setLablePreferences(data:result , label: label)
                     }
-                case .scoreLabel:
-                    if let score = json["score"] as? [String: Any] {
-                        setLablePreferences(data:score , label: label)
-                    }
+               
                 case .userScoreLabel:
                     if let leaderboardJSON = triviaJson["leaderBoard"] as? [String: Any],
                         let userScore = leaderboardJSON["userScore"] as? [String: Any] {
@@ -753,19 +767,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                         setLablePreferences(data:triviaTabularResponsesLabel , label: label)
                     }                    
                     
-                case .optionLabel:
-                    if let option = json["option"] as? [String: Any] {
-                        setLablePreferences(data:option , label: label)
-                    }
-                    
-                case .questionLabel:
-                    if let question = json["question"] as? [String: Any] {
-                        setLablePreferences(data:question , label: label)
-                    }
-                case .thankyouLabel:
-                    if let thanks = json["thankyou"] as? [String: Any] {
-                        setLablePreferences(data:thanks , label: label)
-                    }
+               
                 default:
                     break
                 }

@@ -41,7 +41,7 @@ android {
 
 dependencies{
     
-    implementation 'com.github.upshot-git:upshottestrepo:v1.6.21x'
+    implementation 'com.github.upshot-git:upshottestrepo:v1.7.6x'
     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.cardview:cardview:1.0.0"

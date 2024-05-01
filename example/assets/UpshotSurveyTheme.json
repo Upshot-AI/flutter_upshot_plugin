@@ -1,7 +1,7 @@
 {
     "image": {
-        "background": "surveyBG.png",
-        "logo": "upshot.png",
+        "background": "poll_bg.png",
+        "logo": "",
         "radio_def": "radio_def.png",
         "radio_sel": "radio_sel.png",
         "checkbox_def": "check_def.png",
@@ -20,13 +20,13 @@
         "smiley_Vgood_sel": "veryhappy_in_active.png"
     },
     "color": {
-        "headerBG": "#00000000",
-        "background": "##000000BF",
-        "pagenationdots_def": "#00000070",
-        "pagenationdots_answered": "#000000",
+        "headerBG": "",
+        "background": "",
+        "pagenationdots_def": "#FFFFFF42",
+        "pagenationdots_answered": "#E8BB1B",
         "pagenationdots_current": "#FFFFFF",
         "option_def_border": "#FFFFFF",
-        "option_sel_border": "#FFFFFF20"
+        "option_sel_border": "#E8BB1B"
     },
     "button": {
         "next": {
@@ -38,7 +38,7 @@
             "border_color": ""
         },
         "prev": {
-            "color": "##E8BB1B",
+            "color": "#E8BB1B",
             "font_name": "PFHandbookPro-Medium",
             "size": 18,
             "image": "",
@@ -54,65 +54,63 @@
             "border_color": ""
         },
         "skip": {
-            "image": "close.png"
+            "image": "close"
         },
         "continue": {
-            "color": "#FFFFFF",
+            "color": "#E8BB1B",
             "font_name": "PFHandbookPro-Medium",
             "size": 18,
             "image": "",
-            "bgcolor": "#E8BB1B",
-            "border_color": ""
+            "bgcolor": "#FFFFFF",
+            "border_color": "#E8BB1B"
         }
     },
     "label_text": {
         "header": {
             "color": "#FFFFFF",
             "font_name": "PFHandbookPro-Medium",
-            "size": 16
+            "size": 20
         },
         "desc": {
             "color": "#FFFFFF",
             "font_name": "PFHandbookPro-Medium",
-            "size": 16
+            "size": 20
         },
         "question": {
             "color": "#FFFFFF",
             "font_name": "PFHandbookPro-Medium",
-            "size": 15
+            "size": 20
         },
         "option": {
             "color": "#FFFFFF",
             "font_name": "PFHandbookPro-Regular",
-            "size": 15
+            "size": 18
         },
         "thankyou": {
             "color": "#FFFFFF",
             "font_name": "PFHandbookPro-Regular",
-            "size": 14
+            "size": 20
         }
     },
     "feedbackBox": {
         "color": "#FFFFFF",
         "font_name": "PFHandbookPro-Regular",
-        "size": 14,
+        "size": 18,
         "bgcolor": "#00000000",
-        "border_color": "#E73750"
+        "border_color": "#E8BB1B"
     },
     "slider": {
-        "min_image": "slider_min1.jpg",
-        "max_image": "slider_max1.jpg",
-        "thumb_image": "slider_thumb.jpg",
-        "min_color": "#CFE2FF",
-        "max_color": "#E73750",
+        "thumb_image": "slider_thumb",
+        "min_color": "#FFFFFF",
+        "max_color": "#E8BB1B",
         "slider_score": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular.ttf",
+            "font_name": "PFHandbookPro-Regular",
             "size": 14
         },
         "slider_minScore": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular.ttf",
+            "font_name": "PFHandbookPro-Regular",
             "size": 14
         },
         "slider_maxScore": {

@@ -37,7 +37,7 @@ public class BKPushAction extends BroadcastReceiver {
             try { // loading the Main Activity to not import it in the plugin
                 mainActivity = Class.forName(className);
             } catch (Exception e) {
-                e.printStackTrace();
+                UpshotHelper.logException(e);
             }
             if (mainActivity == null) {
                 return;

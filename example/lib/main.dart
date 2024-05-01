@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
-import 'package:flutter_upshot_plugin/upshotConstants.dart';
+import 'package:flutter_upshot_plugin/upshot_constants.dart';
 import 'package:flutter_upshot_plugin_example/home_screen.dart';
 import 'package:flutter_upshot_plugin_example/upshot_method_channel.dart';
 
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initializeBrandKinesisWithOptions() async {
     Map optionsMap = {
-      UpshotInitOptions.appId: "250ded4e-b4ae-4f66-b2c3-1091f6349764",
+      UpshotInitOptions.appId: "e748a45e-fbef-4a7e-a2c7-ef0b88812399",
       UpshotInitOptions.ownerId: "f3bf1d6f-5771-41f7-a6ff-640d3af4805e",
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
@@ -66,7 +67,9 @@ class _MyAppState extends State<MyApp> {
       UpshotInitOptions.enableExternalStorage: false
     };
     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
-    print("******* registerForPushNotifications ***********");
+    if (kDebugMode) {
+      print("******* registerForPushNotifications ***********");
+    }
     FlutterUpshotPlugin.registerForPushNotifications();
   }
 
