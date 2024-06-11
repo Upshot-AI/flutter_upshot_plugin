@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FlutterUpshotPlugin.getUnreadNotificationsCount(1000, 3);
+      FlutterUpshotPlugin.getUnreadNotificationsCount(3);
       FlutterUpshotPlugin.showActivity(-1, '', context);
       // UpshotMethodChannelInternal().showTutorials(context, '');
     });

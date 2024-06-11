@@ -758,9 +758,8 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
 
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
                 int inboxType = Integer.parseInt(options.get("inboxType").toString());
-                int limit = Integer.parseInt(options.get("limit").toString());
 
-                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, limit, inboxType,
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, inboxType,
                         new BKNotificationsCountResponseListener() {
                             @Override
                             public void notificationsCount(int i) {
@@ -774,6 +773,13 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                                 });
                             }
                         });
+            }
+            break;
+            case  "updateNotificationReadStatus": {
+
+                HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
+                String notificationId = options.get("notificationId").toString();
+                BrandKinesis.getBKInstance().updatePushNotificationReadStatus(context, notificationId);
             }
 
             case "setTechnologyType": {

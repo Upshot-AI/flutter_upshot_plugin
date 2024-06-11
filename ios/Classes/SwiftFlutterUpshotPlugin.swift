@@ -201,14 +201,20 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
                 UpshotHelper.defaultHelper.showInboxScreen(options: details)    
             }
         case "getUnreadNotificationsCount":
-            
-            var limit = 10
+                        
             var inboxType = 1
-            if let details = call.arguments as? [String: Any] {
-                limit = details["limit"] as? Int ?? 10
+            if let details = call.arguments as? [String: Any] {                
                 inboxType = details["inboxType"] as? Int ?? 1
             }
-            UpshotHelper.defaultHelper.getUnreadNotificationsCount(limit: limit, inboxType: inboxType)
+            UpshotHelper.defaultHelper.getUnreadNotificationsCount(inboxType: inboxType)
+
+          case "updateNotificationReadStatus":
+            
+            if let details = call.arguments as? [String: Any] {
+                let notificationId = details["notificationId"] as? String ?? ""
+                UpshotHelper.defaultHelper.updateNotificationReadStatus(notificationId: notificationId)
+            }
+            
 
         case "activityShown_Internal":
             if let details = call.arguments as? [String: Any] {                

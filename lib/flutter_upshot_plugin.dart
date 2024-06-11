@@ -163,9 +163,14 @@ class FlutterUpshotPlugin {
     _channel.invokeListMethod("showInboxScreen", options);
   }
 
-  static void getUnreadNotificationsCount(int limit, int inboxType) {
-    Map details = {'limit': limit, 'inboxType': inboxType};
+  static void getUnreadNotificationsCount(int inboxType) {
+    Map details = {'inboxType': inboxType};
     _channel.invokeListMethod("getUnreadNotificationsCount", details);
+  }
+
+  static void updateNotificationReadStatus(String notificationId) {
+    Map details = {'notificationId': notificationId};
+    _channel.invokeListMethod("updateNotificationReadStatus", details);
   }
 
   static void fetchStreaks() {

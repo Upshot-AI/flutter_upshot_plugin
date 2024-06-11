@@ -520,11 +520,11 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().showInboxController(options)
     }
 
-    func getUnreadNotificationsCount(limit: Int, inboxType: Int) {
+    func getUnreadNotificationsCount(inboxType: Int) {
      
        let type = BKInboxMessageType(rawValue: inboxType) ?? .OnlyPushNotifications
         
-        BrandKinesis.sharedInstance().getUnreadNotificationsCount(limit, notificationType: type) { count in
+        BrandKinesis.sharedInstance().getUnreadNotificationsCount(with: type) { count in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
@@ -535,6 +535,10 @@ class UpshotHelper: NSObject {
                 }
             }
         }
+    }
+    
+    func updateNotificationReadStatus(notificationId: String) {
+        BrandKinesis.sharedInstance().updatePushNotificationReadStatus(notificationId)
     }
     
     func setTechnologyType() {
