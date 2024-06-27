@@ -136,7 +136,6 @@ class _MyAppState extends State<MyApp> {
 
     Map options = {
       UpshotInboxScreenConfig.inboxType: UpshotInboxType.both,
-      UpshotInboxScreenConfig.deListingType: UpshotDelistingType.variable,
       UpshotInboxScreenConfig.displayMessageCount: true,
       UpshotInboxScreenConfig.displayTime: true,
       UpshotInboxScreenConfig.enableLoadMore: true,

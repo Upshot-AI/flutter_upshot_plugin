@@ -25,7 +25,6 @@ class UpshotInitOptions {
 class UpshotInboxScreenConfig {
   static String inboxType = "BKInboxType";
   static String showReadNotifications = "BKShowReadNotifications";
-  static String deListingType = "BKDeListingType";
   static String enableLoadMore = "BKEnableLoadMore";
   static String pushFetchLimit = "BKPushFetchLimit";
   static String displayMessageCount = "BKDisplayMsgCount";

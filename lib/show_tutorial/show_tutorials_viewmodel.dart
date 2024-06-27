@@ -333,7 +333,6 @@ class ShowTutorialsModel extends ChangeNotifier {
       }
     }
     currentToolTipDataClass = toolTipDataClass;
-    log('The yAxis is ${currentToolTipDataClass?.yAxis ?? 0} tooltip height is $_toolTipHeight and can show is $_canShow and the widget height is ${_currentWidget?.rect.height ?? 0} and the visibility is $_isVisible');
   }
 
   ToolTipDataClass _getValue(WidgetDataClass widgetDataClass) {
@@ -380,7 +379,6 @@ class ShowTutorialsModel extends ChangeNotifier {
     final renderBox =
         toolTipGlobalKey.currentContext!.findRenderObject() as RenderBox;
     _toolTipHeight = renderBox.size.height;
-    log('The tool tip size is $_toolTipHeight and webView height is $_webViewHeight');
     notifyListeners();
   }
 
@@ -430,7 +428,6 @@ class ShowTutorialsModel extends ChangeNotifier {
         if (widget.physics is! NeverScrollableScrollPhysics) {
           _parentHeight = element.size!.height;
           _parentHeightOffset = getOffset(element.renderObject!);
-          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
           return false;
         } else {
           return true;
@@ -439,7 +436,6 @@ class ShowTutorialsModel extends ChangeNotifier {
         if (widget.physics is! NeverScrollableScrollPhysics) {
           _parentHeight = element.size!.height;
           _parentHeightOffset = getOffset(element.renderObject!);
-          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
           return false;
         } else {
           return true;
@@ -458,7 +454,6 @@ class ShowTutorialsModel extends ChangeNotifier {
           _scrollElement = element;
           _parentHeight = element.size!.height;
           _parentHeightOffset = getOffset(element.renderObject!);
-          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
           return false;
         } else {
           return true;
@@ -469,7 +464,6 @@ class ShowTutorialsModel extends ChangeNotifier {
 
           _parentHeight = element.size!.height;
           _parentHeightOffset = getOffset(element.renderObject!);
-          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
           return false;
         } else {
           return true;
@@ -479,7 +473,6 @@ class ShowTutorialsModel extends ChangeNotifier {
           _scrollElement = element;
           _parentHeight = element.size!.height;
           _parentHeightOffset = getOffset(element.renderObject!);
-          log('The scroll height and offset is $_parentHeight, $_parentHeightOffset and the parent widget is ${widget.runtimeType}');
           return false;
         } else {
           return true;
@@ -508,7 +501,6 @@ class ShowTutorialsModel extends ChangeNotifier {
   }
 
   bool isFullSizedVerticalScrollbar() {
-    log('IsFullSizeScrollbar ${_parentHeight + _appBarHeight + _bottomNavHeight >= _screenHeight}');
     return _parentHeight > 0.0 &&
         ((_parentHeight + _appBarHeight + _bottomNavHeight) >= _screenHeight);
   }
@@ -524,7 +516,6 @@ class ShowTutorialsModel extends ChangeNotifier {
               .contains('_scaffoldslot.bottomnavigationbar')) {
             _bottomNavHeight = child.size!.height;
             _hasBottomNavBarHeight = true;
-            log('The bottom nav bar height is $_bottomNavHeight');
           }
           if (child.widget.key
               .toString()
@@ -532,7 +523,6 @@ class ShowTutorialsModel extends ChangeNotifier {
               .contains('_scaffoldslot.appbar')) {
             _appBarHeight = child.size!.height;
             _hasAppHeight = true;
-            log('The app bar height is $_appBarHeight');
           }
         }
 
@@ -891,9 +881,6 @@ div {padding: 0px; margin: 0px; $fontName }
                   ? _toolTipMaxHeight - _toolTipHeight
                   : call.arguments)
               .toInt();
-          // webViewHeight = (call.arguments).toInt();
-          log("The new height is $webViewHeight");
-          log("The call height is ${call.arguments}");
           getToolTipSize();
           getYAxis(index: _selectedIndex);
         }

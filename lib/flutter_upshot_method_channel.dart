@@ -15,7 +15,6 @@ class UpshotMethodChannelInternal {
   }
 
   Future<void> _methodCallHandler(MethodCall call) async {
-    log('Upshot _methodCallHandler====' + call.method);
     if (call.method == "upshot_interactive_tutoInfo") {
       data = call.arguments as String;
       if (ShowTutorialsModel.instance.isTutorialProcessing) {
@@ -25,7 +24,6 @@ class UpshotMethodChannelInternal {
       if (context != null &&
           data != null &&
           !ShowTutorialsModel.instance.isTutorialPresent) {
-        // log('Upshot showTutorials====' + UpshotMethodChannelInternal.data!);
         Future.delayed(const Duration(milliseconds: 400), () {
           showTutorials(context!, UpshotMethodChannelInternal.data!);
         });
@@ -34,10 +32,6 @@ class UpshotMethodChannelInternal {
       }
     }
   }
-
-  // void isValidResponse(Map<String, dynamic> json) {
-  //   var validKeys = ["campaignId", "activityId", "msgId"];
-  // }
 
   void showTutorials(BuildContext context, String data) async {
     ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);

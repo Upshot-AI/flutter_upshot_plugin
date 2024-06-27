@@ -149,9 +149,7 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().dispatchEvents(withTimedEvents: timed, completionBlock: nil)
     }
     
-    func showActivity(activityType: BKActivityType, tag: String) {                
-       
-//        showAlert(title: "Activity Request", message: tag)
+    func showActivity(activityType: BKActivityType, tag: String) {                       
         BrandKinesis.sharedInstance().showActivity(with: activityType, andTag: tag)
     }
     
@@ -538,7 +536,17 @@ class UpshotHelper: NSObject {
     }
     
     func updateNotificationReadStatus(notificationId: String) {
-        BrandKinesis.sharedInstance().updatePushNotificationReadStatus(notificationId)
+        BrandKinesis.sharedInstance().updatePushNotificationReadStatus(notificationId) { status, error in
+            if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+                
+                let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    let response: [String : Any] =  ["status":status, "error": error ?? ""];
+                    upshotChannel.invokeMethod("updateNotificationReadStatus", arguments: response)
+                }
+            }
+        }
     }
     
     func setTechnologyType() {
@@ -587,20 +595,7 @@ class UpshotHelper: NSObject {
             print(myJSONError)
         }
         return nil
-    }
-    
-    
-    
-    func showAlert(title: String, message: String) {
-        
-        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
-            
-            let alertController: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(action)
-            controller.present(alertController, animated: false, completion: nil)
-        }
-    }
+    }    
     
     func getContentHeight(data: [String: Any]) {
         
@@ -758,8 +753,7 @@ extension UpshotHelper: BrandKinesisDelegate {
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
             let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
-                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: jsonString)
-                // self.showAlert(title: "Activity Request", message: jsonString)
+                upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: jsonString)                
             }
         }
     }

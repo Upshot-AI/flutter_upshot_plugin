@@ -17,6 +17,7 @@ import com.brandkinesis.BrandKinesis;
 import com.brandkinesis.activitymanager.BKActivityTypes;
 import com.brandkinesis.callback.BKBadgeAccessListener;
 import com.brandkinesis.callback.BKInboxAccessListener;
+import com.brandkinesis.callback.BKMessageReadStatusListener;
 import com.brandkinesis.callback.BrandKinesisCallback;
 import com.brandkinesis.pushnotifications.BKNotificationsCountResponseListener;
 import com.brandkinesis.pushnotifications.BKNotificationsResponseListener;
@@ -779,6 +780,20 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
 
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
                 String notificationId = options.get("notificationId").toString();
+                BrandKinesis.getBKInstance().setBrandkinesisMessageReadStatusCallback(new BKMessageReadStatusListener() {
+                    @Override
+                    public void onMessageStatus(boolean b, String s) {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("status", b);
+                        data.put("error", s);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                channel.invokeMethod("updateNotificationReadStatus", data);
+                            }
+                        });
+                    }
+                });
                 BrandKinesis.getBKInstance().updatePushNotificationReadStatus(context, notificationId);
             }
 
