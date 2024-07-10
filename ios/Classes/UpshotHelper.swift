@@ -696,7 +696,7 @@ extension UpshotHelper: BrandKinesisDelegate {
                         upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: params)
                     }
                     
-                } else if let deepLink  = params["deepLink"] as? String {
+                } else if let deepLink  = params["deepLink"] as? String, params.count == 1 {
                     let activityPayload = ["activityType": activityType.rawValue, "deepLink": deepLink] as [String : Any]
                     
                     DispatchQueue.main.asyncAfter(deadline: .now()) {

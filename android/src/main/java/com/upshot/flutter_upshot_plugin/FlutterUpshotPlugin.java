@@ -366,20 +366,25 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        String data = (String) actionData.get("deepLink");
-                        HashMap<String, Object> response = new HashMap<>();
-                        response.put("activityType", activityType.getValue());
-                        if (data != null) {
-                            try {
-                                JSONObject deeplinkJSON = new JSONObject(data);
-                                response.put("deepLink_keyValue", deeplinkJSON.toString());
-                                channel.invokeMethod("upshotActivityDeeplink", response);
-                            } catch (JSONException e) {
-                                response.put("deepLink", data);
-                                channel.invokeMethod("upshotActivityDeeplink", response);
-                                UpshotHelper.logException(e);
+                        if (actionData instanceof HashMap) {
+                            channel.invokeMethod("upshotActivityDeeplink", actionData);
+                        } else {
+                            String data = (String) actionData.get("deepLink");
+                            HashMap<String, Object> response = new HashMap<>();
+                            response.put("activityType", activityType.getValue());
+                            if (data != null) {
+                                try {
+                                    JSONObject deeplinkJSON = new JSONObject(data);
+                                    response.put("deepLink_keyValue", deeplinkJSON.toString());
+                                    channel.invokeMethod("upshotActivityDeeplink", response);
+                                } catch (JSONException e) {
+                                    response.put("deepLink", data);
+                                    channel.invokeMethod("upshotActivityDeeplink", response);
+                                    UpshotHelper.logException(e);
+                                }
                             }
                         }
+
                     }
                 });
             }
@@ -775,25 +780,26 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                             }
                         });
             }
-            break;
-            case  "updateNotificationReadStatus": {
+                break;
+            case "updateNotificationReadStatus": {
 
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
                 String notificationId = options.get("notificationId").toString();
-                BrandKinesis.getBKInstance().setBrandkinesisMessageReadStatusCallback(new BKMessageReadStatusListener() {
-                    @Override
-                    public void onMessageStatus(boolean b, String s) {
-                        HashMap<String, Object> data = new HashMap<>();
-                        data.put("status", b);
-                        data.put("error", s);
-                        handler.post(new Runnable() {
+                BrandKinesis.getBKInstance()
+                        .setBrandkinesisMessageReadStatusCallback(new BKMessageReadStatusListener() {
                             @Override
-                            public void run() {
-                                channel.invokeMethod("updateNotificationReadStatus", data);
+                            public void onMessageStatus(boolean b, String s) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("status", b);
+                                data.put("error", s);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        channel.invokeMethod("updateNotificationReadStatus", data);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
                 BrandKinesis.getBKInstance().updatePushNotificationReadStatus(context, notificationId);
             }
 
