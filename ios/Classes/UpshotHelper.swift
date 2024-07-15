@@ -686,7 +686,7 @@ extension UpshotHelper: BrandKinesisDelegate {
     
     func brandKinesisActivity(_ activityType: BKActivityType, performedActionWithParams params: [AnyHashable : Any]) {
                 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
