@@ -37,7 +37,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
     private FlutterPlugin.FlutterPluginBinding flutterBinding;
 
     public UpshotTriviaCustomization(Context context, JSONObject triviaJSON, FlutterLoader loader,
-                                     FlutterPlugin.FlutterPluginBinding binding) {
+            FlutterPlugin.FlutterPluginBinding binding) {
         mContext = context;
         try {
             triviaJson = triviaJSON;
@@ -50,12 +50,14 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
 
     @Override
     public void customizeForLinearLayout(LinearLayout linearLayout,
-                                         BKUIPrefComponents.BKActivityLinearLayoutTypes linearLayoutTypes) {
+            BKUIPrefComponents.BKActivityLinearLayoutTypes linearLayoutTypes) {
         super.customizeForLinearLayout(linearLayout, linearLayoutTypes);
-        switch (linearLayoutTypes) {
-            case BKACTIVITY_BACKGROUND_IMAGE:
-                linearLayout.setBackgroundColor(Color.TRANSPARENT);
-                break;
+        if (triviaJson != null) {
+            switch (linearLayoutTypes) {
+                case BKACTIVITY_BACKGROUND_IMAGE:
+                    linearLayout.setBackgroundColor(Color.TRANSPARENT);
+                    break;
+            }
         }
     }
 
@@ -124,28 +126,28 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                         JSONObject option_result = (JSONObject) leaderBoardJson.get("result");
                         applyTextViewProperties(option_result, textView, flutterLoader, flutterBinding);
                     }
-                    break;
+                        break;
                     case BKACTIVITY_LEADER_BOARD_SCORE_VALUE_TV: {
                         JSONObject option_result = (JSONObject) leaderBoardJson.get("yourScore");
                         applyTextViewProperties(option_result, textView, flutterLoader, flutterBinding);
                     }
-                    break;
+                        break;
                     case BKACTIVITY_LEADER_BOARD_GRADE_VALUE_TV: {
                         JSONObject option_yourGrade = (JSONObject) leaderBoardJson.get("yourGrade");
                         applyTextViewProperties(option_yourGrade, textView, flutterLoader, flutterBinding);
                     }
-                    break;
+                        break;
                     case BKACTIVITY_LEADER_BOARD_SCORE_TV: {
                         JSONObject option_userScore = (JSONObject) leaderBoardJson.get("userScore");
                         applyTextViewProperties(option_userScore, textView, flutterLoader, flutterBinding);
                     }
-                    break;
+                        break;
 
                     case BKACTIVITY_LEADER_BOARD_GRADE_TV: {
                         JSONObject option_userGrade = (JSONObject) leaderBoardJson.get("userGrade");
                         applyTextViewProperties(option_userGrade, textView, flutterLoader, flutterBinding);
                     }
-                    break;
+                        break;
                     case BKACTIVITY_LEADER_BOARD_BAR_RESPONSES_TV:
                         String yAxis_HeaderColor = graphJson.getString("yAxis_Header");
                         if (!yAxis_HeaderColor.isEmpty()) {
@@ -177,7 +179,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                                 .get("tabular_response_count");
                         applyTextViewProperties(tabular_response_header, textView, flutterLoader, flutterBinding);
                     }
-                    break;
+                        break;
                     /* User Grade Header Text */
                     case BKACTIVITY_TRIVIA_GRADE_HEADER_TABLE_TV:
                         JSONObject tabularResponseHeader = (JSONObject) leaderBoardJson.get("tabular_grade_header");
@@ -439,7 +441,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
      */
     @Override
     public void customizeRelativeLayout(BKUIPrefComponents.BKActivityRelativeLayoutTypes relativeLayoutTypes,
-                                        RelativeLayout relativeLayout, boolean isFullScreen) {
+            RelativeLayout relativeLayout, boolean isFullScreen) {
         super.customizeRelativeLayout(relativeLayoutTypes, relativeLayout, isFullScreen);
 
         if (triviaJson != null) {

@@ -685,12 +685,18 @@ extension UpshotHelper: BrandKinesisDelegate {
     }
     
     func brandKinesisActivity(_ activityType: BKActivityType, performedActionWithParams params: [AnyHashable : Any]) {
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
-                if let deepLink  = params["deepLink"] as? String {
+                
+                if let _  = params["deepLink"] as? String, let _ = params["deepLink_keyValue"] as? [String: Any] {                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: params)
+                    }
+                    
+                } else if let deepLink  = params["deepLink"] as? String, params.count == 1 {
                     let activityPayload = ["activityType": activityType.rawValue, "deepLink": deepLink] as [String : Any]
                     
                     DispatchQueue.main.asyncAfter(deadline: .now()) {
@@ -701,6 +707,10 @@ extension UpshotHelper: BrandKinesisDelegate {
                     let activityPayload = ["activityType": activityType.rawValue, "deepLink_keyValue": self.jsonToString(json: data) ?? ""] as [String : Any]
                     DispatchQueue.main.asyncAfter(deadline: .now()) {
                         upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: activityPayload)
+                    }
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        upshotChannel.invokeMethod("upshotActivityDeeplink", arguments: params)
                     }
                 }
             }

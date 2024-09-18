@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_upshot_plugin (0.0.1):
+  - flutter_upshot_plugin (1.0.0):
     - Flutter
     - Upshot
   - Upshot (1.0.2)
@@ -26,7 +26,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_upshot_plugin: 6eef2a4f21f313c821311a7b0377757b70ec9a19
+  flutter_upshot_plugin: 3d79a0b02bf90dd0ddf341f73fba016e35b1177f
   Upshot: 72b27af6fa697f7d24323eec8764d288fb84e0ee
   webview_flutter_wkwebview: d08f59cde5e8402c345c0bdda35ac0031352dcae
 
