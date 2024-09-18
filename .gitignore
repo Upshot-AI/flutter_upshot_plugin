@@ -25,5 +25,4 @@ doc/api/
 **/.DS_Store
 **/._.DS_Store
 **/.vscode/
-.vscode/settings.json
-.fvm/fvm_config.json
+
