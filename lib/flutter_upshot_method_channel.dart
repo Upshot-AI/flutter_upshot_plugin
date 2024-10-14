@@ -17,7 +17,7 @@ class UpshotMethodChannelInternal {
 
   Future<void> _methodCallHandler(MethodCall call) async {
     if (call.method == "upshot_interactive_tutoInfo") {
-      data = call.arguments as String;
+      /*data = call.arguments as String;
       if (ShowTutorialsModel.instance.isTutorialProcessing) {
         return;
       }
@@ -30,12 +30,12 @@ class UpshotMethodChannelInternal {
         });
       } else {
         log('No Tutorials to show');
-      }
+      }*/
     }
   }
 
   void showTutorials(BuildContext context, String data) async {
-    ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
+   /* ShowTutorialsModel.instance.getData(UpshotMethodChannelInternal.data!);
     if (ShowTutorialsModel.instance.tutorialList.isNotEmpty) {
       ShowTutorialsModel.instance.isTutorialPresent = true;
       ShowTutorialsModel.context = context;
@@ -46,6 +46,6 @@ class UpshotMethodChannelInternal {
           TransparentRoute(widgetBuilder: (context) => const ShowTutorials()));
     } else {
       log('No Elements found');
-    }
+    }*/
   }
 }
