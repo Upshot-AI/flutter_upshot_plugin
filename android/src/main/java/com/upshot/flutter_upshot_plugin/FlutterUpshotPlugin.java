@@ -397,7 +397,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                     public void run() {
                         if (data != null) {
                             try {
-                                internal_channel.invokeMethod("upshot_interactive_tutoInfo", data);
+                                //internal_channel.invokeMethod("upshot_interactive_tutoInfo", data);
                                 Log.d("upshot_interactive_tutoInfo", "callback send");
 
                             } catch (Exception e) {
