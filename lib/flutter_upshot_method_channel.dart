@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';/*
 import 'show_tutorial/services/custom_transaparent_route.dart';
 import 'show_tutorial/show_tutorial_view.dart';
-import 'show_tutorial/show_tutorials_viewmodel.dart';
+import 'show_tutorial/show_tutorials_viewmodel.dart';*/
 
 class UpshotMethodChannelInternal {
   static const _channel = MethodChannel('flutter_upshot_plugin_internal');
