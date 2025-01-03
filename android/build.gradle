@@ -27,6 +27,7 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
+    namespace 'com.upshot.flutter_upshot_plugin'
     compileSdkVersion 33
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
