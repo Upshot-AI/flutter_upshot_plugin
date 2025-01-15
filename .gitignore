@@ -6,8 +6,8 @@
 build/
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
-.fvm
-.vscode
+# .fvm
+# .vscode
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
 doc/api/
@@ -24,5 +24,13 @@ doc/api/
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
-**/.vscode/
 
+
+# Ignore build folder in example project
+example/build/
+example/.dart_tool/
+example/.packages
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+example/.flutter-plugins-version
+example/pubspec.lock
