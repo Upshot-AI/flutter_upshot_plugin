@@ -1,19 +1,19 @@
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
+  // const MethodChannel channel = MethodChannel('flutter_upshot_plugin');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
-    });
+    // channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    //   return '42';
+    // });
   });
 
   tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    // channel.setMockMethodCallHandler(null);
   });
 
   // test('getPlatformVersion', () async {

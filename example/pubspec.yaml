@@ -6,7 +6,7 @@ description: Demonstrates how to use the flutter_upshot_plugin plugin.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <=3.16.8"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -18,7 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  showcaseview: ^2.0.0+1
+  showcaseview: ^4.0.1
   flutter_upshot_plugin:
     # When depending on this package from a real application you should use:
     #   flutter_upshot_plugin: ^x.y.z
@@ -29,7 +29,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.5
 
 dev_dependencies:
   flutter_test:
@@ -40,7 +40,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -52,46 +52,44 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-     - assets/UpshotPollTheme.json
-     - assets/UpshotRatingTheme.json
-     - assets/UpshotSurveyTheme.json
-     - assets/UpshotTriviaTheme.json     
-     - assets/new_tutorial_json.json
-     - assets/images/avg_active.png
-     - assets/images/avg_in_active.png
-     - assets/images/bad_active.png
-     - assets/images/bad_in_active.png
-     - assets/images/happy_active.png
-     - assets/images/happy_in_active.png
-     - assets/images/buttonBg.png
-     - assets/images/check_def.png
-     - assets/images/check_sel.png
-     - assets/images/close.png
-     - assets/images/dislike_active.png
-     - assets/images/dislike_in_active.png
-     - assets/images/like_active.png     
-     - assets/images/like_in_active.png
-     - assets/images/radio_def.png
-     - assets/images/radio_sel.png
-     - assets/images/ratingBG.png
-     - assets/images/slider_max.png
-     - assets/images/slider_min.png
-     - assets/images/slider_thumb.jpg
-     - assets/images/star_active.png
-     - assets/images/star_in_active.png
-     - assets/images/surveyBG.png
-     - assets/images/triviaBG.jpg
-     - assets/images/unhappy_active.png
-     - assets/images/unhappy_in_active.png
-     - assets/images/upshot.png
-     - assets/images/veryhappy_active.png
-     - assets/images/veryhappy_in_active.png
-     - assets/images/poll_bg.png
-     - assets/images/rating_bg.png
-     - assets/images/upshot_logo.png
-     
-     
-     
+    - assets/UpshotPollTheme.json
+    - assets/UpshotRatingTheme.json
+    - assets/UpshotSurveyTheme.json
+    - assets/UpshotTriviaTheme.json
+    - assets/new_tutorial_json.json
+    - assets/images/avg_active.png
+    - assets/images/avg_in_active.png
+    - assets/images/bad_active.png
+    - assets/images/bad_in_active.png
+    - assets/images/happy_active.png
+    - assets/images/happy_in_active.png
+    - assets/images/buttonBg.png
+    - assets/images/check_def.png
+    - assets/images/check_sel.png
+    - assets/images/close.png
+    - assets/images/dislike_active.png
+    - assets/images/dislike_in_active.png
+    - assets/images/like_active.png
+    - assets/images/like_in_active.png
+    - assets/images/radio_def.png
+    - assets/images/radio_sel.png
+    - assets/images/ratingBG.png
+    - assets/images/slider_max.png
+    - assets/images/slider_min.png
+    - assets/images/slider_thumb.jpg
+    - assets/images/star_active.png
+    - assets/images/star_in_active.png
+    - assets/images/surveyBG.png
+    - assets/images/triviaBG.jpg
+    - assets/images/unhappy_active.png
+    - assets/images/unhappy_in_active.png
+    - assets/images/upshot.png
+    - assets/images/veryhappy_active.png
+    - assets/images/veryhappy_in_active.png
+    - assets/images/poll_bg.png
+    - assets/images/rating_bg.png
+    - assets/images/upshot_logo.png
+
   fonts:
     - family: PFHandbookPro
       fonts:

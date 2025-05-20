@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_upshot_plugin/show_tutorial/utilities/ui_utils.dart';
 import 'widget_data_class.dart';
 
 class TransaprentCustomPainter extends CustomPainter {
@@ -14,7 +15,7 @@ class TransaprentCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black.withOpacity(opacity)
+      ..color = getColor("#000000", opacity) ?? Colors.black
       ..style = PaintingStyle.fill;
 
     canShow && widgetDataClass != null && isVisible

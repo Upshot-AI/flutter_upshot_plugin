@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_upshot_plugin/flutter_upshot_plugin.dart';
 import 'package:flutter_upshot_plugin/upshot_constants.dart';
-import 'package:flutter_upshot_plugin_example/test_page.dart';
-import 'package:flutter_upshot_plugin_example/upshot_method_channel.dart';
+import 'test_page.dart';
+import 'upshot_method_channel.dart';
+// import 'package:flutter_upshot_plugin_example/test_page.dart';
+// import 'package:flutter_upshot_plugin_example/upshot_method_channel.dart';
 import 'home_screen.dart';
 
 class DemoClass extends StatefulWidget {

@@ -9,6 +9,7 @@ import 'package:flutter_upshot_plugin/show_tutorial/models/interactive_tutorial/
 import 'package:flutter_upshot_plugin/show_tutorial/services/tool_tip_data_class.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/upshot_keys.dart';
 import 'package:flutter_upshot_plugin/show_tutorial/services/widget_data_class.dart';
+import 'package:flutter_upshot_plugin/show_tutorial/utilities/ui_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'models/interactive_tutorial/interactive_tutorial_elements_model.dart'
     as interactive_tutorial;
@@ -715,10 +716,24 @@ class ShowTutorialsModel extends ChangeNotifier {
     }
   }
 
-  Color? getColor(String? hexColor) {
+  // Color? getColor(String? hexColor) {
+  //   if ((hexColor?.isNotEmpty ?? false) && hexColor != "") {
+  //     hexColor!.replaceFirst('#', '');
+  //     return Color(int.parse('0xFF${hexColor.substring(1)}'));
+  //   }
+  //   return null;
+  // }
+
+  Color? getColor(String? hexColor, double opacity) {
     if ((hexColor?.isNotEmpty ?? false) && hexColor != "") {
-      hexColor!.replaceFirst('#', '');
-      return Color(int.parse('0xFF${hexColor.substring(1)}'));
+      hexColor = hexColor!.replaceFirst('#', '');
+
+      int alpha = (opacity * 255).round();
+      String alphaHex = alpha.toRadixString(16).padLeft(2, '0').toUpperCase();
+      if (hexColor.length == 6) {
+        return Color(
+            int.parse('0x$alphaHex$hexColor')); // Full ARGB (opacity + RGB)
+      }
     }
     return null;
   }
@@ -734,12 +749,12 @@ class ShowTutorialsModel extends ChangeNotifier {
     return false;
   }
 
-  String descriptionText(String? text) {
+  String descriptionText(String? text, BuildContext context) {
     final fontName = (tutorialList[_selectedIndex].description?.fontName != '')
         ? 'font-family: ${tutorialList[_selectedIndex].description?.fontName};'
         : 'font-family: Arial, sans-serif;';
     final pixelRatio = Platform.isAndroid
-        ? WidgetsBinding.instance.window.devicePixelRatio /
+        ? getDevicePixelRatio(context) /
             (orientation == Orientation.landscape ? 2 : 1)
         : 1;
     final fontSize = tutorialList[_selectedIndex].description?.fontSize ?? 16;

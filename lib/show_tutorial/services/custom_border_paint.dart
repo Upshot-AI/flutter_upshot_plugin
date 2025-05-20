@@ -19,7 +19,7 @@ class CustomBorderPaint extends CustomPainter {
     if (canShow && widgetDataClass != null) {
       final Paint paint = Paint()
         // ..color = Colors.red
-        ..color = ShowTutorialsModel.instance.getColor(color) ?? Colors.red
+        ..color = ShowTutorialsModel.instance.getColor(color, 1) ?? Colors.red
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2;
 

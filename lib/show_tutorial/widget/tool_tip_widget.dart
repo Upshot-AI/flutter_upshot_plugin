@@ -81,14 +81,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: model
-                                      .getColor(tutorial.description?.bgColor)
-                                      ?.withOpacity(
-                                          (tutorial.description?.opacity ?? 1)
-                                              .toDouble()) ??
-                                  Colors.white.withOpacity(
-                                      (tutorial.description?.opacity ?? 1)
-                                          .toDouble()),
+                              color: model.getColor(
+                                      tutorial.description?.bgColor,
+                                      tutorial.description?.opacity ?? 1) ??
+                                  model.getColor("#FFFFFF", 1),
                             ),
                             padding: widget.isUp
                                 ? const EdgeInsets.fromLTRB(10, 30, 10, 10)
@@ -98,7 +94,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                               child: WebViewWidget(
                                 controller: model.webViewController
                                   ..loadHtmlString(model.descriptionText(
-                                      tutorial.description?.text))
+                                      tutorial.description?.text, context))
                                   ..setNavigationDelegate(NavigationDelegate(
                                     onPageFinished: (url) {
                                       // model.webViewController.runJavaScript(
@@ -154,12 +150,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                           padding: !widget.isUp
                               ? const EdgeInsets.fromLTRB(10, 10, 10, 30)
                               : const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          color: model
-                                  .getColor(footer?.backgroundColor)
-                                  ?.withOpacity((tutorial.footer?.opacity ?? 1)
-                                      .toDouble()) ??
-                              Colors.white.withOpacity(
-                                  (tutorial.footer?.opacity ?? 1).toDouble()),
+                          color: model.getColor(footer?.backgroundColor,
+                                  tutorial.footer?.opacity ?? 1) ??
+                              model.getColor("#ffffff", 1),
                           child: model.shouldShowSkip(footer)
                               ? Row(
                                   mainAxisAlignment:
@@ -173,16 +166,15 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                   elevation: 0.0,
                                                   splashFactory:
                                                       NoSplash.splashFactory,
-                                                  primary: model
-                                                      .getColor(footer
-                                                          ?.skipButton
-                                                          ?.backgroundColor)
-                                                      ?.withOpacity((tutorial
+                                                  backgroundColor:
+                                                      model.getColor(
+                                                          footer?.skipButton
+                                                              ?.backgroundColor,
+                                                          tutorial
                                                                   .footer
                                                                   ?.skipButton
                                                                   ?.opacity ??
-                                                              1)
-                                                          .toDouble()),
+                                                              1),
                                                   fixedSize:
                                                       const Size.fromHeight(
                                                           44)),
@@ -217,9 +209,10 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                               ?.fontStyle)
                                                       ? FontWeight.w800
                                                       : null,
-                                                  color: model.getColor(footer
-                                                          ?.skipButton
-                                                          ?.fontColor) ??
+                                                  color: model.getColor(
+                                                          footer?.skipButton
+                                                              ?.fontColor,
+                                                          1) ??
                                                       Colors.white,
                                                 ),
                                               ),
@@ -250,15 +243,15 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                         .splashFactory,
                                                                 fixedSize:
                                                                     const Size
-                                                                        .fromHeight(44),
-                                                                primary: model
-                                                                    .getColor(footer
+                                                                        .fromHeight(
+                                                                        44),
+                                                                backgroundColor: model.getColor(
+                                                                    footer
                                                                         ?.prevButton
-                                                                        ?.backgroundColor)
-                                                                    ?.withOpacity(
-                                                                        (footer?.prevButton?.opacity ??
-                                                                                1)
-                                                                            .toDouble()),
+                                                                        ?.backgroundColor,
+                                                                    footer?.prevButton
+                                                                            ?.opacity ??
+                                                                        1),
                                                               ),
                                                               onPressed: model
                                                                   .previousTap,
@@ -299,9 +292,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                       ?.prevButton
                                                                       ?.fontSize
                                                                       ?.toDouble(),
-                                                                  color: model.getColor(footer
-                                                                      ?.prevButton
-                                                                      ?.fontColor),
+                                                                  color: model.getColor(
+                                                                      footer
+                                                                          ?.prevButton
+                                                                          ?.fontColor,
+                                                                      1),
                                                                 ),
                                                               ))),
                                                       const SizedBox(width: 10),
@@ -321,15 +316,12 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                       fixedSize:
                                                           const Size.fromHeight(
                                                               44),
-                                                      primary: model
-                                                          .getColor(footer
-                                                              ?.nextButton
-                                                              ?.backgroundColor)
-                                                          ?.withOpacity((footer
-                                                                      ?.nextButton
-                                                                      ?.opacity ??
-                                                                  1)
-                                                              .toDouble()),
+                                                      backgroundColor: model.getColor(
+                                                          footer?.nextButton
+                                                              ?.backgroundColor,
+                                                          footer?.nextButton
+                                                                  ?.opacity ??
+                                                              1),
                                                     ),
                                                     onPressed: () =>
                                                         model.nextTap(context),
@@ -363,7 +355,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                               ?.fontSize
                                                               ?.toDouble(),
                                                           color: model.getColor(
-                                                              footer?.nextButton?.fontColor)),
+                                                              footer?.nextButton?.fontColor, 1)),
                                                     ),
                                                   ),
                                                 )
@@ -398,15 +390,15 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                         .splashFactory,
                                                                 fixedSize:
                                                                     const Size
-                                                                        .fromHeight(44),
-                                                                primary: model
-                                                                    .getColor(footer
+                                                                        .fromHeight(
+                                                                        44),
+                                                                backgroundColor: model.getColor(
+                                                                    footer
                                                                         ?.prevButton
-                                                                        ?.backgroundColor)
-                                                                    ?.withOpacity(
-                                                                        (footer?.prevButton?.opacity ??
-                                                                                1)
-                                                                            .toDouble()),
+                                                                        ?.backgroundColor,
+                                                                    footer?.prevButton
+                                                                            ?.opacity ??
+                                                                        1),
                                                               ),
                                                               onPressed: model
                                                                   .previousTap,
@@ -447,9 +439,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                                       ?.prevButton
                                                                       ?.fontSize
                                                                       ?.toDouble(),
-                                                                  color: model.getColor(footer
-                                                                      ?.prevButton
-                                                                      ?.fontColor),
+                                                                  color: model.getColor(
+                                                                      footer
+                                                                          ?.prevButton
+                                                                          ?.fontColor,
+                                                                      1),
                                                                 ),
                                                               ))),
                                                       const SizedBox(width: 10),
@@ -469,15 +463,12 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                       fixedSize:
                                                           const Size.fromHeight(
                                                               44),
-                                                      primary: model
-                                                          .getColor(footer
-                                                              ?.nextButton
-                                                              ?.backgroundColor)
-                                                          ?.withOpacity((footer
-                                                                      ?.nextButton
-                                                                      ?.opacity ??
-                                                                  1)
-                                                              .toDouble()),
+                                                      backgroundColor: model.getColor(
+                                                          footer?.nextButton
+                                                              ?.backgroundColor,
+                                                          footer?.nextButton
+                                                                  ?.opacity ??
+                                                              1),
                                                     ),
                                                     onPressed: () =>
                                                         model.nextTap(context),
@@ -519,7 +510,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
                                                             ?.toDouble(),
                                                         color: model.getColor(
                                                             footer?.nextButton
-                                                                ?.fontColor),
+                                                                ?.fontColor,
+                                                            1),
                                                       ),
                                                     ),
                                                   ),
