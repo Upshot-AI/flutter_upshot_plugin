@@ -1,0 +1,2 @@
+/Users/vinodkottamasu/Documents/Projects/Flutter/flutter_upshot_plugin/example/android/app/.cxx/RelWithDebInfo/1l225g6c/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/vinodkottamasu/Documents/Projects/Flutter/flutter_upshot_plugin/example/android/app/.cxx/RelWithDebInfo/1l225g6c/armeabi-v7a/CMakeFiles/rebuild_cache.dir

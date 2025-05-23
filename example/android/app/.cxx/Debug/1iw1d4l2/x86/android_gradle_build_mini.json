@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/vinodkottamasu/fvm/versions/3.29.0/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/vinodkottamasu/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/vinodkottamasu/Documents/Projects/Flutter/flutter_upshot_plugin/example/android/app/.cxx/Debug/1iw1d4l2/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/vinodkottamasu/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/vinodkottamasu/Documents/Projects/Flutter/flutter_upshot_plugin/example/android/app/.cxx/Debug/1iw1d4l2/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

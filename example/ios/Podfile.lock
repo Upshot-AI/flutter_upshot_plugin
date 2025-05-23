@@ -3,14 +3,15 @@ PODS:
   - flutter_upshot_plugin (1.0.0):
     - Flutter
     - Upshot
-  - Upshot (1.0.2)
+  - Upshot (1.6.7)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_upshot_plugin (from `.symlinks/plugins/flutter_upshot_plugin/ios`)
-  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -22,14 +23,14 @@ EXTERNAL SOURCES:
   flutter_upshot_plugin:
     :path: ".symlinks/plugins/flutter_upshot_plugin/ios"
   webview_flutter_wkwebview:
-    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_upshot_plugin: 3d79a0b02bf90dd0ddf341f73fba016e35b1177f
-  Upshot: 72b27af6fa697f7d24323eec8764d288fb84e0ee
-  webview_flutter_wkwebview: d08f59cde5e8402c345c0bdda35ac0031352dcae
+  Upshot: 32a4cc50331d7f8a9ee27bc28759b8aa42173809
+  webview_flutter_wkwebview: a4af96a051138e28e29f60101d094683b9f82188
 
-PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
+PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.12.1

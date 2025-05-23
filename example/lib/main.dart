@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
     UpshotMethodChannel();
   }
 
-  Future<void> initPlatformState() async {
+  FutureOr<void> initPlatformState() async {
     try {
       // platformVersion = await FlutterUpshotPlugin.getSDKVersion ??
       //     'Unknown platform version';
@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> initialiseBrandKinesis() async {
+  FutureOr<void> initialiseBrandKinesis() async {
     try {
       // await FlutterUpshotPlugin.initializeUpshotUsingConfigFile();
     } catch (e) {
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  Future<void> initializeBrandKinesisWithOptions() async {
+  FutureOr<void> initializeBrandKinesisWithOptions() async {
     Map optionsMap = {
       UpshotInitOptions.appId: "e748a45e-fbef-4a7e-a2c7-ef0b88812399",
       UpshotInitOptions.ownerId: "f3bf1d6f-5771-41f7-a6ff-640d3af4805e",
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
     FlutterUpshotPlugin.registerForPushNotifications();
   }
 
-  Future<void> createEvent(
+  FutureOr<void> createEvent(
       String eventName, HashMap<String, Object> data) async {
     try {
       FlutterUpshotPlugin.getUnreadNotificationsCount(3);
@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  Future<void> createLocationEvent(double lat, double long) async {
+  FutureOr<void> createLocationEvent(double lat, double long) async {
     try {
       // await FlutterUpshotPlugin.createLocationEvent(lat, long);
     } catch (e) {
@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  Future<void> createAttributionEvent(String attributionSource,
+  FutureOr<void> createAttributionEvent(String attributionSource,
       String utmSource, String utmMedium, String utmCampaign) async {
     try {
       Map optionsMap = {
@@ -121,15 +121,15 @@ class _MyAppState extends State<MyApp> {
     // await FlutterUpshotPlugin.sendUserDetails(data);
   }
 
-  static Future<void> setValueAndClose(String eventName, Map data) async {
+  static FutureOr<void> setValueAndClose(String eventName, Map data) async {
     // await FlutterUpshotPlugin.setValueAndClose(eventName, data);
   }
 
-  static Future<void> closeEventForId(String eventId) async {
+  static FutureOr<void> closeEventForId(String eventId) async {
     // await FlutterUpshotPlugin.closeEventForId(eventId);
   }
 
-  static Future<void> dispatchEventWithTime(bool time) async {
+  static FutureOr<void> dispatchEventWithTime(bool time) async {
     // await FlutterUpshotPlugin.dispatchEvents(time);
   }
 
@@ -147,7 +147,7 @@ class _MyAppState extends State<MyApp> {
     FlutterUpshotPlugin.showInboxScreen(options);
   }
 
-  static Future<void> createPageViewEvent(String pageName) async {
+  static FutureOr<void> createPageViewEvent(String pageName) async {
     try {
       String? eventID = await FlutterUpshotPlugin.createPageViewEvent(pageName);
       log(eventID.toString());
@@ -156,19 +156,19 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  Future<void> terminateUpshot() async {
+  FutureOr<void> terminateUpshot() async {
     // await FlutterUpshotPlugin.terminateUpshot();
   }
 
-  Future<void> showActivity(String tag) async {
+  FutureOr<void> showActivity(String tag) async {
     FlutterUpshotPlugin.showActivity(-1, "");
   }
 
-  static Future<void> getBadges() async {
+  static FutureOr<void> getBadges() async {
     // await FlutterUpshotPlugin.fetchUserBadges();
   }
 
-  static Future<void> getCampaignDetails() async {
+  static FutureOr<void> getCampaignDetails() async {
     // await FlutterUpshotPlugin.fetchInboxDetails();
   }
 

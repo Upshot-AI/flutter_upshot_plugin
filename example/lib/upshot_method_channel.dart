@@ -1,21 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 class UpshotMethodChannel {
   static const _channel = MethodChannel('flutter_upshot_plugin');
-  // final MethodChannel _channel = MethodChannel('flutter_upshot_plugin');
-  // _channel.setMethodCallHandler(_methodCallHandler);
 
   UpshotMethodChannel() {
-    _channel.setMethodCallHandler(_methodCallHandler);
+    _channel.setMethodCallHandler((MethodCall call) async {
+      return await _methodCallHandler(call);
+    });
   }
 
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     Map data = call.arguments as Map;
 
     if (kDebugMode) {
-      print("callback method name=======" + call.method);
-      print("callback method data=======" + data.toString());
+      print("callback method name ======= ${call.method}");
+      print("callback method data ======= ${data.toString()}");
     }
+
+    return null; // Explicitly return null as Future<dynamic>
   }
 }

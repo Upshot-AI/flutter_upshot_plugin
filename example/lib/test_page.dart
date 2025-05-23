@@ -149,26 +149,28 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                               itemExtent: 48.0,
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  // This builder is called for each child.
-                                  // In this example, we just number each list item.
+                                  final baseColor = Color(
+                                    0xFF000000 |
+                                        (math.Random().nextDouble() * 0xFFFFFF)
+                                            .toInt(),
+                                  );
+
+                                  // Use .withOpacity(1.0) for older versions, fallback from try-catch if needed
+                                  Color safeColor;
+                                  try {
+                                    // For newer Flutter versions (≥ 3.22.0) — prefer .withAlpha(255)
+                                    safeColor = baseColor.withAlpha(255);
+                                  } catch (_) {
+                                    // For older versions
+                                    safeColor = baseColor.withOpacity(1.0);
+                                  }
+
                                   return ListTile(
                                     key: ValueKey('target_$index'),
                                     title: Text('target_$index'),
-                                    // onTap: () => findIndex
-                                    //     .currentContext!
-                                    //     .findRenderObject()!
-                                    //     .showOnScreen(),
-                                    tileColor: Color(
-                                            (math.Random().nextDouble() *
-                                                    0xFFFFFF)
-                                                .toInt())
-                                        .withOpacity(1),
+                                    tileColor: safeColor,
                                   );
                                 },
-                                // The childCount of the SliverChildBuilderDelegate
-                                // specifies how many children this inner list
-                                // has. In this example, each tab has a list of
-                                // exactly 30 items, but this is arbitrary.
                                 childCount: 30,
                               ),
                             ),
