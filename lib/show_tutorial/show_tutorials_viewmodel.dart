@@ -694,7 +694,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     });
   }
 
-  Future<void> loadData() async {
+  FutureOr<void> loadData() async {
     try {
       _interactiveTutorialModel = InteractiveTutorialModel.fromJson(
           await rootBundle.loadString(
@@ -870,7 +870,7 @@ div {padding: 0px; margin: 0px; $fontName }
 
   ///////////
 
-  Future<void> calculateHeightWebView() async {
+  FutureOr<void> calculateHeightWebView() async {
     if (tutorialList[_selectedIndex].description != null) {
       final data = tutorialList[_selectedIndex].description!;
 

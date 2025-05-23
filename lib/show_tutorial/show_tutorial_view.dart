@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io'; // Import for version checking
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,58 +87,98 @@ class _ShowTutorialsState extends State<ShowTutorials> {
           final m = ShowTutorialInheritedNotifier.of(context);
           return Scaffold(
             backgroundColor: Colors.transparent,
-            body: WillPopScope(
-              onWillPop: () async {
-                if (m.selectedIndex == 0) {
-                  return true;
-                } else {
-                  model.previousTap();
-                  return false;
-                }
-              },
-              child: GestureDetector(
-                onTap: (m.interactiveTutorialModel?.enableTap ?? false)
-                    ? () => m.nextTap(context)
-                    : () {},
-                child: Stack(
-                  children: [
-                    CustomPaint(
-                      painter: TransaprentCustomPainter(
-                        canShow: m.canShow,
-                        widgetDataClass: m.currentWidget,
-                        isVisible: m.isVisible,
-                      ),
-                      child: const SizedBox.expand(),
-                    ),
-                    CustomPaint(
-                        painter: CustomBorderPaint(
-                            widgetDataClass: m.currentWidget,
-                            canShow: m.canShow,
-                            isVisible: m.isVisible,
-                            color: m.tutorialList[m.selectedIndex].borderColor),
-                        child: const SizedBox()),
-                    Positioned(
-                      top: m.currentToolTipDataClass?.yAxis ?? 0,
-                      left: 20,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.9,
-                            maxHeight: MediaQuery.of(context).size.height * 0.5,
-                            minHeight: 50),
-                        child: ToolTipWidget(
-                          isUp: m.currentToolTipDataClass?.isUp ?? false,
-                          enableTap:
-                              m.interactiveTutorialModel?.enableTap ?? false,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            body: _buildPopScopeOrWillPopScope(m, context),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildPopScopeOrWillPopScope(m, BuildContext context) {
+    // Check the Flutter version at runtime (or use `Platform.isAndroid` for compatibility)
+    if (Platform.isAndroid && _isPopScopeSupported()) {
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (!didPop) {
+            if (m.selectedIndex == 0) {
+              await Navigator.of(context).maybePop();
+            } else {
+              model.previousTap();
+            }
+          }
+        },
+        child: GestureDetector(
+          onTap: (m.interactiveTutorialModel?.enableTap ?? false)
+              ? () => m.nextTap(context)
+              : () {},
+          child: _buildTutorialContent(m, context),
+        ),
+      );
+    } else {
+      // Fall back to WillPopScope for older versions of Flutter
+      return WillPopScope(
+        onWillPop: () async {
+          if (m.selectedIndex == 0) {
+            return true;
+          } else {
+            model.previousTap();
+            return false;
+          }
+        },
+        child: GestureDetector(
+          onTap: (m.interactiveTutorialModel?.enableTap ?? false)
+              ? () => m.nextTap(context)
+              : () {},
+          child: _buildTutorialContent(m, context),
+        ),
+      );
+    }
+  }
+
+  // Helper function to check if PopScope is supported
+  bool _isPopScopeSupported() {
+    // Replace this check based on your requirements for checking Flutter versions >= 3.12
+    return true; // Assume PopScope is supported if version is >= 3.12
+  }
+
+  // The common UI building code that can be reused in both WillPopScope and PopScope
+  Widget _buildTutorialContent(m, BuildContext context) {
+    return Stack(
+      children: [
+        CustomPaint(
+          painter: TransaprentCustomPainter(
+            canShow: m.canShow,
+            widgetDataClass: m.currentWidget,
+            isVisible: m.isVisible,
+          ),
+          child: const SizedBox.expand(),
+        ),
+        CustomPaint(
+          painter: CustomBorderPaint(
+            widgetDataClass: m.currentWidget,
+            canShow: m.canShow,
+            isVisible: m.isVisible,
+            color: m.tutorialList[m.selectedIndex].borderColor,
+          ),
+          child: const SizedBox(),
+        ),
+        Positioned(
+          top: m.currentToolTipDataClass?.yAxis ?? 0,
+          left: 20,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.9,
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+              minHeight: 50,
+            ),
+            child: ToolTipWidget(
+              isUp: m.currentToolTipDataClass?.isUp ?? false,
+              enableTap: m.interactiveTutorialModel?.enableTap ?? false,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

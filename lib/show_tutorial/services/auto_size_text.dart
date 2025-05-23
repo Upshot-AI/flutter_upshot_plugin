@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_upshot_plugin/show_tutorial/utilities/ui_utils.dart';
 
 /// Flutter widget that automatically resizes text to fit perfectly within its
 /// bounds.
@@ -298,8 +299,10 @@ class AutoSizeTextState extends State<AutoSizeText> {
       recognizer: widget.textSpan?.recognizer,
     );
 
-    final userScale =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+    final double userScale = widget.textScaleFactor ??
+        (isTextScalerSupported()
+            ? MediaQuery.textScalerOf(context).scale(1.0)
+            : MediaQuery.textScaleFactorOf(context));
 
     int left;
     int right;
@@ -356,14 +359,14 @@ class AutoSizeTextState extends State<AutoSizeText> {
     if (!widget.wrapWords) {
       final words = text.toPlainText().split(RegExp('\\s+'));
 
-      final wordWrapTextPainter = TextPainter(
+      final wordWrapTextPainter = createTextPainter(
         text: TextSpan(
           style: text.style,
           text: words.join('\n'),
         ),
         textAlign: widget.textAlign ?? TextAlign.left,
         textDirection: widget.textDirection ?? TextDirection.ltr,
-        textScaleFactor: scale,
+        scale: scale,
         maxLines: words.length,
         locale: widget.locale,
         strutStyle: widget.strutStyle,
@@ -377,16 +380,14 @@ class AutoSizeTextState extends State<AutoSizeText> {
       }
     }
 
-    final textPainter = TextPainter(
-      text: text,
-      textAlign: widget.textAlign ?? TextAlign.left,
-      textDirection: widget.textDirection ?? TextDirection.ltr,
-      textScaleFactor: scale,
-      maxLines: maxLines,
-      locale: widget.locale,
-      strutStyle: widget.strutStyle,
-    );
-
+    final textPainter = createTextPainter(
+        text: text,
+        textAlign: widget.textAlign ?? TextAlign.left,
+        textDirection: widget.textDirection ?? TextDirection.ltr,
+        scale: scale,
+        maxLines: maxLines,
+        locale: widget.locale,
+        strutStyle: widget.strutStyle);
     textPainter.layout(maxWidth: constraints.maxWidth);
 
     return !(textPainter.didExceedMaxLines ||

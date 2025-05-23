@@ -47,26 +47,26 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod("displayNotification", data);
   }
 
-  static Future<String?> upshotUserId() async {
+  static FutureOr<String?> upshotUserId() async {
     return await _channel.invokeMethod("getUserId");
   }
 
-  static Future<String?> upshotSDKVersion() async {
+  static FutureOr<String?> upshotSDKVersion() async {
     final String? version = await _channel.invokeMethod('getSDKVersion');
     return version;
   }
 
-  static Future<String?> createCustomEvent(
+  static FutureOr<String?> createCustomEvent(
       String eventName, Map data, bool isTimed) async {
     Map payload = {'eventName': eventName, 'data': data, 'isTimed': isTimed};
     return await _channel.invokeMethod("createCustomEvent", payload);
   }
 
-  static Future<String?> createPageViewEvent(String pageName) async {
+  static FutureOr<String?> createPageViewEvent(String pageName) async {
     return await _channel.invokeMethod("createPageViewEvent", pageName);
   }
 
-  static Future<String?> createAttributionEvent(Map payload) async {
+  static FutureOr<String?> createAttributionEvent(Map payload) async {
     return await _channel.invokeMethod("createAttributionEvent", payload);
   }
 
