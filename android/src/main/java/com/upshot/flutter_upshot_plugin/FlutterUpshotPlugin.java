@@ -431,6 +431,10 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 }
             }
                 break;
+            case "setFontStyles":{
+                HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
+                BrandKinesis.getBKInstance().setFonts(data);
+            }
             case "terminate":
                 break;
             case "sendUserDetails": {

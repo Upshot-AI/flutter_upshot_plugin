@@ -34,12 +34,15 @@ class UpshotHelper: NSObject {
         let enableLocation = options["enableLocation"] ?? false
         let enableDebuglogs = options["enableDebuglogs"] ?? false
         let enableCrashlogs = options["enableCrashlogs"] ?? false
+        let appuid = options["appuid"] ?? ""
         
         if let initOptions = [BKApplicationID: appId,
                       BKApplicationOwnerID: ownerId,
                          BKEnableDebugLogs: enableDebuglogs,
                            BKFetchLocation: enableLocation,
-                           BKExceptionHandler: enableCrashlogs] as? [String: Any] {
+                           BKExceptionHandler: enableCrashlogs,
+                        BKAppuID:appuid
+        ] as? [String: Any] {
             
             BrandKinesis.sharedInstance().initialize(options: initOptions, delegate: self)
             setCustomisationData()                        
@@ -66,6 +69,10 @@ class UpshotHelper: NSObject {
     func updateUserDetails(details: [String: Any]) {
         
         buildUserDetails(details: details)
+    }
+    
+    func setFontStyles(styles: [String: Any]) {
+        BrandKinesis.sharedInstance().fontStyles = styles
     }
     
     func getUserDetails() {
@@ -764,6 +771,17 @@ extension UpshotHelper: BrandKinesisDelegate {
             let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 upshotChannel.invokeMethod("upshot_interactive_tutoInfo", arguments: jsonString)                
+            }
+        }
+    }
+    
+    func brandKinesisOnPushClickInfo(_ payload: [AnyHashable : Any]) {
+        if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                if let pushData = payload as? [String: Any] {
+                    upshotChannel.invokeMethod("onUpshotPushClick", arguments: self.jsonToString(json: pushData))
+                }
             }
         }
     }

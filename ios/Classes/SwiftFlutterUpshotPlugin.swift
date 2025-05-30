@@ -67,6 +67,10 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             if let payload = call.arguments as? [String: Any] {
                 UpshotHelper.defaultHelper.updateUserDetails(details: payload)
             }
+        case "setFontStyles":
+            if let arguments = call.arguments as? [String: Any] {
+                UpshotHelper.defaultHelper.setFontStyles(styles: arguments)
+            }
         case "getUserDetails":
             UpshotHelper.defaultHelper.getUserDetails()
             
