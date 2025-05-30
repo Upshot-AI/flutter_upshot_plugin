@@ -66,11 +66,10 @@ TextPainter createTextPainter({
         );
 }
 
-// double getUserTextScaleFactor(BuildContext context) {
-//   try {
-//     TextScaler a = MediaQuery.textScalerOf(context);
-//     return a.scale(fontSize)
-//   } catch (_) {
-//    return MediaQuery.textScaleFactorOf(context);
-//   }
-// }
+double getUserTextScaleFactor(BuildContext context, double baseFontSize) {
+  try {
+    return MediaQuery.of(context).textScaler.scale(baseFontSize);
+  } catch (_) {
+    return baseFontSize * MediaQuery.textScaleFactorOf(context);
+  }
+}

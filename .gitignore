@@ -25,7 +25,6 @@ doc/api/
 **/.DS_Store
 **/._.DS_Store
 
-
 # Ignore build folder in example project
 example/build/
 example/.dart_tool/
@@ -34,3 +33,6 @@ example/.flutter-plugins
 example/.flutter-plugins-dependencies
 example/.flutter-plugins-version
 example/pubspec.lock
+
+# FVM Version Cache
+.fvm/

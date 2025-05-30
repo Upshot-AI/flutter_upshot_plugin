@@ -391,7 +391,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.purpletalk.upshot;
+				PRODUCT_BUNDLE_IDENTIFIER = com.upshot.upshot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -527,7 +527,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.purpletalk.upshot;
+				PRODUCT_BUNDLE_IDENTIFIER = com.upshot.upshot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Upshot enterprise development";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Upshot Development 2023";
@@ -556,7 +556,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.purpletalk.upshot;
+				PRODUCT_BUNDLE_IDENTIFIER = com.upshot.upshot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "PurpleTalk Upshot In-House Distribution";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "PurpleTalk Upshot Ad-Hoc 2023";

@@ -757,14 +757,19 @@ class ShowTutorialsModel extends ChangeNotifier {
         ? getDevicePixelRatio(context) /
             (orientation == Orientation.landscape ? 2 : 1)
         : 1;
+
     final fontSize = tutorialList[_selectedIndex].description?.fontSize ?? 16;
+    final finalFontSize = Platform.isAndroid
+        ? getUserTextScaleFactor(context, fontSize.toDouble() + 2) /
+            (orientation == Orientation.landscape ? 2 : 1)
+        : 1;
     String newText = '''
  <!DOCTYPE html>
 <html>
 <head>
 <style>
 body {padding: 0px; margin: 0px; $fontName }
-p {font-size: ${(pixelRatio * fontSize)}px; padding: 0px; margin: 0px; $fontName }
+p {font-size: ${(finalFontSize)}px; padding: 0px; margin: 0px; $fontName }
 div {padding: 0px; margin: 0px; $fontName }
 </style>
 </head>
