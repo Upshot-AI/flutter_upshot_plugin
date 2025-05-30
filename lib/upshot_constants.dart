@@ -16,6 +16,7 @@ class ActivityTypes {
 class UpshotInitOptions {
   static String appId = "appId";
   static String ownerId = "ownerId";
+  static String appuId = "appuid";
   static String enableLocation = "enableLocation";
   static String enableDebuglogs = "enableDebuglogs";
   static String enableExternalStorage = "enableExternalStorage";

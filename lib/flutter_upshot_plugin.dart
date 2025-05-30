@@ -70,6 +70,10 @@ class FlutterUpshotPlugin {
     return await _channel.invokeMethod("createAttributionEvent", payload);
   }
 
+  static void setFontStyles(Map fontStyles) {
+    _channel.invokeMethod("setFontStyles", fontStyles);
+  }
+
   static void createLocationEvent(double latitude, double longitude) {
     Map params = {'latitude': latitude, 'longitude': longitude};
     _channel.invokeMethod("createLocationEvent", params);
