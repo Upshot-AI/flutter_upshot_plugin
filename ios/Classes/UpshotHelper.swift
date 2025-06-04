@@ -108,6 +108,7 @@ class UpshotHelper: NSObject {
     
     func updatePushClickDetails(payload: [String: Any]) {
         
+        BrandKinesis.sharedInstance().delegate = self
         BrandKinesis.sharedInstance().handlePushNotification(withParams: payload, withCompletionBlock: nil)
     }
     
@@ -564,7 +565,7 @@ class UpshotHelper: NSObject {
         
         if #available(iOS 10.0, *) {
             
-            var delegate = UIApplication.shared.delegate
+            let delegate = UIApplication.shared.delegate
             if (delegate != nil) {
                 
                 let notificationCenter = UNUserNotificationCenter.current()
@@ -776,8 +777,11 @@ extension UpshotHelper: BrandKinesisDelegate {
     }
     
     func brandKinesisOnPushClickInfo(_ payload: [AnyHashable : Any]) {
+        
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
-            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin_internal", binaryMessenger: controller.binaryMessenger)
+            
+            let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
+            
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 if let pushData = payload as? [String: Any] {
                     upshotChannel.invokeMethod("onUpshotPushClick", arguments: self.jsonToString(json: pushData))
