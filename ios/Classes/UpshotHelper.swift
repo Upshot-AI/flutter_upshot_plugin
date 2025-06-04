@@ -779,12 +779,11 @@ extension UpshotHelper: BrandKinesisDelegate {
     func brandKinesisOnPushClickInfo(_ payload: [AnyHashable : Any]) {
         
         if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
-            
             let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
             
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 if let pushData = payload as? [String: Any] {
-                    upshotChannel.invokeMethod("onUpshotPushClick", arguments: self.jsonToString(json: pushData))
+                    upshotChannel.invokeMethod("onUpshotPushClick", arguments: pushData)
                 }
             }
         }
