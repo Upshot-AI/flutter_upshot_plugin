@@ -432,7 +432,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
             }
                 break;
             case "setFontStyles":{
-                HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
+                HashMap<String, String> data = (HashMap<String, String>) call.arguments;
                 BrandKinesis.getBKInstance().setFonts(data);
             }
             case "terminate":
