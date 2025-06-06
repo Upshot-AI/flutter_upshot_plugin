@@ -77,23 +77,26 @@ public class UpshotApplication extends FlutterApplication {
         if (options.containsKey("ownerId")) {
             ownerId = (String) options.get("ownerId");
         }
-
+        String appuid = "";
+        if (options.containsKey("appuid")) {
+            appuid = (String) options.get("appuid");
+        }
         boolean fetchLocation = false;
         if (options.containsKey("enableLocation")) {
-            fetchLocation = (boolean) options.get("enableLocation");
+            fetchLocation = Boolean.TRUE.equals(options.get("enableLocation"));
         }
         boolean enableDebugLogs = false;
         if (options.containsKey("enableDebuglogs")) {
-            enableDebugLogs = (boolean) options.get("enableDebuglogs");
+            enableDebugLogs = Boolean.TRUE.equals(options.get("enableDebuglogs"));
         }
         boolean useExternalStorage = false;
         if (options.containsKey("enableExternalStorage")) {
-            useExternalStorage = (boolean) options.get("enableExternalStorage");
+            useExternalStorage = Boolean.TRUE.equals(options.get("enableExternalStorage"));
         }
 
         boolean enableCrashLogs = false;
         if (options.containsKey("enableCrashlogs")) {
-            enableCrashLogs = (boolean) options.get("enableCrashlogs");
+            enableCrashLogs = Boolean.TRUE.equals(options.get("enableCrashlogs"));
         }
 
         if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
@@ -104,6 +107,7 @@ public class UpshotApplication extends FlutterApplication {
             bundle.putBoolean(BKProperties.BK_ENABLE_DEBUG_LOGS, enableDebugLogs);
             bundle.putBoolean(BKProperties.BK_USE_EXTERNAL_STORAGE, useExternalStorage);
             bundle.putBoolean(BKProperties.BK_EXCEPTION_HANDLER, enableCrashLogs);
+            bundle.putString("appuid", appuid);
             BrandKinesis.initialiseBrandKinesis(this, bundle, null);
         }
     }

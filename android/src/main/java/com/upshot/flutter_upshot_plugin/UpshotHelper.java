@@ -51,6 +51,7 @@ class UpshotHelper {
 
             String appId = validateHashmapString(options,"appId");
             String ownerId = validateHashmapString(options,"ownerId");
+            String appuid = validateHashmapString(options,"appuid");
             Boolean fetchLocation = validateHashmapBoolean(options, "enableLocation");
             Boolean enableDebugLogs = validateHashmapBoolean(options, "enableDebuglogs");
             Boolean useExternalStorage = validateHashmapBoolean(options, "enableExternalStorage");
@@ -65,6 +66,7 @@ class UpshotHelper {
                 bundle.putBoolean(BKProperties.BK_ENABLE_DEBUG_LOGS, enableDebugLogs);
                 bundle.putBoolean(BKProperties.BK_USE_EXTERNAL_STORAGE, useExternalStorage);
                 bundle.putBoolean(BKProperties.BK_EXCEPTION_HANDLER, enableCrashLogs);
+                bundle.putString("appuid", appuid);
                 BrandKinesis.initialiseBrandKinesis(context, bundle, null);
             }
         } catch (Exception e) {

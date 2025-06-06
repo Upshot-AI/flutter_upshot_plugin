@@ -279,7 +279,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
 
             @Override
             public void onAuthenticationError(String errorMsg) {
-
+                UpshotApplication.options = null;
                 HashMap<String, String> response = new HashMap<>();
                 response.put("status", "Fail");
                 response.put("errorMessage", errorMsg);
