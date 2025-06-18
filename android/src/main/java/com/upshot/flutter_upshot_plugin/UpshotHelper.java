@@ -140,7 +140,9 @@ class UpshotHelper {
                         bundle.putFloat(bkKey, (float) userData.get(key));
                     } else if (value instanceof Double) {
                         bundle.putDouble(bkKey, (double) userData.get(key));
-                    } else {
+                    }else if (value instanceof Boolean) {
+                        bundle.putInt(bkKey, (Boolean) value ? 1 : 0);
+                    }  else {
                         bundle.putString(bkKey, (String) userData.get(key));
                     }
                 } else {

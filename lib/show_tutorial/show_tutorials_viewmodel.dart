@@ -762,7 +762,7 @@ class ShowTutorialsModel extends ChangeNotifier {
     final finalFontSize = Platform.isAndroid
         ? getUserTextScaleFactor(context, fontSize.toDouble() + 2) /
             (orientation == Orientation.landscape ? 2 : 1)
-        : 1;
+        : fontSize;
     String newText = '''
  <!DOCTYPE html>
 <html>
