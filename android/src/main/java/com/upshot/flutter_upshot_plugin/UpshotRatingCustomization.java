@@ -261,10 +261,10 @@ public class UpshotRatingCustomization extends UpshotCustomization {
 
                 switch (imageType) {
                     case BACTIVITY_RATING_LIKE_BUTTON:
-                        // imageView.setImageResource(R.drawable.rating_like_selector);
+                         imageView.setImageResource(R.drawable.custom_like_selector);
                         break;
                     case BACTIVITY_RATING_DISLIKE_BUTTON:
-                        // imageView.setImageResource(R.drawable.rating_dislike_selector);
+                         imageView.setImageResource(R.drawable.custom_dislike_selector);
                         break;
                     case BKACTIVITY_PORTRAIT_LOGO:
                     case BKACTIVITY_LANDSCAPE_LOGO:

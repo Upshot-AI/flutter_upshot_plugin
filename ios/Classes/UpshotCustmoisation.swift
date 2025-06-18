@@ -56,18 +56,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
     }
     
     func getImage(imageName: String) -> UIImage? {
-        
-        if let reg = registrar {
-            let fileKey = reg.lookupKey(forAsset: "assets/\(imageName)")
-            let filePath =  Bundle.main.path(forResource: fileKey, ofType: nil)
-            if let path = filePath {
-                let fileUrl = URL(fileURLWithPath: path)
-                if let data = try? Data(contentsOf: fileUrl) {
-                    return UIImage(data: data)
-                }
-            }
-        }
-        return nil
+        return UIImage(named: imageName)
     }
     
     func loadFonts(with name: String) {
