@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.view.View;
@@ -30,6 +31,8 @@ import java.util.List;
 
 import static com.brandkinesis.BKUIPrefComponents.BKActivityImageButtonTypes;
 import static com.brandkinesis.BKUIPrefComponents.BKUICheckBox;
+
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -175,6 +178,16 @@ public class UpshotCustomization {
             UpshotHelper.logException(e);
         }
         return 0;
+    }
+
+    public Drawable getDrawable(Context context, String imageName) {
+        try {
+            int resourceId = getIdentifier(context, imageName);
+            return ContextCompat.getDrawable(context, resourceId);
+        } catch (Exception e) {
+            UpshotHelper.logException(e);
+        }
+        return null;
     }
 
     private void applyBgColorAttribute(View view, JSONObject jsonObject) {

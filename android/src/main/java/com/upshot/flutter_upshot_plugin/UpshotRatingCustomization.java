@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.brandkinesis.BKUIPrefComponents;
 import com.brandkinesis.BKUIPrefComponents.BKActivityTextViewTypes;
+import com.flutter.plugins.flutter_upshot_plugin.R;
 
 import org.json.JSONObject;
 
@@ -254,6 +256,7 @@ public class UpshotRatingCustomization extends UpshotCustomization {
 
     public void customizeImageView(ImageView imageView, BKUIPrefComponents.BKActivityImageViewType imageType) {
         super.customizeImageView(imageView, imageType);
+        Context context = imageView.getContext();
 
         if (ratingJson != null) {
             try {
@@ -261,10 +264,89 @@ public class UpshotRatingCustomization extends UpshotCustomization {
 
                 switch (imageType) {
                     case BACTIVITY_RATING_LIKE_BUTTON:
-                         imageView.setImageResource(R.drawable.custom_like_selector);
+
+                        Drawable likeSelResourceId = getDrawable(context, getImageName(imageJson, "like_sel"));
+                        Drawable likeDefResourceId = getDrawable(context, getImageName(imageJson, "like_def"));
+
+                        if (likeSelResourceId== null || likeDefResourceId == null) {
+                            break;
+                        }
+                        StateListDrawable likeStateListDrawable = new StateListDrawable();
+
+// Selected states
+                        likeStateListDrawable.addState(
+                                new int[]{android.R.attr.state_pressed},
+                                likeSelResourceId
+                        );
+                        likeStateListDrawable.addState(
+                                new int[]{android.R.attr.state_selected},
+                                likeSelResourceId
+                        );
+                        likeStateListDrawable.addState(
+                                new int[]{android.R.attr.state_focused},
+                                likeSelResourceId
+                        );
+
+// Unselected states
+                        likeStateListDrawable.addState(
+                                new int[]{-android.R.attr.state_pressed},
+                                likeDefResourceId
+                        );
+                        likeStateListDrawable.addState(
+                                new int[]{-android.R.attr.state_selected},
+                                likeDefResourceId
+                        );
+                        likeStateListDrawable.addState(
+                                new int[]{-android.R.attr.state_focused},
+                                likeDefResourceId
+                        );
+
+                        imageView.setImageDrawable(likeStateListDrawable);
+
+//                         imageView.setImageResource(R.drawable.custom_like_selector);
                         break;
                     case BACTIVITY_RATING_DISLIKE_BUTTON:
-                         imageView.setImageResource(R.drawable.custom_dislike_selector);
+
+                        Drawable disLikeSelResourceId = getDrawable(context, getImageName(imageJson, "disLike_sel"));
+                        Drawable disLikeDefResourceId = getDrawable(context, getImageName(imageJson, "disLike_def"));
+
+                        if (disLikeSelResourceId== null || disLikeDefResourceId == null) {
+                            break;
+                        }
+                        StateListDrawable stateListDrawable = new StateListDrawable();
+
+// Selected states
+                        stateListDrawable.addState(
+                                new int[]{android.R.attr.state_pressed},
+                                disLikeSelResourceId
+                        );
+                        stateListDrawable.addState(
+                                new int[]{android.R.attr.state_selected},
+                                disLikeSelResourceId
+                        );
+                        stateListDrawable.addState(
+                                new int[]{android.R.attr.state_focused},
+                                disLikeSelResourceId
+                        );
+
+// Unselected states
+                        stateListDrawable.addState(
+                                new int[]{-android.R.attr.state_pressed},
+                                disLikeDefResourceId
+                        );
+                        stateListDrawable.addState(
+                                new int[]{-android.R.attr.state_selected},
+                                disLikeDefResourceId
+                        );
+                        stateListDrawable.addState(
+                                new int[]{-android.R.attr.state_focused},
+                                disLikeDefResourceId
+                        );
+
+                        imageView.setImageDrawable(stateListDrawable);
+
+
+//                         imageView.setImageResource(R.drawable.custom_dislike_selector);
                         break;
                     case BKACTIVITY_PORTRAIT_LOGO:
                     case BKACTIVITY_LANDSCAPE_LOGO:
