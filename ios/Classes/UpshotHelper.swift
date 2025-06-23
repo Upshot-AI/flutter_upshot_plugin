@@ -440,8 +440,29 @@ class UpshotHelper: NSObject {
                 externalId.setValue(details[key], forKey: key)
                 
             } else if type == "UserInfo" {
-                userInfo.setValue(details[key], forKey: key)
-                
+                if key == "data_opt" {
+                    if let optValue = details[key] as? Bool {
+                        userInfo.dataOptout = NSNumber(value: optValue)
+                    }
+                } else if key == "email_opt" {
+                    if let optValue = details[key] as? Bool {
+                        userInfo.emailOptout = NSNumber(value: optValue)
+                    }
+                } else if key == "sms_opt" {
+                    if let optValue = details[key] as? Bool {
+                        userInfo.smsOptout = NSNumber(value: optValue)
+                    }
+                } else if key == "push_opt" {
+                    if let optValue = details[key] as? Bool {
+                        userInfo.pushOptout = NSNumber(value: optValue)
+                    }
+                } else if key == "ip_opt" {
+                    if let optValue = details[key] as? Bool {
+                        userInfo.ipOptout = NSNumber(value: optValue)
+                    }
+                } else {
+                    userInfo.setValue(details[key], forKey: key)
+                }
             } else {
                 others[key] = details[key]
             }

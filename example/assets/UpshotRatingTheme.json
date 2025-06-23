@@ -1,52 +1,50 @@
 {
     "image": {
-        "background": "rating_bg.png",
-        "logo": "",
-        "star_sel": "star_active.png",
-        "star_def": "star_in_active.png",
+        "star_sel": "star_sel.png",
+        "star_def": "star_def.png",
         "smiley_vbad_def": "unhappy_active.png",
         "smiley_bad_def": "bad_active.png",
         "smiley_avg_def": "avg_active.png",
         "smiley_good_def": "happy_active.png",
-        "smiley_Vgood_def": "veryhappy_active.png",
-        "smiley_vbad_sel": "unhappy_in_active.png",
-        "smiley_bad_sel": "bad_in_active.png",
-        "smiley_avg_sel": "avg_in_active.png",
-        "smiley_good_sel": "happy_in_active.png",
-        "smiley_Vgood_sel": "veryhappy_in_active.png",
-        "like_sel": "like_active.png",
-        "disLike_sel": "dislike_active.png",
-        "like_def": "like_in_active.png",
-        "disLike_def": "dislike_in_active.png"
+        "smiley_Vgood_def": "vhappy_active.png",
+        "smiley_vbad_sel": "unhappy_active.png",
+        "smiley_bad_sel": "bad_active.png",
+        "smiley_avg_sel": "avg_active.png",
+        "smiley_good_sel": "happy_active.png",
+        "smiley_Vgood_sel": "vhappy_active.png",
+        "like_sel": "like.png",
+        "disLike_sel": "dis_like.png",
+        "like_def": "like_def.png",
+        "disLike_def": "dislike_def.png"
     },
     "color": {
         "headerBG": "",
-        "background": ""
+        "background": "#E3C497"
     },
     "button": {
         "yes": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "font_name": "Khula-Regular",
             "size": 18,
-            "image": "PFHandbookPro-Regular",
-            "bgcolor": "#E8BB1B",
-            "border_color": "#FFFFFF"
+            "image": "button_image",
+            "bgcolor": "#763421",
+            "border_color": ""
         },
         "no": {
-            "color": "#E8BB1B",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 18,
             "image": "",
-            "bgcolor": "#FFFFFF",
-            "border_color": "#E8BB1B"
+            "bgcolor": "#E3C497",
+            "border_color": "#763421"
         },
         "submit": {
             "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "font_name": "Khula-Regular",
             "size": 18,
-            "image": "",
-            "bgcolor": "#E8BB1B",
-            "border_color": "#FFFFFF"
+            "image": "button_image",
+            "bgcolor": "#763421",
+            "border_color": ""
         },
         "skip": {
             "image": "close.png"
@@ -54,60 +52,60 @@
     },
     "label_text": {
         "appStoreHint": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 18
         },
         "feedback_header": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 18
         },
         "question": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 18
         },
         "thankyou": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 18
         }
     },
     "feedbackBox": {
-        "color": "#FFFFFF",
-        "font_name": "PFHandbookPro-Regular",
+        "color": "#000000",
+        "font_name": "Khula-Regular",
         "size": 18,
         "bgcolor": "#00000000",
-        "border_color": "#E8BB1B"
+        "border_color": "#763421"
     },
     "slider": {
-        "thumb_image": "slider_thumb.jpg",
-        "min_color": "#FFFFFF",
-        "max_color": "#2D7AED",
+        "thumb_image": "slider_uplevyl_thumb",
+        "min_color": "#763421",
+        "max_color": "#763421",
         "slider_score": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular.ttf",
+            "color": "#000000",
+            "font_name": "Khula-Regular",
             "size": 14
         },
         "slider_minScore": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular.ttf",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 14
         },
         "slider_maxScore": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 14
         },
         "slider_minText": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 14
         },
         "slider_maxText": {
-            "color": "#FFFFFF",
-            "font_name": "PFHandbookPro-Regular",
+            "color": "#763421",
+            "font_name": "Khula-Regular",
             "size": 14
         }
     }

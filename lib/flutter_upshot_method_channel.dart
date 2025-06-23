@@ -17,17 +17,16 @@ class UpshotMethodChannelInternal {
 
   Future<void> _methodCallHandler(MethodCall call) async {
     if (call.method == "upshot_interactive_tutoInfo") {
-      final argumentsData = call.arguments as String;
-
+      data = call.arguments as String;
       if (ShowTutorialsModel.instance.isTutorialProcessing) return;
 
       ShowTutorialsModel.instance.isTutorialProcessing = true;
 
       if (context != null &&
-          argumentsData.isNotEmpty &&
+          data != null &&
           !ShowTutorialsModel.instance.isTutorialPresent) {
         Timer(const Duration(milliseconds: 400), () {
-          showTutorials(context!, argumentsData);
+          showTutorials(context!, UpshotMethodChannelInternal.data!);
         });
       } else {
         log('No Tutorials to show');

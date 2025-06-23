@@ -129,9 +129,7 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
     
     func setButtonPreferences(data: [String: Any], button: UIButton) {
         
-        if let bgcolor = data["bgcolor"] as? String, !bgcolor.isEmpty {
-            button.backgroundColor = getColorFrom(hex: bgcolor)
-        }
+        
         
         if let tColor = data["color"] as? String, !tColor.isEmpty {
             button.setTitleColor(getColorFrom(hex: tColor), for: .normal)
@@ -146,9 +144,18 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
             }
         }
         
-        if let borderColor = data["border_color"] as? String, !borderColor.isEmpty {
-            button.layer.borderWidth = 1.0
-            button.layer.borderColor = getColorFrom(hex: borderColor).cgColor
+        if let borderColor = data["border_color"] as? String {
+            if  !borderColor.isEmpty {
+                button.layer.borderWidth = 1.0
+                button.layer.borderColor = getColorFrom(hex: borderColor).cgColor
+            } else {
+                button.layer.borderWidth = 0.0
+                button.layer.borderColor = UIColor.clear.cgColor
+            }
+        }
+        
+        if let bgcolor = data["bgcolor"] as? String, !bgcolor.isEmpty {
+            button.backgroundColor = getColorFrom(hex: bgcolor)
         }
         
         if let image = data["image"] as? String, !image.isEmpty, let buttonImage = getImage(imageName: image) {
@@ -360,7 +367,6 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
         case .rating:
             if let ratingJson = getJsonfromdata(type: .rating),
                let json = getJsonUsing(key: "button", mainJson: ratingJson) {
-                
                 switch activityButton {
                     
                 case .ratingDislikeButton:
@@ -403,13 +409,17 @@ class UpshotCustomisation: NSObject, BKUIPreferencesDelegate {
                     }
                 case .ratingYesButton:
                     if let cButton = json["yes"] as? [String: Any] {
-                        self.setButtonPreferences(data: cButton, button: button)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
+                            self.setButtonPreferences(data: cButton, button: button)
+                        })
                     }
                     
                 case .ratingNoButton:
                     
                     if let cButton = json["no"] as? [String: Any] {
-                        self.setButtonPreferences(data: cButton, button: button)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2, execute: {
+                            self.setButtonPreferences(data: cButton, button: button)
+                        })
                     }
                     
                 case .submitButton:

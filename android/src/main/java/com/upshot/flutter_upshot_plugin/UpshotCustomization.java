@@ -209,6 +209,11 @@ public class UpshotCustomization {
                     ((Button) view).setTextColor(Color.parseColor(text_color));
                 } else if (view instanceof TextView) {
                     ((TextView) view).setTextColor(Color.parseColor(text_color));
+                }else if (view instanceof EditText) {
+                    EditText editText = (EditText) view;
+                    int textColor = Color.parseColor(text_color);
+                    editText.setTextColor(textColor);
+                    editText.setHintTextColor(adjustAlpha(textColor, 0.2f));
                 }
             } catch (Exception e) {
                 UpshotHelper.logException(e);
@@ -216,6 +221,13 @@ public class UpshotCustomization {
         }
     }
 
+    public static int adjustAlpha(int color, float factor) {
+        int alpha = Math.round(Color.alpha(color) * factor);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
+    }
     private void applyTextSizeAttribute(View view, JSONObject jsonObject) {
         int font_size = getFontSize(jsonObject, "size");
         try {

@@ -477,7 +477,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
             try {
                 JSONObject buttonJson = (JSONObject) triviaJson.get("button");
                 switch (buttonType) {
-                    case BKACTIVITY_SKIP_BUTTON:
+                   case BKACTIVITY_SKIP_BUTTON:
                         JSONObject skipJson = (JSONObject) buttonJson.get("skip");
                         applySkipImage(mContext, skipJson, button);
                         break;
