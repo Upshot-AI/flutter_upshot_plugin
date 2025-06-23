@@ -207,13 +207,13 @@ public class UpshotCustomization {
             try {
                 if (view instanceof Button) {
                     ((Button) view).setTextColor(Color.parseColor(text_color));
-                } else if (view instanceof TextView) {
-                    ((TextView) view).setTextColor(Color.parseColor(text_color));
                 }else if (view instanceof EditText) {
                     EditText editText = (EditText) view;
                     int textColor = Color.parseColor(text_color);
                     editText.setTextColor(textColor);
                     editText.setHintTextColor(adjustAlpha(textColor, 0.2f));
+                } else if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(Color.parseColor(text_color));
                 }
             } catch (Exception e) {
                 UpshotHelper.logException(e);
