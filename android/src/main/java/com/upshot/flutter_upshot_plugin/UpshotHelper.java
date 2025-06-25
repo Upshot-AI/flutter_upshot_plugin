@@ -41,14 +41,15 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
 class UpshotHelper {
 
-
+    Boolean enableCustomization = false;
+    Boolean isInitialised = false;
     public void initialize(HashMap<String, Object> options, Context context) {
 
         try {
+            isInitialised = true;
             if (options == null) {
                 return;
             }
-
             String appId = validateHashmapString(options,"appId");
             String ownerId = validateHashmapString(options,"ownerId");
             String appuid = validateHashmapString(options,"appuid");
@@ -56,7 +57,11 @@ class UpshotHelper {
             Boolean enableDebugLogs = validateHashmapBoolean(options, "enableDebuglogs");
             Boolean useExternalStorage = validateHashmapBoolean(options, "enableExternalStorage");
             Boolean enableCrashLogs = validateHashmapBoolean(options, "enableCrashlogs");
+            enableCustomization = validateHashmapBoolean(options, "enableCustomization");
 
+            if(!enableCustomization) {
+                BrandKinesis.getBKInstance().setUIPreferences(null);
+            }
             if (appId != null && ownerId != null && !appId.isEmpty() && !ownerId.isEmpty()) {
 
                 Bundle bundle = new Bundle();
@@ -275,6 +280,9 @@ class UpshotHelper {
             String triviaThemeJson, Context context, FlutterLoader loader, FlutterPlugin.FlutterPluginBinding binding) {
 
         {
+            if(isInitialised && !enableCustomization) {
+                return;
+            }
             try {
                 JSONObject surveyJSON = null;
                 JSONObject ratingJSON = null;
@@ -582,14 +590,6 @@ class UpshotHelper {
             }
 
         }
-        // try {
-        // BrandKinesis bkInstance = BrandKinesis.getBKInstance();
-        // UpshotCustomization upshotCustomization = new UpshotCustomization();
-        // upshotCustomization.setCustomizationData(new JSONObject(customizationJson),
-        // bkInstance, context);
-        // } catch (JSONException e) {
-        // e.printStackTrace();
-        // }
     }
 
     public int calculateWebViewHeight(Context context, Map<String, Object> description) {

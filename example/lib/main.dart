@@ -66,7 +66,8 @@ class _MyAppState extends State<MyApp> {
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,
-      UpshotInitOptions.enableExternalStorage: false
+      UpshotInitOptions.enableExternalStorage: false,
+      UpshotInitOptions.enableCustomization: true
     };
     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
     if (kDebugMode) {

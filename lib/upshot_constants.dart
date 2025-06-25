@@ -21,6 +21,7 @@ class UpshotInitOptions {
   static String enableDebuglogs = "enableDebuglogs";
   static String enableExternalStorage = "enableExternalStorage";
   static String enableCrashlogs = "enableCrashlogs";
+  static String enableCustomization = "enableCustomization";
 }
 
 class UpshotInboxScreenConfig {

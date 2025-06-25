@@ -32,7 +32,8 @@ class _DemoClassState extends State<DemoClass> {
       UpshotInitOptions.enableDebuglogs: false,
       UpshotInitOptions.enableLocation: false,
       UpshotInitOptions.enableCrashlogs: true,
-      UpshotInitOptions.enableExternalStorage: false
+      UpshotInitOptions.enableExternalStorage: false,
+      UpshotInitOptions.enableCustomization: false
     };
     FlutterUpshotPlugin.initialiseUpshotUsingOptions(optionsMap);
     FlutterUpshotPlugin.registerForPushNotifications();

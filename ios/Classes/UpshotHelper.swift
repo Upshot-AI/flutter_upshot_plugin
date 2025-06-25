@@ -34,6 +34,7 @@ class UpshotHelper: NSObject {
         let enableLocation = options["enableLocation"] ?? false
         let enableDebuglogs = options["enableDebuglogs"] ?? false
         let enableCrashlogs = options["enableCrashlogs"] ?? false
+        let enableCustomization = options["enableCustomization"] ?? false
         let appuid = options["appuid"] ?? ""
         
         if let initOptions = [BKApplicationID: appId,
@@ -45,7 +46,10 @@ class UpshotHelper: NSObject {
         ] as? [String: Any] {
             
             BrandKinesis.sharedInstance().initialize(options: initOptions, delegate: self)
-            setCustomisationData()                        
+            if(enableCustomization) {
+                setCustomisationData()                        
+            }
+            
         }        
     }
     

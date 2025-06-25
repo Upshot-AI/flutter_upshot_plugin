@@ -1,5 +1,7 @@
 package com.upshot.flutter_upshot_plugin;
 
+import static com.brandkinesis.BKUIPrefComponents.BKActivityTextViewTypes.BKACTIVITY_NPS_MIN_LABEL_TV;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -341,10 +343,12 @@ public class UpshotSurveyCustomization extends UpshotCustomization {
                         JSONObject slider_minScore = (JSONObject) sliderJson.get("slider_minScore");
                         applyTextViewProperties(slider_minScore, textView, flutterLoader, flutterBinding);
                         break;
+                    case BKACTIVITY_NPS_MAX_LABEL_TV:
                     case BKACTIVITY_SLIDE_MAX_LABEL_TV:
                         JSONObject slider_maxText = (JSONObject) sliderJson.get("slider_maxText");
                         applyTextViewProperties(slider_maxText, textView, flutterLoader, flutterBinding);
                         break;
+                    case BKACTIVITY_NPS_MIN_LABEL_TV:
                     case BKACTIVITY_SLIDE_MIN_LABEL_TV:
                         JSONObject slider_minText = (JSONObject) sliderJson.get("slider_minText");
                         applyTextViewProperties(slider_minText, textView, flutterLoader, flutterBinding);
