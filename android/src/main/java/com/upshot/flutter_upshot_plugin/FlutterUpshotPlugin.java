@@ -464,7 +464,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 }
                 BrandKinesis.getBKInstance().setFonts(formattedFontData);
             }
-                break
+                break;
             case "terminate":
                 break;
             case "sendUserDetails": {
