@@ -432,9 +432,39 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
             }
                 break;
             case "setFontStyles":{
-                HashMap<String, String> data = (HashMap<String, String>) call.arguments;
-                BrandKinesis.getBKInstance().setFonts(data);
+                HashMap<String, Object> data = (HashMap<String, Object>) call.arguments;
+
+                HashMap<String, String> formattedFontData = new HashMap<>();
+
+                for (HashMap.Entry<String, Object> entry : data.entrySet()) {
+                    String key = entry.getKey();
+                    try {
+
+                        HashMap<String, Object> keyDataMap = (HashMap<String, Object>) data.get(key);
+
+                        JSONObject jFormattedObj = new JSONObject();
+                        Integer size = (Integer) keyDataMap.get("size");
+                        jFormattedObj.put("size", size);
+
+                        String formattedFontName = "";
+                        String fontName = (String) keyDataMap.get("name");
+                        if (!fontName.endsWith(".ttf")) {
+                            formattedFontName = fontName + ".ttf";
+                        } else {
+                            formattedFontName = fontName;
+                        }
+                        jFormattedObj.put("name", formattedFontName);
+
+                        formattedFontData.put(key, jFormattedObj.toString());
+
+                    } catch (Exception e) {
+
+                    }
+                    // ...
+                }
+                BrandKinesis.getBKInstance().setFonts(formattedFontData);
             }
+                break
             case "terminate":
                 break;
             case "sendUserDetails": {
