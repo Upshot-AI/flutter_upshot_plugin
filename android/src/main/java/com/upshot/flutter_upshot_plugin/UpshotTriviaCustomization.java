@@ -25,6 +25,7 @@ import static com.brandkinesis.BKUIPrefComponents.BKUICheckBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import io.flutter.Log;
 import io.flutter.embedding.engine.loader.FlutterLoader;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
@@ -221,6 +222,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                     case BKACTIVITY_PIE_GRAPH:
                         colorsList.clear();
                         JSONArray pieColors = graphJson.getJSONArray("pie");
+                        Log.i("pieColors", "pieColors:" + pieColors);
                         if (pieColors.length() == 5) {
                             for (int i = 0; i < pieColors.length(); i++) {
                                 colorsList.add(Color.parseColor(pieColors.getString(i)));
@@ -285,6 +287,7 @@ public class UpshotTriviaCustomization extends UpshotCustomization {
                 switch (colorType) {
 
                     case BKACTIVITY_TRIVIA_HEADER_COLOR:
+//                    case BKACTIVITY_TRIVIA_TITLE_COLOR:
                         String headerBG = validateJsonString(colorJson, "headerBG");
                         if (headerBG != null && !headerBG.isEmpty()) {
                             color.setColor(Color.parseColor(headerBG));

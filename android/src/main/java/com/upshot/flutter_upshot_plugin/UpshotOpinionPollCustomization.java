@@ -277,7 +277,7 @@ public class UpshotOpinionPollCustomization extends UpshotCustomization {
                         break;
                     case BKACTIVITY_PIE_GRAPH:
                         colorsList.clear();
-                        JSONArray pieColors = graphJson.getJSONArray("piecolors");
+                        JSONArray pieColors = graphJson.getJSONArray("pie");
                         for (int i = 0; i < pieColors.length(); i++) {
                             colorsList.add(Color.parseColor(pieColors.getString(i)));
                         }

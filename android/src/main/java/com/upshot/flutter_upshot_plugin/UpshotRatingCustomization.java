@@ -241,7 +241,7 @@ public class UpshotRatingCustomization extends UpshotCustomization {
                             selectedRatingList.add(bad_sel);
                             selectedRatingList.add(avg_sel);
                             selectedRatingList.add(good_sel);
-                            selectedRatingList.add(veryBad_sel);
+                            selectedRatingList.add(vGood_sel);
                         }
                 }
             } catch (Exception e) {

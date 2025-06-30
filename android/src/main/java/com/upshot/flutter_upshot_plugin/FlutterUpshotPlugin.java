@@ -455,6 +455,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                         }
                         jFormattedObj.put("name", formattedFontName);
 
+                        Log.i("formattedFontName", "formattedFontName : " + formattedFontName);
                         formattedFontData.put(key, jFormattedObj.toString());
 
                     } catch (Exception e) {
@@ -462,7 +463,7 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                     }
                     // ...
                 }
-                BrandKinesis.getBKInstance().setFonts(formattedFontData);
+                BrandKinesis.getBKInstance().setFonts(formattedFontData, context);
             }
                 break;
             case "terminate":
