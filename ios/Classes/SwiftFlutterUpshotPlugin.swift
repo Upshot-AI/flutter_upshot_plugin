@@ -196,7 +196,8 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
             if let data = call.arguments as? [String: Any] {
                 let loadMore = data["loadMore"] as? Bool ?? false
                 let limit = data["limit"] as? Int ?? 10
-                UpshotHelper.defaultHelper.getNotifications(loadMore: loadMore, limit: limit)
+                let fromLastDays = data["fromLastDays"] as? Int ?? 90
+                UpshotHelper.defaultHelper.getNotifications(loadMore: loadMore, limit: limit, fromLastDays: fromLastDays)
             }
             
         case "showInboxScreen":
@@ -207,10 +208,12 @@ public class SwiftFlutterUpshotPlugin: NSObject, FlutterPlugin {
         case "getUnreadNotificationsCount":
                         
             var inboxType = 1
+            var fromLastDays = 90
             if let details = call.arguments as? [String: Any] {                
                 inboxType = details["inboxType"] as? Int ?? 1
+                fromLastDays = details["fromLastDays"] as? Int ?? 90
             }
-            UpshotHelper.defaultHelper.getUnreadNotificationsCount(inboxType: inboxType)
+            UpshotHelper.defaultHelper.getUnreadNotificationsCount(inboxType: inboxType, fromLastDays: fromLastDays)
 
           case "updateNotificationReadStatus":
             

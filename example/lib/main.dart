@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
   FutureOr<void> createEvent(
       String eventName, HashMap<String, Object> data) async {
     try {
-      FlutterUpshotPlugin.getUnreadNotificationsCount(3);
+      FlutterUpshotPlugin.getUnreadNotificationsCount(3, 3);
       // String? eventID =
       //     await FlutterUpshotPlugin.createCustomEvent(eventName, data, false);
       // eventId = eventID;
@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   static void showInbox() {
-    FlutterUpshotPlugin.getUnreadNotificationsCount(3);
+    FlutterUpshotPlugin.getUnreadNotificationsCount(3, 3);
 
     Map options = {
       UpshotInboxScreenConfig.inboxType: UpshotInboxType.both,

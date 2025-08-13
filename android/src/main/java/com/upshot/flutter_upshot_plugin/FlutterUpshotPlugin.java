@@ -748,10 +748,24 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
             }
                 break;
             case "getNotifications": {
-                boolean loadMore = call.argument("loadMore");
-                boolean fetchFromStart = !loadMore;
-                int limit = call.argument("limit");
-                BrandKinesis.getBKInstance().getNotifications(context, fetchFromStart, limit,
+                
+                boolean fetchFromStart = true;
+                int limit = 10;
+                int daysToConsider = 90;
+                Object fromLastDaysArgument = call.argument("fromLastDays");
+                Object notificationLimitArgument = call.argument("limit");
+                Object loadMoreArgument = call.argument("loadMore");
+
+                if(fromLastDaysArgument instanceof Integer) {
+                    daysToConsider = (Integer) fromLastDaysArgument;
+                }
+                if(notificationLimitArgument instanceof Integer) {
+                    limit = (Integer) notificationLimitArgument;
+                }
+                if(loadMoreArgument instanceof Boolean) {
+                    fetchFromStart = !(Boolean) loadMoreArgument;
+                }
+                BrandKinesis.getBKInstance().getNotifications(context, fetchFromStart, limit,daysToConsider,
                         new BKNotificationsResponseListener() {
                             @Override
                             public void notificationsResponse(Object o) {
@@ -785,8 +799,15 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
                 int inboxType = Integer.parseInt(options.get("BKInboxType").toString());
                 Boolean readNotifications = (Boolean) options.get("BKShowReadNotifications");
+                int daysToConsider = 90;
+                Object fromLastDaysArgument = options.get("BKPushDaysLimit");
+                if(fromLastDaysArgument instanceof Integer) {
+                    daysToConsider = (Integer) fromLastDaysArgument;
+                }
                 options.put("bkShowReadNotifications", readNotifications);
                 options.put("bkInboxType", inboxType);
+                options.put("BKPushFetchDays", daysToConsider);
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -799,8 +820,14 @@ public class FlutterUpshotPlugin implements FlutterPlugin, MethodCallHandler, Ac
 
                 HashMap<String, Object> options = (HashMap<String, Object>) call.arguments;
                 int inboxType = Integer.parseInt(options.get("inboxType").toString());
+                int daysToConsider = 90;
+                Object fromLastDaysArgument = call.argument("fromLastDays");
 
-                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, inboxType,
+                if(fromLastDaysArgument instanceof Integer) {
+                    daysToConsider = (Integer) fromLastDaysArgument;
+                }
+
+                BrandKinesis.getBKInstance().getUnreadNotificationsCount(context, inboxType,daysToConsider,
                         new BKNotificationsCountResponseListener() {
                             @Override
                             public void notificationsCount(int i) {

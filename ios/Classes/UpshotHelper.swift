@@ -341,9 +341,9 @@ class UpshotHelper: NSObject {
         }
     }
     
-    func getNotifications(loadMore: Bool, limit: Int) {
-        
-        BrandKinesis.sharedInstance().getNotificationsWith(limit, loadmore: loadMore) { response, errorMessage in
+    func getNotifications(loadMore: Bool, limit: Int, fromLastDays: Int) {
+
+        BrandKinesis.sharedInstance().getNotificationsWith(limit, loadmore: loadMore, fromLastDays: fromLastDays) { response, errorMessage in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)
@@ -551,11 +551,11 @@ class UpshotHelper: NSObject {
         BrandKinesis.sharedInstance().showInboxController(options)
     }
 
-    func getUnreadNotificationsCount(inboxType: Int) {
+    func getUnreadNotificationsCount(inboxType: Int, fromLastDays: Int) {
      
        let type = BKInboxMessageType(rawValue: inboxType) ?? .OnlyPushNotifications
         
-        BrandKinesis.sharedInstance().getUnreadNotificationsCount(with: type) { count in
+        BrandKinesis.sharedInstance().getUnreadNotificationsCount(with: type, fromLastDays: fromLastDays) { count in
             if let controller : FlutterViewController = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController {
                 
                 let upshotChannel = FlutterMethodChannel(name: "flutter_upshot_plugin", binaryMessenger: controller.binaryMessenger)

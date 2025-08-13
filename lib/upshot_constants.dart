@@ -31,6 +31,7 @@ class UpshotInboxScreenConfig {
   static String pushFetchLimit = "BKPushFetchLimit";
   static String displayMessageCount = "BKDisplayMsgCount";
   static String displayTime = "BKDisplayTime";
+  static String daysLimit = "BKPushDaysLimit";
 }
 
 class UpshotAttribution {

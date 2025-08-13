@@ -157,8 +157,12 @@ class FlutterUpshotPlugin {
     _channel.invokeMethod("disableUser");
   }
 
-  static void getNotifications(bool loadMore, int limit) {
-    Map details = {'loadMore': loadMore, 'limit': limit};
+  static void getNotifications(bool loadMore, int limit, int fromLastDays) {
+    Map details = {
+      'loadMore': loadMore,
+      'limit': limit,
+      "fromLastDays": fromLastDays
+    };
     _channel.invokeListMethod("getNotifications", details);
   }
 
@@ -166,8 +170,8 @@ class FlutterUpshotPlugin {
     _channel.invokeListMethod("showInboxScreen", options);
   }
 
-  static void getUnreadNotificationsCount(int inboxType) {
-    Map details = {'inboxType': inboxType};
+  static void getUnreadNotificationsCount(int inboxType, int fromLastDays) {
+    Map details = {'inboxType': inboxType, 'fromLastDays': fromLastDays};
     _channel.invokeListMethod("getUnreadNotificationsCount", details);
   }
 

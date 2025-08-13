@@ -3,7 +3,7 @@ PODS:
   - flutter_upshot_plugin (1.0.0):
     - Flutter
     - Upshot
-  - Upshot (1.6.7)
+  - Upshot (1.6.8)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -27,9 +27,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_upshot_plugin: 3d79a0b02bf90dd0ddf341f73fba016e35b1177f
-  Upshot: 32a4cc50331d7f8a9ee27bc28759b8aa42173809
-  webview_flutter_wkwebview: a4af96a051138e28e29f60101d094683b9f82188
+  flutter_upshot_plugin: df506a8ff1164b49285cad73250ae7623a3e5145
+  Upshot: cd2ef6fc1ed65a510d40cae867529b3b3d430102
+  webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
 PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
