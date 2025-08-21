@@ -753,10 +753,10 @@ class ShowTutorialsModel extends ChangeNotifier {
     final fontName = (tutorialList[_selectedIndex].description?.fontName != '')
         ? 'font-family: ${tutorialList[_selectedIndex].description?.fontName};'
         : 'font-family: Arial, sans-serif;';
-    final pixelRatio = Platform.isAndroid
-        ? getDevicePixelRatio(context) /
-            (orientation == Orientation.landscape ? 2 : 1)
-        : 1;
+    // final pixelRatio = Platform.isAndroid
+    //     ? getDevicePixelRatio(context) /
+    //         (orientation == Orientation.landscape ? 2 : 1)
+    //     : 1;
 
     final fontSize = tutorialList[_selectedIndex].description?.fontSize ?? 16;
     final finalFontSize = Platform.isAndroid
