@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:8.1.0'
     }
 }
 
@@ -27,7 +27,7 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion safeExtGet('compileSdkVersion', 35)
     namespace 'com.flutter.plugins.flutter_upshot_plugin'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,15 +35,14 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion safeExtGet('minSdkVersion', 16)
         multiDexEnabled true
     }
 }
 
 dependencies{
 
-    // implementation 'com.github.Upshot-AI:upshot-android-sdk:v1.7.3x'
-    implementation 'com.github.upshot-git:upshottestrepo:v1.7.100x'
+    implementation 'com.github.Upshot-AI:upshot-android-sdk:v1.8.0x'
     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.cardview:cardview:1.0.0"
